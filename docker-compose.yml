@@ -1,0 +1,23 @@
+version: '3.9'
+services:
+  postgresdb:
+    image: 'postgres:13-alpine'
+    ports:
+    - '15432:5432'
+    environment:
+    - POSTGRES_PASSWORD=parcelaAE2021
+    volumes:
+    - //c/WS_Parcela_Ae/Docker/PostgreSQL:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+    - '16543:80'
+    environment:
+    - PGADMIN_DEFAULT_EMAIL=parcela@ae.com
+    - PGADMIN_DEFAULT_PASSWORD=parcelaAE2021
+    depends_on:
+    - postgresdb
+
+volumes:
+  postgres_volume:
