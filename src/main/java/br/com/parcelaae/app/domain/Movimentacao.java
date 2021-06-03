@@ -3,6 +3,7 @@ package br.com.parcelaae.app.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class Movimentacao implements Serializable {
@@ -70,5 +71,18 @@ public class Movimentacao implements Serializable {
 
     public void setDataOperacao(Date dataOperacao) {
         this.dataOperacao = dataOperacao;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movimentacao that = (Movimentacao) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

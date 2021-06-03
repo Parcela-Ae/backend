@@ -42,9 +42,6 @@ public class Especialidade implements Serializable {
 
     @Override
     public int hashCode() {
-        final var prime = 31;
-        var result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
+        return Objects.hash(id);
     }
 }

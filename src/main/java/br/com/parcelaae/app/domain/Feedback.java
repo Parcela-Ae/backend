@@ -2,6 +2,7 @@ package br.com.parcelaae.app.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 public class Feedback implements Serializable {
@@ -59,5 +60,18 @@ public class Feedback implements Serializable {
 
     public void setClinica(Clinica clinica) {
         this.clinica = clinica;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Feedback feedback = (Feedback) o;
+        return Objects.equals(id, feedback.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

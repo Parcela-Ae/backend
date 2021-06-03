@@ -1,11 +1,12 @@
 package br.com.parcelaae.app.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Cliente extends Usuario {
+public class Cliente extends Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String cpf;
