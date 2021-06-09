@@ -7,6 +7,7 @@ import br.com.parcelaae.app.repositories.ClinicaRepository;
 import br.com.parcelaae.app.repositories.UsuarioRepository;
 import br.com.parcelaae.app.repositories.impl.ClinicaCustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class ClinicaService {
 
     @Autowired
     private EnderecoService enderecoService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public Usuario insert(Usuario usuario) {
         usuario.setId(null);
@@ -57,7 +61,7 @@ public class ClinicaService {
         clinica.setNome(newUserDTO.getNome());
         clinica.setEmail(newUserDTO.getEmail());
         clinica.setCnpj(newUserDTO.getCpfOuCnpj());
-        clinica.setSenha(newUserDTO.getSenha());
+        clinica.setSenha(passwordEncoder.encode(newUserDTO.getSenha()));
 
         var cid = new Cidade(newUserDTO.getCidadeId(), null, null);
         var end = new Endereco(null, newUserDTO.getLogradouro(), newUserDTO.getNumero(), newUserDTO.getComplemento(), newUserDTO.getBairro(), newUserDTO.getCep(), clinica, cid);

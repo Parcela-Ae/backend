@@ -5,6 +5,7 @@ import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.repositories.ClienteRepository;
 import br.com.parcelaae.app.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class ClienteService {
 
     @Autowired
     private EnderecoService enderecoService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public List<Cliente> listAll() {
         return  clienteRepository.findAll();
@@ -37,7 +41,7 @@ public class ClienteService {
         cliente.setNome(newUserDTO.getNome());
         cliente.setEmail(newUserDTO.getEmail());
         cliente.setCpf(newUserDTO.getCpfOuCnpj());
-        cliente.setSenha(newUserDTO.getSenha());
+        cliente.setSenha(passwordEncoder.encode(newUserDTO.getSenha()));
 
         var cid = new Cidade(newUserDTO.getCidadeId(), null, null);
         var end = new Endereco(null, newUserDTO.getLogradouro(), newUserDTO.getNumero(), newUserDTO.getComplemento(), newUserDTO.getBairro(), newUserDTO.getCep(), cliente, cid);

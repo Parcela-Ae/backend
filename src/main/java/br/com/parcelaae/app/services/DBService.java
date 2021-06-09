@@ -6,6 +6,7 @@ import br.com.parcelaae.app.repositories.ClinicaRepository;
 import br.com.parcelaae.app.repositories.EspecialidadeRepository;
 import br.com.parcelaae.app.repositories.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class DBService {
 
     @Autowired
     private ClinicaRepository clinicaRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public void instantiateTestDatabase() {
         //String[] estados = {"Acre","Alagoas","Amapá","Amazonas","Bahia","Ceará","Distrito Federal","Espírito Santo","Goiás","Maranhão","Mato Grosso","Mato Grosso do Sul","Minas Gerais","Pará","Paraíba","Paraná","Pernambuco","Piauí","Rio de Janeiro","Rio Grande do Norte","Rio Grande do Sul","Rondônia","Roraima","Santa Catarina","São Paulo","Sergipe","Tocantins"};
@@ -49,12 +53,12 @@ public class DBService {
 
         especialidadeRepository.saveAll(List.of(especialidade1, especialidade2, especialidade3));
 
-        var clinica1 = new Clinica("Ok Doutor", "ok@doutor.com", "123", "12345678910");
+        var clinica1 = new Clinica("Ok Doutor", "ok@doutor.com", passwordEncoder.encode("123"), "12345678910");
         clinica1.getTelefones().addAll(List.of("81994020345", "34353637"));
         clinica1.getEspecialidades().addAll(List.of(especialidade2, especialidade3));
 
 
-        var clinica2 = new Clinica("Sirio Libanes", "sirio@libanes.com", "123", "10987654321");
+        var clinica2 = new Clinica("Sirio Libanes", "sirio@libanes.com", passwordEncoder.encode("123"), "10987654321");
         clinica2.getTelefones().addAll(List.of("11994020345", "32353937"));
         clinica2.getEspecialidades().addAll(List.of(especialidade1, especialidade2, especialidade3));
 
