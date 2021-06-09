@@ -16,6 +16,12 @@ public class Especialidade implements Serializable {
     private Integer id;
     private String nome;
 
+    public Especialidade() {}
+
+    public Especialidade(String nome) {
+        this.nome = nome;
+    }
+
     public Integer getId() {
         return id;
     }

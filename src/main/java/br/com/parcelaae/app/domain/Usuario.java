@@ -1,10 +1,12 @@
 package br.com.parcelaae.app.domain;
 
+import br.com.parcelaae.app.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -33,6 +35,14 @@ public abstract class Usuario implements Serializable {
 
     @OneToOne(mappedBy = "usuario")
     private Credito credito;
+
+    protected Usuario() {}
+
+    protected Usuario(String nome, String email, String senha) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+    }
 
     public Integer getId() {
         return id;
@@ -82,12 +92,12 @@ public abstract class Usuario implements Serializable {
         this.telefones = telefones;
     }
 
-    public Set<Integer> getPerfis() {
-        return perfis;
+    public Set<Perfil> getPerfis() {
+        return perfis.stream().map(Perfil::toEnum).collect(Collectors.toSet());
     }
 
-    public void setPerfis(Set<Integer> perfis) {
-        this.perfis = perfis;
+    public void addPerfil(Perfil perfil) {
+        perfis.add(perfil.getCod());
     }
 
     public Credito getCredito() {

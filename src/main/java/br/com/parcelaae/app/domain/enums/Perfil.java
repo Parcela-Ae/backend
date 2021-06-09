@@ -5,7 +5,8 @@ import java.util.stream.Stream;
 public enum Perfil {
 
     ADMIN(1, "ROLE_ADMIN"),
-    CLIENTE(2, "ROLE_CLIENTE");
+    CLIENTE(2, "ROLE_CLIENTE"),
+    CLINICA(3, "ROLE_CLINICA");
 
     private int cod;
     private String descricao;

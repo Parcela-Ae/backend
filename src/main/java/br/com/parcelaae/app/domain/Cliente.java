@@ -1,5 +1,7 @@
 package br.com.parcelaae.app.domain;
 
+import br.com.parcelaae.app.domain.enums.Perfil;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +15,16 @@ public class Cliente extends Usuario implements Serializable {
 
     @OneToMany(mappedBy = "cliente")
     private List<Feedback> feedbacks = new ArrayList<>();
+
+    public Cliente() {
+        addPerfil(Perfil.CLIENTE);
+    }
+
+    public Cliente(String nome, String email, String senha, String cpf) {
+        super(nome, email, senha);
+        this.cpf = cpf;
+        addPerfil(Perfil.CLIENTE);
+    }
 
     public String getCpf() {
         return cpf;
