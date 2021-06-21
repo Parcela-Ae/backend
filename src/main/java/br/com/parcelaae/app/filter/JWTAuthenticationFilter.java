@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -51,10 +52,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                          FilterChain chain, Authentication auth) throws IOException, ServletException {
-        String username = ((UserSS) auth.getPrincipal()).getUsername();
+        UserSS userSS = (UserSS) auth.getPrincipal();
+        String username = userSS.getUsername();
         String token = jwtUtil.generateToken(username);
         response.addHeader("Authorization", "Bearer " + token);
-//        auth.getAuthorities().contains(Perfil.CLINICA)
+        response.addHeader("TypeUser", getTypeUser(userSS));
     }
 
     private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
@@ -75,5 +77,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     + "\"message\": \"Email ou senha invalidos\", "
                     + "\"path\": \"/login\"}";
         }
+    }
+
+    private String getTypeUser(UserSS userSS) {
+        String typeUser = "CLIENTE";
+        if (userSS.getAuthorities().contains(new SimpleGrantedAuthority(Perfil.CLINICA.getDescricao())))
+            typeUser = "CLINICA";
+
+        return typeUser;
     }
 }
