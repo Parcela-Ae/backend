@@ -23,7 +23,7 @@ public class ClinicaController {
         return ResponseEntity.ok().body(service.listAll());
     }
 
-    @GetMapping(value = "/filter")
+    @PostMapping(value = "/search")
     public ResponseEntity<List<Clinica>> find(@RequestBody ClinicFilter filter) {
         List<Clinica> clinicas = service.find(filter);
         return ResponseEntity.ok().body(clinicas);

@@ -5,6 +5,7 @@ import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -17,6 +18,7 @@ public class ClienteController {
     @Autowired
     private ClienteService service;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<Cliente>> find() {
         return ResponseEntity.ok().body(service.listAll());
