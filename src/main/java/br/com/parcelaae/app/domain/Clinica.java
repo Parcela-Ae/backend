@@ -1,6 +1,7 @@
 package br.com.parcelaae.app.domain;
 
 import br.com.parcelaae.app.domain.enums.Perfil;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -8,8 +9,9 @@ import javax.persistence.ManyToMany;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 public class Clinica extends Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -31,21 +33,4 @@ public class Clinica extends Usuario implements Serializable {
         this.especialidades.addAll(especialidades);
         addPerfil(Perfil.CLINICA);
     }
-
-    public String getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
-
-    public List<Especialidade> getEspecialidades() {
-        return especialidades;
-    }
-
-    public void setEspecialidades(List<Especialidade> especialidades) {
-        this.especialidades = especialidades;
-    }
-
 }

@@ -64,12 +64,20 @@ public class ClinicaService {
         clinica.setSenha(passwordEncoder.encode(newUserDTO.getSenha()));
 
         var cid = new Cidade(newUserDTO.getCidadeId(), null, null);
-        var end = new Endereco(null, newUserDTO.getLogradouro(), newUserDTO.getNumero(), newUserDTO.getComplemento(), newUserDTO.getBairro(), newUserDTO.getCep(), clinica, cid);
-        var especialides = newUserDTO.getEspecialidades();
+        var end = Endereco.builder()
+                .logradouro(newUserDTO.getLogradouro())
+                .numero(newUserDTO.getNumero())
+                .complemento(newUserDTO.getComplemento())
+                .bairro(newUserDTO.getBairro())
+                .cep(newUserDTO.getCep())
+                .usuario(clinica)
+                .cidade(cid)
+                .build();
+        var especialidades = newUserDTO.getEspecialidades();
 
         clinica.getEnderecos().add(end);
         clinica.getTelefones().add(newUserDTO.getTelefone1());
-        clinica.getEspecialidades().addAll(especialides);
+        clinica.getEspecialidades().addAll(especialidades);
         if (newUserDTO.getTelefone2()!=null) {
             clinica.getTelefones().add(newUserDTO.getTelefone2());
         }

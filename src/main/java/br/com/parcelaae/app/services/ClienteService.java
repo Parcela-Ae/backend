@@ -44,7 +44,15 @@ public class ClienteService {
         cliente.setSenha(passwordEncoder.encode(newUserDTO.getSenha()));
 
         var cid = new Cidade(newUserDTO.getCidadeId(), null, null);
-        var end = new Endereco(null, newUserDTO.getLogradouro(), newUserDTO.getNumero(), newUserDTO.getComplemento(), newUserDTO.getBairro(), newUserDTO.getCep(), cliente, cid);
+        var end = Endereco.builder()
+                .logradouro(newUserDTO.getLogradouro())
+                .numero(newUserDTO.getNumero())
+                .complemento(newUserDTO.getComplemento())
+                .bairro(newUserDTO.getBairro())
+                .cep(newUserDTO.getCep())
+                .usuario(cliente)
+                .cidade(cid)
+                .build();
 
         cliente.getEnderecos().add(end);
         cliente.getTelefones().add(newUserDTO.getTelefone1());

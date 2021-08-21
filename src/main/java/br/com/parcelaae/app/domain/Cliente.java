@@ -1,12 +1,19 @@
 package br.com.parcelaae.app.domain;
 
 import br.com.parcelaae.app.domain.enums.Perfil;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@AllArgsConstructor
 @Entity
 public class Cliente extends Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -24,21 +31,5 @@ public class Cliente extends Usuario implements Serializable {
         super(nome, email, senha);
         this.cpf = cpf;
         addPerfil(Perfil.CLIENTE);
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public List<Feedback> getFeedbacks() {
-        return feedbacks;
-    }
-
-    public void setFeedbacks(List<Feedback> feedbacks) {
-        this.feedbacks = feedbacks;
     }
 }
