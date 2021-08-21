@@ -1,7 +1,7 @@
 package br.com.parcelaae.app.filter;
 
-import br.com.parcelaae.app.domain.enums.Perfil;
-import br.com.parcelaae.app.dto.CredenciaisDTO;
+import br.com.parcelaae.app.domain.enums.Profile;
+import br.com.parcelaae.app.dto.CredentialsDTO;
 import br.com.parcelaae.app.security.JWTUtil;
 import br.com.parcelaae.app.security.UserSS;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,10 +36,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            CredenciaisDTO creds = new ObjectMapper()
-                    .readValue(request.getInputStream(), CredenciaisDTO.class);
+            CredentialsDTO creds = new ObjectMapper()
+                    .readValue(request.getInputStream(), CredentialsDTO.class);
 
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getSenha(), new ArrayList<>());
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>());
 
             Authentication auth = authenticationManager.authenticate(authToken);
             return auth;
@@ -81,7 +81,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private String getTypeUser(UserSS userSS) {
         String typeUser = "CLIENTE";
-        if (userSS.getAuthorities().contains(new SimpleGrantedAuthority(Perfil.CLINICA.getDescricao())))
+        if (userSS.getAuthorities().contains(new SimpleGrantedAuthority(Profile.CLINIC.getDescription())))
             typeUser = "CLINICA";
 
         return typeUser;

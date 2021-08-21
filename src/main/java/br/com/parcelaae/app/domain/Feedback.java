@@ -20,13 +20,13 @@ public class Feedback implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String message;
-    private Integer avaliacao;
+    private Integer rating;
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Cliente cliente;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "clinica_id")
-    private Clinica clinica;
+    @JoinColumn(name = "clinic_id")
+    private Clinic clinic;
 }

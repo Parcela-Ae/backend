@@ -1,6 +1,6 @@
 package br.com.parcelaae.app.domain;
 
-import br.com.parcelaae.app.domain.enums.Perfil;
+import br.com.parcelaae.app.domain.enums.Profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,43 +21,43 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-public abstract class Usuario implements Serializable {
+public abstract class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
-    private String nome;
+    private String name;
     private String email;
 
     @JsonIgnore
-    private String senha;
+    private String password;
 
-    @OneToMany(mappedBy="usuario", cascade = CascadeType.ALL)
-    private List<Endereco> enderecos = new ArrayList<>();
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+    private List<Address> addresses = new ArrayList<>();
 
     @ElementCollection
-    @CollectionTable(name="TELEFONE")
+    @CollectionTable(name="PHONES")
     private Set<String> telefones = new HashSet<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "PERFIS")
-    private Set<Integer> perfis = new HashSet<>();
+    @CollectionTable(name = "PROFILES")
+    private Set<Integer> profiles = new HashSet<>();
 
-    @OneToOne(mappedBy = "usuario")
-    private Credito credito;
+    @OneToOne(mappedBy = "user")
+    private Credit credit;
 
-    protected Usuario(String nome, String email, String senha) {
-        this.nome = nome;
+    protected User(String name, String email, String password) {
+        this.name = name;
         this.email = email;
-        this.senha = senha;
+        this.password = password;
     }
 
-    public Set<Perfil> getPerfis() {
-        return perfis.stream().map(Perfil::toEnum).collect(Collectors.toSet());
+    public Set<Profile> getProfiles() {
+        return profiles.stream().map(Profile::toEnum).collect(Collectors.toSet());
     }
 
-    public void addPerfil(Perfil perfil) {
-        perfis.add(perfil.getCod());
+    public void addPerfil(Profile profile) {
+        profiles.add(profile.getCod());
     }
 }

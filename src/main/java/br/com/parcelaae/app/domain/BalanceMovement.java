@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Movimentacao implements Serializable {
+public class BalanceMovement implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -22,14 +22,14 @@ public class Movimentacao implements Serializable {
     private Integer id;
 
     @OneToOne
-    @JoinColumn(name = "origem_id")
-    private Credito origem;
+    @JoinColumn(name = "origin_id")
+    private Credit origin;
 
     @OneToOne
-    @JoinColumn(name = "destino_id")
-    private Credito destino;
+    @JoinColumn(name = "destination_id")
+    private Credit destination;
 
-    private String tipo;
-    private Double valor;
-    private Date dataOperacao;
+    private String type;
+    private Double value;
+    private Date operationDate;
 }

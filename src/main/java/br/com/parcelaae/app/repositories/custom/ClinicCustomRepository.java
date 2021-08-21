@@ -1,32 +1,32 @@
-package br.com.parcelaae.app.repositories.impl;
+package br.com.parcelaae.app.repositories.custom;
 
 import br.com.parcelaae.app.controllers.queryfilter.ClinicFilter;
-import br.com.parcelaae.app.domain.Clinica;
+import br.com.parcelaae.app.domain.Clinic;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 @Repository
-public class ClinicaCustomRepository {
+public class ClinicCustomRepository {
 
     private final EntityManager em;
 
-    public ClinicaCustomRepository(EntityManager em) {
+    public ClinicCustomRepository(EntityManager em) {
         this.em = em;
     }
 
-    public List<Clinica> find(ClinicFilter filter) {
+    public List<Clinic> find(ClinicFilter filter) {
         String sql = "";
 
-        sql += " SELECT clinica ";
-        sql += " FROM Clinica clinica ";
+        sql += " SELECT clinic ";
+        sql += " FROM Clinic clinic ";
 
         if (filter != null && filter.getName() != null) {
-            sql += " WHERE clinica.nome LIKE :name";
+            sql += " WHERE clinic.name LIKE :name";
         }
 
-        var query = em.createQuery(sql, Clinica.class);
+        var query = em.createQuery(sql, Clinic.class);
 
         if (filter != null && filter.getName() != null) {
             query.setParameter("name", "%" + filter.getName() + "%");

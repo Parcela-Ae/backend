@@ -1,6 +1,6 @@
 package br.com.parcelaae.app.dto;
 
-import br.com.parcelaae.app.domain.Especialidade;
+import br.com.parcelaae.app.domain.Specialty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,14 +10,14 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-public class EspecialidadeDTO implements Serializable {
+public class SpecialtyDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
-    private String nome;
+    private String name;
 
-    public EspecialidadeDTO(Especialidade entity) {
+    public SpecialtyDTO(Specialty entity) {
         setId(entity.getId());
-        setNome(entity.getNome());
+        setName(entity.getName());
     }
 }

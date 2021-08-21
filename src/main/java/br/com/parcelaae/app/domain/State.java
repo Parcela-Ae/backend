@@ -14,16 +14,16 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Estado implements Serializable {
+public class State implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String nome;
+    private String name;
 
     @Builder.Default
     @JsonIgnore
-    @OneToMany(mappedBy = "estado")
-    private List<Cidade> cidades = new ArrayList<>();
+    @OneToMany(mappedBy = "state")
+    private List<City> cities = new ArrayList<>();
 }

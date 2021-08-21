@@ -1,6 +1,6 @@
 package br.com.parcelaae.app.domain;
 
-import br.com.parcelaae.app.domain.enums.Perfil;
+import br.com.parcelaae.app.domain.enums.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,21 +15,21 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @Entity
-public class Cliente extends Usuario implements Serializable {
+public class Customer extends User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String cpf;
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "customer")
     private List<Feedback> feedbacks = new ArrayList<>();
 
-    public Cliente() {
-        addPerfil(Perfil.CLIENTE);
+    public Customer() {
+        addPerfil(Profile.CUSTOMER);
     }
 
-    public Cliente(String nome, String email, String senha, String cpf) {
-        super(nome, email, senha);
+    public Customer(String name, String email, String password, String cpf) {
+        super(name, email, password);
         this.cpf = cpf;
-        addPerfil(Perfil.CLIENTE);
+        addPerfil(Profile.CUSTOMER);
     }
 }

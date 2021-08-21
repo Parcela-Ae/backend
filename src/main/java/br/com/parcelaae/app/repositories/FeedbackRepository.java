@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
 
-    @Query("SELECT feedback FROM Feedback feedback WHERE feedback.cliente.id = :customerId")
+    @Query("SELECT feedback FROM Feedback feedback WHERE feedback.customer.id = :customerId")
     List<Feedback> findByCustomerId(@Param("customerId") Integer customerId);
 }

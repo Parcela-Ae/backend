@@ -1,6 +1,6 @@
 package br.com.parcelaae.app.security;
 
-import br.com.parcelaae.app.domain.enums.Perfil;
+import br.com.parcelaae.app.domain.enums.Profile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,17 +14,17 @@ public class UserSS implements UserDetails {
 
     private Integer id;
     private String email;
-    private String senha;
+    private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserSS() {
     }
 
-    public UserSS(Integer id, String email, String senha, Set<Perfil> perfis) {
+    public UserSS(Integer id, String email, String password, Set<Profile> perfis) {
         this.id = id;
         this.email = email;
-        this.senha = senha;
-        this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao())).collect(Collectors.toList());
+        this.password = password;
+        this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toList());
     }
 
     public Integer getId() {
@@ -38,7 +38,7 @@ public class UserSS implements UserDetails {
 
     @Override
     public String getPassword() {
-        return senha;
+        return password;
     }
 
     @Override

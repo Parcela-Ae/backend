@@ -1,6 +1,6 @@
 package br.com.parcelaae.app.dto;
 
-import br.com.parcelaae.app.domain.Especialidade;
+import br.com.parcelaae.app.domain.Specialty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +19,7 @@ public class NewUserDTO implements Serializable {
 
     @NotEmpty(message = "Preenchimento obrigatório")
     @Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
-    private String nome;
+    private String name;
 
     @NotEmpty(message = "Preenchimento obrigatório")
     @Email(message = "Email inválido")
@@ -28,30 +28,30 @@ public class NewUserDTO implements Serializable {
     @NotEmpty(message = "Preenchimento obrigatório")
     private String cpfOuCnpj;
 
-    private List<Especialidade> especialidades;
+    private List<Specialty> specialties;
 
     @NotEmpty(message = "Preenchimento obrigatório")
-    private String senha;
+    private String password;
 
     @NotEmpty(message = "Preenchimento obrigatório")
-    private String logradouro;
+    private String publicArea;
 
     @NotEmpty(message = "Preenchimento obrigatório")
-    private String numero;
+    private String number;
 
-    private String complemento;
+    private String complement;
 
-    private String bairro;
-
-    @NotEmpty(message = "Preenchimento obrigatório")
-    private String cep;
+    private String neighborhood;
 
     @NotEmpty(message = "Preenchimento obrigatório")
-    private String telefone1;
+    private String zipCode;
 
-    private String telefone2;
+    @NotEmpty(message = "Preenchimento obrigatório")
+    private String phone1;
 
-    private String telefone3;
+    private String phone2;
 
-    private Integer cidadeId;
+    private String phone3;
+
+    private Integer cityId;
 }

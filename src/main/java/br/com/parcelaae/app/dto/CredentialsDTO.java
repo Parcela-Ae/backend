@@ -9,9 +9,9 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CredenciaisDTO implements Serializable {
+public class CredentialsDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String email;
-    private String senha;
+    private String password;
 }
