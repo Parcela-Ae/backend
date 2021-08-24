@@ -55,12 +55,12 @@ public class CustomerService {
                 .build();
 
         cliente.getAddresses().add(end);
-        cliente.getTelefones().add(newUserDTO.getPhone1());
+        cliente.getPhones().add(newUserDTO.getPhone1());
         if (newUserDTO.getPhone2()!=null) {
-            cliente.getTelefones().add(newUserDTO.getPhone2());
+            cliente.getPhones().add(newUserDTO.getPhone2());
         }
         if (newUserDTO.getPhone3()!=null) {
-            cliente.getTelefones().add(newUserDTO.getPhone3());
+            cliente.getPhones().add(newUserDTO.getPhone3());
         }
         return cliente;
     }

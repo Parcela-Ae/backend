@@ -38,7 +38,7 @@ public abstract class User implements Serializable {
 
     @ElementCollection
     @CollectionTable(name="PHONES")
-    private Set<String> telefones = new HashSet<>();
+    private Set<String> phones = new HashSet<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "PROFILES")

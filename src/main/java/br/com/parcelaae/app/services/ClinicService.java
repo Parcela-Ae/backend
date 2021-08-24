@@ -76,13 +76,13 @@ public class ClinicService {
         var especialidades = newUserDTO.getSpecialties();
 
         clinica.getAddresses().add(end);
-        clinica.getTelefones().add(newUserDTO.getPhone1());
+        clinica.getPhones().add(newUserDTO.getPhone1());
         clinica.getSpecialties().addAll(especialidades);
         if (newUserDTO.getPhone2()!=null) {
-            clinica.getTelefones().add(newUserDTO.getPhone2());
+            clinica.getPhones().add(newUserDTO.getPhone2());
         }
         if (newUserDTO.getPhone3()!=null) {
-            clinica.getTelefones().add(newUserDTO.getPhone3());
+            clinica.getPhones().add(newUserDTO.getPhone3());
         }
         return clinica;
     }
