@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import static br.com.parcelaae.app.security.SecurityUtil.*;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -21,6 +23,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null)
             throw new UsernameNotFoundException(email);
 
-        return new UserSS(user.getId(), user.getEmail(), user.getPassword(), user.getProfiles());
+        var userSS = new UserSS(user.getId(), user.getEmail(), user.getPassword(), user.getName(), user.getProfiles());
+        userSS.setTypeUser(getTypeUser(userSS));
+        return userSS;
     }
 }

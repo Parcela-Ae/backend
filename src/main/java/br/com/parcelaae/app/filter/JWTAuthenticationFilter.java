@@ -1,6 +1,5 @@
 package br.com.parcelaae.app.filter;
 
-import br.com.parcelaae.app.domain.enums.Profile;
 import br.com.parcelaae.app.dto.CredentialsDTO;
 import br.com.parcelaae.app.security.JWTUtil;
 import br.com.parcelaae.app.security.UserSS;
@@ -9,7 +8,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -41,11 +39,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>());
 
-            Authentication auth = authenticationManager.authenticate(authToken);
-            return auth;
+            return authenticationManager.authenticate(authToken);
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new SecurityException(e);
         }
     }
 
@@ -56,7 +53,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String username = userSS.getUsername();
         String token = jwtUtil.generateToken(username);
         response.addHeader("Authorization", "Bearer " + token);
-        response.addHeader("TypeUser", getTypeUser(userSS));
     }
 
     private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
@@ -77,13 +73,5 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     + "\"message\": \"Email ou senha invalidos\", "
                     + "\"path\": \"/login\"}";
         }
-    }
-
-    private String getTypeUser(UserSS userSS) {
-        String typeUser = "CLIENTE";
-        if (userSS.getAuthorities().contains(new SimpleGrantedAuthority(Profile.CLINIC.getDescription())))
-            typeUser = "CLINICA";
-
-        return typeUser;
     }
 }
