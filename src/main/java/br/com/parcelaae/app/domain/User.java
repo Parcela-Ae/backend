@@ -28,6 +28,8 @@ public abstract class User implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     private String name;
+
+    @Column(unique = true)
     private String email;
 
     @JsonIgnore
@@ -40,6 +42,7 @@ public abstract class User implements Serializable {
     @CollectionTable(name="PHONES")
     private Set<String> phones = new HashSet<>();
 
+    @JsonIgnore
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "PROFILES")
     private Set<Integer> profiles = new HashSet<>();

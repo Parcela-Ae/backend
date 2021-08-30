@@ -1,6 +1,7 @@
 package br.com.parcelaae.app.dto;
 
 import br.com.parcelaae.app.domain.Specialty;
+import br.com.parcelaae.app.services.validation.UserInsert;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@UserInsert
 public class NewUserDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 

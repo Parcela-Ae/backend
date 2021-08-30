@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -30,7 +31,7 @@ public class ClinicController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody NewUserDTO newUserDTO) {
+    public ResponseEntity<Void> insert(@Valid @RequestBody NewUserDTO newUserDTO) {
         Clinic clinic = service.fromDTO(newUserDTO);
         service.insert(clinic);
         var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(clinic.getId()).toUri();

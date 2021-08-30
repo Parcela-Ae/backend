@@ -1,6 +1,9 @@
 package br.com.parcelaae.app.services;
 
-import br.com.parcelaae.app.domain.*;
+import br.com.parcelaae.app.domain.Address;
+import br.com.parcelaae.app.domain.City;
+import br.com.parcelaae.app.domain.Customer;
+import br.com.parcelaae.app.domain.User;
 import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.repositories.CustomerRepository;
 import br.com.parcelaae.app.repositories.UserRepository;
@@ -25,6 +28,12 @@ public class CustomerService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private CityService cityService;
+
+    @Autowired
+    private ViaCepService viaCepService;
+
     public List<Customer> listAll() {
         return  customerRepository.findAll();
     }
@@ -43,6 +52,7 @@ public class CustomerService {
         cliente.setCpf(newUserDTO.getCpfOuCnpj());
         cliente.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
 
+        validCity(newUserDTO);
         var cid = new City(newUserDTO.getCityId(), null, null);
         var end = Address.builder()
                 .publicArea(newUserDTO.getPublicArea())
@@ -63,5 +73,11 @@ public class CustomerService {
             cliente.getPhones().add(newUserDTO.getPhone3());
         }
         return cliente;
+    }
+
+    private void validCity(NewUserDTO newUserDTO) {
+        if (!cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())) {
+            throw new IllegalArgumentException("Invalid city id");
+        }
     }
 }
