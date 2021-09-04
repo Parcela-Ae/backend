@@ -1,13 +1,11 @@
 package br.com.parcelaae.app.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,7 +18,7 @@ public class Feedback implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String message;
-    private Integer rating;
+    private Float rating;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")

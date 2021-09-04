@@ -6,7 +6,7 @@ create table clinic (cnpj varchar(255), id integer not null, primary key (id));
 create table clinic_specialties (clinic_id integer not null, specialties_id integer not null);
 create table credit (id serial primary key, balance double, user_id integer, primary key (id));
 create table customer (cpf varchar(255), id integer not null, primary key (id));
-create table feedback (id serial primary key, message varchar(255), rating integer, clinic_id integer, customer_id integer, primary key (id));
+create table feedback (id serial primary key, message varchar(255), rating double, clinic_id integer, customer_id integer, primary key (id));
 create table phones (user_id integer not null, phones varchar(255));
 create table profiles (user_id integer not null, profiles integer);
 create table specialty (id serial primary key, name varchar(255), primary key (id));

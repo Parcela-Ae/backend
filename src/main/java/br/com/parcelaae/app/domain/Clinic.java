@@ -30,7 +30,10 @@ public class Clinic extends User implements Serializable {
     public Clinic(String name, String email, String password, String cnpj) {
         super(name, email, password);
         this.cnpj = cnpj;
-        this.specialties.addAll(specialties);
         addPerfil(Profile.CLINIC);
+    }
+
+    public Clinic(Integer id) {
+        setId(id);
     }
 }
