@@ -11,6 +11,7 @@ create table phones (user_id integer not null, phones varchar(255));
 create table profiles (user_id integer not null, profiles integer);
 create table specialty (id serial primary key, name varchar(255), primary key (id));
 create table state (id serial primary key, uf varchar(255), name varchar(255), primary key (id));
+create table email (id serial primary key, ownerRef varchar(255), emailFrom varchar(255), emailTo varchar(255), text text, sendDateEmail date, statusEmail integer, primary key (id));
 create table user (id serial primary key, email varchar(255), name varchar(255), password varchar(255), primary key (id));
 alter table address add constraint fk_address_city foreign key (city_id) references city;
 alter table address add constraint fk_address_user foreign key (user_id) references user;
