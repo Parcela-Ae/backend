@@ -2,7 +2,7 @@ package br.com.parcelaae.app.domain.enums;
 
 import java.util.stream.Stream;
 
-public enum TipoCliente {
+public enum CustomerType {
 
     PESSOAFISICA(1, "Pessoa Física"),
     PESSOAJURIDICA(2, "Pessoa Jurídica");
@@ -10,7 +10,7 @@ public enum TipoCliente {
     private int cod;
     private String descricao;
 
-    private TipoCliente(int cod, String descricao) {
+    private CustomerType(int cod, String descricao) {
         this.cod = cod;
         this.descricao = descricao;
     }
@@ -22,8 +22,8 @@ public enum TipoCliente {
         return descricao;
     }
 
-    public static TipoCliente toEnum(Integer cod) {
-        return Stream.of(TipoCliente.values())
+    public static CustomerType toEnum(Integer cod) {
+        return Stream.of(CustomerType.values())
                 .filter(e -> cod.equals(e.getCod()))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("Id inválido: " + cod));

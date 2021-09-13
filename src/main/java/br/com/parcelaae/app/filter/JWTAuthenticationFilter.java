@@ -3,7 +3,9 @@ package br.com.parcelaae.app.filter;
 import br.com.parcelaae.app.dto.CredentialsDTO;
 import br.com.parcelaae.app.security.JWTUtil;
 import br.com.parcelaae.app.security.UserSS;
+import br.com.parcelaae.app.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,10 +27,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private JWTUtil jwtUtil;
 
+    private UserService userService;
+
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
         setAuthenticationFailureHandler(new JWTAuthenticationFailureHandler());
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.userService = new UserService();
     }
 
     @Override
@@ -52,7 +57,17 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserSS userSS = (UserSS) auth.getPrincipal();
         String username = userSS.getUsername();
         String token = jwtUtil.generateToken(username);
-        response.addHeader("Authorization", "Bearer " + token);
+        fillAuthorizationInfo(response, userSS, token);
+    }
+
+    private void fillAuthorizationInfo(HttpServletResponse response, UserSS userSS, String token) throws IOException {
+        var userDTO = userService.getUserProfile(userSS);
+        userDTO.setAccessToken("Bearer " + token);
+        String userJson = new Gson().toJson(userDTO);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(userJson);
     }
 
     private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {

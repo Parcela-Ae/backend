@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 @NoArgsConstructor
 public class UserProfileDTO {
 
+    private String accessToken;
     private Integer id;
     private String email;
     private String name;
