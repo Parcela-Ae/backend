@@ -33,11 +33,13 @@ public class CityService {
     }
 
     public boolean isAValidCity(Integer cityId, String zipCode) {
-        Optional<City> city = getOptionalCityById(cityId);
-        if (city.isEmpty()) {
-            return isAValidCityInTheViaCep(zipCode);
-        }
-        return true;
+        var isAValidCity = true;
+        var city = getOptionalCityById(cityId);
+
+        if (city.isEmpty())
+            isAValidCity = isAValidCityInTheViaCep(zipCode);
+
+        return isAValidCity;
     }
 
 

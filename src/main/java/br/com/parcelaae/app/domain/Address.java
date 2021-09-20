@@ -31,7 +31,7 @@ public class Address implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name = "city_id")
     private City city;
 }

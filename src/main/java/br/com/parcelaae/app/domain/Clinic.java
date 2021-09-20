@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity

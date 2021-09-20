@@ -2,9 +2,7 @@ package br.com.parcelaae.app.dto;
 
 import br.com.parcelaae.app.domain.Specialty;
 import br.com.parcelaae.app.services.validation.UserInsert;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
@@ -12,9 +10,11 @@ import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @UserInsert
 public class NewUserDTO implements Serializable {
     private static final long serialVersionUID = 1L;

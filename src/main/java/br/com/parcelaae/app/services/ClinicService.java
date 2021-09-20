@@ -28,10 +28,12 @@ public class ClinicService {
     private AddressService addressService;
 
     @Autowired
+    private CityService cityService;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     public User insert(User user) {
-        user.setId(null);
         user = userRepository.save(user);
         addressService.saveAll(user.getAddresses());
         return user;
@@ -57,12 +59,13 @@ public class ClinicService {
     }
 
     public Clinic fromDTO(NewUserDTO newUserDTO) {
-        var clinica = new Clinic();
-        clinica.setName(newUserDTO.getName());
-        clinica.setEmail(newUserDTO.getEmail());
-        clinica.setCnpj(newUserDTO.getCpfOuCnpj());
-        clinica.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
+        var clinic = new Clinic();
+        clinic.setName(newUserDTO.getName());
+        clinic.setEmail(newUserDTO.getEmail());
+        clinic.setCnpj(newUserDTO.getCpfOuCnpj());
+        clinic.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
 
+        validCity(newUserDTO);
         var cid = new City(newUserDTO.getCityId(), null, null);
         var end = Address.builder()
                 .publicArea(newUserDTO.getPublicArea())
@@ -70,20 +73,26 @@ public class ClinicService {
                 .complement(newUserDTO.getComplement())
                 .neighborhood(newUserDTO.getNeighborhood())
                 .zipCode(newUserDTO.getZipCode())
-                .user(clinica)
+                .user(clinic)
                 .city(cid)
                 .build();
         var especialidades = newUserDTO.getSpecialties();
 
-        clinica.getAddresses().add(end);
-        clinica.getPhones().add(newUserDTO.getPhone1());
-        clinica.getSpecialties().addAll(especialidades);
+        clinic.getAddresses().add(end);
+        clinic.getPhones().add(newUserDTO.getPhone1());
+        clinic.getSpecialties().addAll(especialidades);
         if (newUserDTO.getPhone2()!=null) {
-            clinica.getPhones().add(newUserDTO.getPhone2());
+            clinic.getPhones().add(newUserDTO.getPhone2());
         }
         if (newUserDTO.getPhone3()!=null) {
-            clinica.getPhones().add(newUserDTO.getPhone3());
+            clinic.getPhones().add(newUserDTO.getPhone3());
         }
-        return clinica;
+        return clinic;
+    }
+
+    private void validCity(NewUserDTO newUserDTO) {
+        if (!cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())) {
+            throw new IllegalArgumentException("Invalid city id");
+        }
     }
 }

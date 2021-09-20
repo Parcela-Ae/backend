@@ -39,40 +39,39 @@ public class CustomerService {
     }
 
     public User insert(User user) {
-        user.setId(null);
         user = userRepository.save(user);
         addressService.saveAll(user.getAddresses());
         return user;
     }
 
     public Customer fromDTO(NewUserDTO newUserDTO) {
-        var cliente = new Customer();
-        cliente.setName(newUserDTO.getName());
-        cliente.setEmail(newUserDTO.getEmail());
-        cliente.setCpf(newUserDTO.getCpfOuCnpj());
-        cliente.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
+        var customer = new Customer();
+        customer.setName(newUserDTO.getName());
+        customer.setEmail(newUserDTO.getEmail());
+        customer.setCpf(newUserDTO.getCpfOuCnpj());
+        customer.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
 
         validCity(newUserDTO);
-        var cid = new City(newUserDTO.getCityId(), null, null);
-        var end = Address.builder()
+        var city = new City(newUserDTO.getCityId(), null, null);
+        var address = Address.builder()
                 .publicArea(newUserDTO.getPublicArea())
                 .number(newUserDTO.getNumber())
                 .complement(newUserDTO.getComplement())
                 .neighborhood(newUserDTO.getNeighborhood())
                 .zipCode(newUserDTO.getZipCode())
-                .user(cliente)
-                .city(cid)
+                .user(customer)
+                .city(city)
                 .build();
 
-        cliente.getAddresses().add(end);
-        cliente.getPhones().add(newUserDTO.getPhone1());
+        customer.getAddresses().add(address);
+        customer.getPhones().add(newUserDTO.getPhone1());
         if (newUserDTO.getPhone2()!=null) {
-            cliente.getPhones().add(newUserDTO.getPhone2());
+            customer.getPhones().add(newUserDTO.getPhone2());
         }
         if (newUserDTO.getPhone3()!=null) {
-            cliente.getPhones().add(newUserDTO.getPhone3());
+            customer.getPhones().add(newUserDTO.getPhone3());
         }
-        return cliente;
+        return customer;
     }
 
     private void validCity(NewUserDTO newUserDTO) {

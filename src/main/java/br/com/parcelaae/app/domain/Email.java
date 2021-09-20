@@ -1,13 +1,18 @@
 package br.com.parcelaae.app.domain;
 
 import br.com.parcelaae.app.domain.enums.StatusEmail;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Data
+@Builder
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Entity
 public class Email implements Serializable {
 

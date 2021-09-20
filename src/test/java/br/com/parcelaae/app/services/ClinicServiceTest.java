@@ -1,10 +1,13 @@
 package br.com.parcelaae.app.services;
 
+import br.com.parcelaae.app.controllers.queryfilter.ClinicFilter;
 import br.com.parcelaae.app.domain.Address;
-import br.com.parcelaae.app.domain.Customer;
+import br.com.parcelaae.app.domain.Clinic;
+import br.com.parcelaae.app.domain.Specialty;
 import br.com.parcelaae.app.dto.NewUserDTO;
-import br.com.parcelaae.app.repositories.CustomerRepository;
+import br.com.parcelaae.app.repositories.ClinicRepository;
 import br.com.parcelaae.app.repositories.UserRepository;
+import br.com.parcelaae.app.repositories.custom.ClinicCustomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,51 +16,48 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-class CustomerServiceTest {
+@ExtendWith({MockitoExtension.class})
+class ClinicServiceTest {
 
     private static final String ENCRYPTED_PASSWORD = "******";
 
     private static final String DECRYPTED_PASSWORD = "123456";
 
     @InjectMocks
-    private CustomerService customerService;
-
-    @Mock
-    private CustomerRepository customerRepository;
+    private ClinicService clinicService;
 
     @Mock
     private UserRepository userRepository;
 
     @Mock
-    private AddressService addressService;
+    private ClinicRepository clinicRepository;
 
     @Mock
-    private BCryptPasswordEncoder passwordEncoder;
+    private ClinicCustomRepository clinicCustomRepository;
+
+    @Mock
+    private AddressService addressService;
 
     @Mock
     private CityService cityService;
 
-    private List<Customer> customersExpected = new ArrayList<>();
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
 
     private NewUserDTO newUserDTO;
 
     @BeforeEach
     public void setUp() {
-        var customer = new Customer();
-        customersExpected.addAll(List.of(customer));
-
         newUserDTO = NewUserDTO.builder()
                 .name("John Wick")
                 .email("john@wick.com")
                 .cpfOuCnpj("00011122233")
+                .specialties(List.of(Specialty.builder().build()))
                 .password(DECRYPTED_PASSWORD)
                 .cityId(2610707)
                 .publicArea("Rua das Acácias")
@@ -69,40 +69,80 @@ class CustomerServiceTest {
     }
 
     @Test
-    void shouldReturnListOfTheAllCustomer() {
-        when(customerRepository.findAll()).thenReturn(customersExpected);
+    void shouldInsertANewUser() {
+        var addresses = List.of(Address.builder().build(), Address.builder().build());
+        var userToSave = Clinic.builder().build();
 
-        var customersActual = customerService.listAll();
+        var userExpected = Clinic.builder().build();
+        userExpected.setId(1);
+        userExpected.getAddresses().addAll(addresses);
 
-        assertEquals(customersExpected, customersActual);
+        when(userRepository.save(userToSave)).thenReturn(userExpected);
+
+        var userActual = clinicService.insert(userToSave);
+
+        assertThat(userActual).isNotNull();
+        assertThat(userActual.getId()).isEqualTo(userExpected.getId());
+        verify(addressService, times(1)).saveAll(userExpected.getAddresses());
     }
 
     @Test
-    void shouldSaveANewCustomer() {
-        var address = new Address();
-        var customerToSave = new Customer();
-        customerToSave.getAddresses().add(address);
-        var customerExpected = Customer.builder().cpf("123456").build();
+    void shouldFindAListOfClinics() {
+        var filter = ClinicFilter.builder().build();
+        var clinics = List.of(Clinic.builder().build());
 
-        when(userRepository.save(customerToSave)).thenReturn(customerExpected);
+        when(clinicCustomRepository.find(filter)).thenReturn(clinics);
 
-        var newCustomerActual = customerService.insert(customerToSave);
+        var clinicsActual = clinicService.find(filter);
 
-        assertThat(newCustomerActual).isNotNull();
-        verify(addressService, times(1)).saveAll(customerExpected.getAddresses());
+        assertThat(clinicsActual).isNotEmpty();
     }
 
     @Test
-    void shouldConveterNewUserDtoToCustomer() {
+    void shouldListAllClinics() {
+        var clinics = List.of(Clinic.builder().build());
+
+        when(clinicRepository.findAll()).thenReturn(clinics);
+
+        var clinicsActual = clinicService.listAll();
+
+        assertThat(clinicsActual).isNotEmpty();
+    }
+
+    @Test
+    void shouldUpdateTheUser() {
+        var userToUpdate = Clinic.builder().build();
+        var userExpected = Clinic.builder().build();
+
+        when(userRepository.save(userToUpdate)).thenReturn(userExpected);
+
+        var userActual = clinicService.update(userToUpdate);
+
+        assertThat(userActual).isEqualTo(userExpected);
+    }
+
+    @Test
+    void shouldDeleteTheUser() {
+        var userId = 1;
+
+        doNothing().when(userRepository).deleteById(userId);
+
+        clinicService.delete(userId);
+
+        verify(userRepository, times(1)).deleteById(userId);
+    }
+
+    @Test
+    void shouldConveterNewUserDtoToClinic() {
         when(cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())).thenReturn(Boolean.TRUE);
         when(passwordEncoder.encode(newUserDTO.getPassword())).thenReturn(ENCRYPTED_PASSWORD);
 
-        var customer = customerService.fromDTO(newUserDTO);
+        var customer = clinicService.fromDTO(newUserDTO);
 
         assertThat(customer.getName()).isEqualTo(newUserDTO.getName());
         assertThat(customer.getEmail()).isEqualTo(newUserDTO.getEmail());
         assertThat(customer.getPassword()).isEqualTo(ENCRYPTED_PASSWORD);
-        assertThat(customer.getCpf()).isEqualTo(newUserDTO.getCpfOuCnpj());
+        assertThat(customer.getCnpj()).isEqualTo(newUserDTO.getCpfOuCnpj());
 
         assertThat(newUserDTO.getPhone1()).isIn(customer.getPhones());
     }
@@ -113,7 +153,7 @@ class CustomerServiceTest {
 
         when(cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())).thenReturn(Boolean.TRUE);
 
-        var customer = customerService.fromDTO(newUserDTO);
+        var customer = clinicService.fromDTO(newUserDTO);
 
         assertThat(newUserDTO.getPhone2()).isIn(customer.getPhones());
     }
@@ -124,7 +164,7 @@ class CustomerServiceTest {
 
         when(cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())).thenReturn(Boolean.TRUE);
 
-        var customer = customerService.fromDTO(newUserDTO);
+        var customer = clinicService.fromDTO(newUserDTO);
 
         assertThat(newUserDTO.getPhone3()).isIn(customer.getPhones());
     }
@@ -133,7 +173,7 @@ class CustomerServiceTest {
     void shouldThrowIllegalArgumentExceptionWhenCityIdIsInvalid() {
         when(cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())).thenReturn(Boolean.FALSE);
         try {
-            customerService.fromDTO(newUserDTO);
+            clinicService.fromDTO(newUserDTO);
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage()).isEqualTo("Invalid city id");
         }

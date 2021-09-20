@@ -23,7 +23,6 @@ public class AddressService {
 
     @Transactional
     public Address insert(Address address) {
-        address.setId(null);
         return repository.save(address);
     }
 
@@ -35,8 +34,8 @@ public class AddressService {
     /**
      * @// TODO: 03/06/2021 Criar método para definir quais campos serão atualizados antes de salvar
      */
-    public Address update(Address novoAddress) {
-        return repository.save(novoAddress);
+    public Address update(Address newAddress) {
+        return repository.save(newAddress);
     }
 
     public void delete(Integer id) {
