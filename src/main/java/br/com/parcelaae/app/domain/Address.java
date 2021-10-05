@@ -25,13 +25,12 @@ public class Address implements Serializable {
     private String zipCode;
     private String latitude;
     private String longitude;
+    private String city;
+    private String state;
+    private String uf;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name = "city_id")
-    private City city;
 }

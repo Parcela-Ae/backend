@@ -48,6 +48,12 @@ public class NewUserDTO implements Serializable {
     @NotEmpty(message = "Preenchimento obrigatório")
     private String zipCode;
 
+    private String city;
+
+    private String state;
+
+    private String uf;
+
     @NotEmpty(message = "Preenchimento obrigatório")
     private String phone1;
 

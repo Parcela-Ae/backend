@@ -44,9 +44,6 @@ class ClinicServiceTest {
     private AddressService addressService;
 
     @Mock
-    private CityService cityService;
-
-    @Mock
     private BCryptPasswordEncoder passwordEncoder;
 
     private NewUserDTO newUserDTO;
@@ -132,7 +129,6 @@ class ClinicServiceTest {
 
     @Test
     void shouldConveterNewUserDtoToClinic() {
-        when(cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())).thenReturn(Boolean.TRUE);
         when(passwordEncoder.encode(newUserDTO.getPassword())).thenReturn(ENCRYPTED_PASSWORD);
 
         var customer = clinicService.fromDTO(newUserDTO);
@@ -149,8 +145,6 @@ class ClinicServiceTest {
     void shouldConveterNewUserDtoToCustomerWithTwoPhones() {
         newUserDTO.setPhone2("32364455");
 
-        when(cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())).thenReturn(Boolean.TRUE);
-
         var customer = clinicService.fromDTO(newUserDTO);
 
         assertThat(newUserDTO.getPhone2()).isIn(customer.getPhones());
@@ -160,8 +154,6 @@ class ClinicServiceTest {
     void shouldConveterNewUserDtoToCustomerWithThreePhones() {
         newUserDTO.setPhone3("32364455");
 
-        when(cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())).thenReturn(Boolean.TRUE);
-
         var customer = clinicService.fromDTO(newUserDTO);
 
         assertThat(newUserDTO.getPhone3()).isIn(customer.getPhones());
@@ -169,7 +161,6 @@ class ClinicServiceTest {
 
     @Test
     void shouldThrowIllegalArgumentExceptionWhenCityIdIsInvalid() {
-        when(cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())).thenReturn(Boolean.FALSE);
         try {
             clinicService.fromDTO(newUserDTO);
         } catch (IllegalArgumentException e) {

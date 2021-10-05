@@ -1,7 +1,9 @@
 package br.com.parcelaae.app.services;
 
 import br.com.parcelaae.app.controllers.queryfilter.ClinicFilter;
-import br.com.parcelaae.app.domain.*;
+import br.com.parcelaae.app.domain.Address;
+import br.com.parcelaae.app.domain.Clinic;
+import br.com.parcelaae.app.domain.User;
 import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.repositories.ClinicRepository;
 import br.com.parcelaae.app.repositories.UserRepository;
@@ -26,9 +28,6 @@ public class ClinicService {
 
     @Autowired
     private AddressService addressService;
-
-    @Autowired
-    private CityService cityService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -65,8 +64,6 @@ public class ClinicService {
         clinic.setCnpj(newUserDTO.getCpfOuCnpj());
         clinic.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
 
-        validCity(newUserDTO);
-        var cid = new City(newUserDTO.getCityId(), null, null);
         var end = Address.builder()
                 .publicArea(newUserDTO.getPublicArea())
                 .number(newUserDTO.getNumber())
@@ -74,7 +71,9 @@ public class ClinicService {
                 .neighborhood(newUserDTO.getNeighborhood())
                 .zipCode(newUserDTO.getZipCode())
                 .user(clinic)
-                .city(cid)
+                .city(newUserDTO.getCity())
+                .state(newUserDTO.getState())
+                .uf(newUserDTO.getUf())
                 .build();
         var especialidades = newUserDTO.getSpecialties();
 
@@ -88,11 +87,5 @@ public class ClinicService {
             clinic.getPhones().add(newUserDTO.getPhone3());
         }
         return clinic;
-    }
-
-    private void validCity(NewUserDTO newUserDTO) {
-        if (!cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())) {
-            throw new IllegalArgumentException("Invalid city id");
-        }
     }
 }

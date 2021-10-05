@@ -4,7 +4,6 @@ import br.com.parcelaae.app.controllers.exceptions.FieldMessage;
 import br.com.parcelaae.app.domain.User;
 import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.repositories.UserRepository;
-import br.com.parcelaae.app.services.CityService;
 import br.com.parcelaae.app.services.ViaCepService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,9 +16,6 @@ public class UserInsertValidator implements ConstraintValidator<UserInsert, NewU
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private CityService cityService;
 
     @Autowired
     private ViaCepService viaCepService;

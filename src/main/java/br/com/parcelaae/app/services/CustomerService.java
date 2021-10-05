@@ -1,7 +1,6 @@
 package br.com.parcelaae.app.services;
 
 import br.com.parcelaae.app.domain.Address;
-import br.com.parcelaae.app.domain.City;
 import br.com.parcelaae.app.domain.Customer;
 import br.com.parcelaae.app.domain.User;
 import br.com.parcelaae.app.dto.NewUserDTO;
@@ -29,9 +28,6 @@ public class CustomerService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    private CityService cityService;
-
-    @Autowired
     private ViaCepService viaCepService;
 
     public List<Customer> listAll() {
@@ -51,8 +47,6 @@ public class CustomerService {
         customer.setCpf(newUserDTO.getCpfOuCnpj());
         customer.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
 
-        validCity(newUserDTO);
-        var city = new City(newUserDTO.getCityId(), null, null);
         var address = Address.builder()
                 .publicArea(newUserDTO.getPublicArea())
                 .number(newUserDTO.getNumber())
@@ -60,7 +54,9 @@ public class CustomerService {
                 .neighborhood(newUserDTO.getNeighborhood())
                 .zipCode(newUserDTO.getZipCode())
                 .user(customer)
-                .city(city)
+                .city(newUserDTO.getCity())
+                .state(newUserDTO.getState())
+                .uf(newUserDTO.getUf())
                 .build();
 
         customer.getAddresses().add(address);
@@ -72,11 +68,5 @@ public class CustomerService {
             customer.getPhones().add(newUserDTO.getPhone3());
         }
         return customer;
-    }
-
-    private void validCity(NewUserDTO newUserDTO) {
-        if (!cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())) {
-            throw new IllegalArgumentException("Invalid city id");
-        }
     }
 }

@@ -42,9 +42,6 @@ class CustomerServiceTest {
     @Mock
     private BCryptPasswordEncoder passwordEncoder;
 
-    @Mock
-    private CityService cityService;
-
     private List<Customer> customersExpected = new ArrayList<>();
 
     private NewUserDTO newUserDTO;
@@ -94,7 +91,6 @@ class CustomerServiceTest {
 
     @Test
     void shouldConveterNewUserDtoToCustomer() {
-        when(cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())).thenReturn(Boolean.TRUE);
         when(passwordEncoder.encode(newUserDTO.getPassword())).thenReturn(ENCRYPTED_PASSWORD);
 
         var customer = customerService.fromDTO(newUserDTO);
@@ -111,8 +107,6 @@ class CustomerServiceTest {
     void shouldConveterNewUserDtoToCustomerWithTwoPhones() {
         newUserDTO.setPhone2("32364455");
 
-        when(cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())).thenReturn(Boolean.TRUE);
-
         var customer = customerService.fromDTO(newUserDTO);
 
         assertThat(newUserDTO.getPhone2()).isIn(customer.getPhones());
@@ -122,8 +116,6 @@ class CustomerServiceTest {
     void shouldConveterNewUserDtoToCustomerWithThreePhones() {
         newUserDTO.setPhone3("32364455");
 
-        when(cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())).thenReturn(Boolean.TRUE);
-
         var customer = customerService.fromDTO(newUserDTO);
 
         assertThat(newUserDTO.getPhone3()).isIn(customer.getPhones());
@@ -131,7 +123,6 @@ class CustomerServiceTest {
 
     @Test
     void shouldThrowIllegalArgumentExceptionWhenCityIdIsInvalid() {
-        when(cityService.isAValidCity(newUserDTO.getCityId(), newUserDTO.getZipCode())).thenReturn(Boolean.FALSE);
         try {
             customerService.fromDTO(newUserDTO);
         } catch (IllegalArgumentException e) {
