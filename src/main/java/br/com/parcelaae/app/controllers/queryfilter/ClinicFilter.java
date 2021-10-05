@@ -1,10 +1,12 @@
 package br.com.parcelaae.app.controllers.queryfilter;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 @Builder
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ClinicFilter {
 
     private String name;

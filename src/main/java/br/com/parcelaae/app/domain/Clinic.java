@@ -2,6 +2,7 @@ package br.com.parcelaae.app.domain;
 
 import br.com.parcelaae.app.domain.enums.Profile;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -10,7 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @Getter
 @Setter

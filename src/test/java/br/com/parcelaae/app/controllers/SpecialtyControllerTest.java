@@ -1,9 +1,8 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.controllers.queryfilter.ClinicFilter;
-import br.com.parcelaae.app.domain.Clinic;
-import br.com.parcelaae.app.dto.NewUserDTO;
-import br.com.parcelaae.app.services.ClinicService;
+import br.com.parcelaae.app.domain.Specialty;
+import br.com.parcelaae.app.dto.SpecialtyDTO;
+import br.com.parcelaae.app.services.SpecialtyService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,31 +15,30 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.List;
-
+import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ClinicControllerTest {
+class SpecialtyControllerTest {
 
-    public static final String CLINIC_NAME = "Ok Doutor";
-    public static final String URI_EXPECTED = "http://localhost/clinics/1";
+    public static final String URI_EXPECTED = "http://localhost/specialties/1";
 
     @InjectMocks
-    private ClinicController clinicController;
+    private SpecialtyController specialtyController;
 
     @Mock
-    private ClinicService clinicService;
+    private SpecialtyService specialtyService;
 
     @BeforeEach
-    public void setUp() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
+    void setUp() {
+        var request = new MockHttpServletRequest();
         request.setScheme("http");
         request.setServerName("localhost");
         request.setServerPort(-1);
-        request.setRequestURI("/clinics");
+        request.setRequestURI("/specialties");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
     }
 
@@ -50,32 +48,27 @@ class ClinicControllerTest {
     }
 
     @Test
-    void shouldFindWithFilter() {
-        var filter = ClinicFilter.builder().name(CLINIC_NAME).build();
-        var clinic = Clinic.builder().name(CLINIC_NAME).build();
-        var clinics = List.of(clinic);
+    void shouldListAll() {
+        var specialties = singletonList(Specialty.builder().id(1).name("Cardiologia").build());
 
-        when(clinicService.find(filter)).thenReturn(clinics);
+        when(specialtyService.listAll()).thenReturn(specialties);
 
-        var response = clinicController.find(filter);
+        var response = specialtyController.listAll();
 
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
     }
 
     @Test
-    void shouldInsertANewClinic() {
-        var newUserDTO = NewUserDTO.builder()
-                .name(CLINIC_NAME)
-                .build();
-        var newClinic = Clinic.builder()
-                .id(1)
-                .name(CLINIC_NAME)
-                .build();
+    void shouldInsert() {
+        var specialtyDTO = SpecialtyDTO.builder().id(1).name("Cardiologia").build();
+        var specialty = Specialty.builder().id(1).name("Cardiologia").build();
 
-        when(clinicService.fromDTO(newUserDTO)).thenReturn(newClinic);
+        when(specialtyService.fromDTO(specialtyDTO)).thenReturn(specialty);
+        when(specialtyService.insert(any())).thenReturn(any());
 
-        var response = clinicController.insert(newUserDTO);
+        var response = specialtyController.insert(specialtyDTO);
         var uriGenerated = requireNonNull(response.getHeaders().get("Location")).get(0);
 
         assertThat(response).isNotNull();

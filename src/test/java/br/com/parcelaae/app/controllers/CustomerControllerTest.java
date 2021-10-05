@@ -1,9 +1,8 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.controllers.queryfilter.ClinicFilter;
-import br.com.parcelaae.app.domain.Clinic;
+import br.com.parcelaae.app.domain.Customer;
 import br.com.parcelaae.app.dto.NewUserDTO;
-import br.com.parcelaae.app.services.ClinicService;
+import br.com.parcelaae.app.services.CustomerService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,24 +22,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ClinicControllerTest {
+class CustomerControllerTest {
 
-    public static final String CLINIC_NAME = "Ok Doutor";
-    public static final String URI_EXPECTED = "http://localhost/clinics/1";
+    public static final String CUSTOMER_NAME = "Ok Doutor";
+    public static final String URI_EXPECTED = "http://localhost/customers/1";
 
     @InjectMocks
-    private ClinicController clinicController;
+    private CustomerController customerController;
 
     @Mock
-    private ClinicService clinicService;
+    private CustomerService customerService;
 
     @BeforeEach
     public void setUp() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        var request = new MockHttpServletRequest();
         request.setScheme("http");
         request.setServerName("localhost");
         request.setServerPort(-1);
-        request.setRequestURI("/clinics");
+        request.setRequestURI("/customers");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
     }
 
@@ -51,31 +50,30 @@ class ClinicControllerTest {
 
     @Test
     void shouldFindWithFilter() {
-        var filter = ClinicFilter.builder().name(CLINIC_NAME).build();
-        var clinic = Clinic.builder().name(CLINIC_NAME).build();
-        var clinics = List.of(clinic);
+        var customer = Customer.builder().name(CUSTOMER_NAME).build();
+        var customers = List.of(customer);
 
-        when(clinicService.find(filter)).thenReturn(clinics);
+        when(customerService.listAll()).thenReturn(customers);
 
-        var response = clinicController.find(filter);
+        var response = customerController.findAll();
 
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
-    void shouldInsertANewClinic() {
+    void shouldInsertANewCustomer() {
         var newUserDTO = NewUserDTO.builder()
-                .name(CLINIC_NAME)
+                .name(CUSTOMER_NAME)
                 .build();
-        var newClinic = Clinic.builder()
+        var newCustomer = Customer.builder()
                 .id(1)
-                .name(CLINIC_NAME)
+                .name(CUSTOMER_NAME)
                 .build();
 
-        when(clinicService.fromDTO(newUserDTO)).thenReturn(newClinic);
+        when(customerService.fromDTO(newUserDTO)).thenReturn(newCustomer);
 
-        var response = clinicController.insert(newUserDTO);
+        var response = customerController.insert(newUserDTO);
         var uriGenerated = requireNonNull(response.getHeaders().get("Location")).get(0);
 
         assertThat(response).isNotNull();

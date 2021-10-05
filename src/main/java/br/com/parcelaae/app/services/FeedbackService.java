@@ -13,21 +13,21 @@ import java.util.List;
 public class FeedbackService {
 
     @Autowired
-    private FeedbackRepository repository;
+    private FeedbackRepository feedbackRepository;
 
     @Autowired
     FeedbackCustomRepository customRepository;
 
-    public List<Feedback> findByClient(Integer customerId) {
-        return repository.findByCustomerId(customerId);
+    public List<Feedback> findByCustumer(Integer customerId) {
+        return feedbackRepository.findByCustomerId(customerId);
     }
 
     public List<Feedback> findAll() {
-        return repository.findAll();
+        return feedbackRepository.findAll();
     }
 
     public void save(Feedback feedback) {
-        repository.save(feedback);
+        feedbackRepository.save(feedback);
     }
 
     public List<Feedback> search(FeedbackFilter filter) {

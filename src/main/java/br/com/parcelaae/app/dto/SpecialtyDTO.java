@@ -1,14 +1,14 @@
 package br.com.parcelaae.app.dto;
 
 import br.com.parcelaae.app.domain.Specialty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
+@Builder
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class SpecialtyDTO implements Serializable {
     private static final long serialVersionUID = 1L;

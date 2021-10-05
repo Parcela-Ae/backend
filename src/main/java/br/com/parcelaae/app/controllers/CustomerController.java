@@ -21,7 +21,7 @@ public class CustomerController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<List<Customer>> find() {
+    public ResponseEntity<List<Customer>> findAll() {
         return ResponseEntity.ok().body(service.listAll());
     }
 

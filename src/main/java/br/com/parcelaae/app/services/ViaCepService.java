@@ -16,7 +16,8 @@ public class ViaCepService {
     @Autowired
     private WebClient webClientViaCep;
 
-    @Autowired CityService cityService;
+    @Autowired
+    private CityService cityService;
 
     public ViaCep getCityByZipCode(String zipCode) {
         Mono<ViaCep> viaCepMono = this.webClientViaCep

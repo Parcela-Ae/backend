@@ -142,6 +142,9 @@
 					<excludedClasses>
 						<param>br.com.parcelaae.app.config.*</param>
 						<param>br.com.parcelaae.app.controllers.queryfilter.*</param>
+						<param>br.com.parcelaae.app.controllers.exceptions.*Error</param>
+						<param>br.com.parcelaae.app.controllers.exceptions.*Message</param>
+						<param>br.com.parcelaae.app.services.validation.*Validator</param>
 						<param>br.com.parcelaae.app.domain.*</param>
 						<param>br.com.parcelaae.app.dto.*</param>
 						<param>br.com.parcelaae.app.filter.*</param>

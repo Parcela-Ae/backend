@@ -20,7 +20,7 @@ public class SpecialtyController {
     private SpecialtyService specialtyService;
 
     @GetMapping
-    public ResponseEntity<List<SpecialtyDTO>> find() {
+    public ResponseEntity<List<SpecialtyDTO>> listAll() {
         List<SpecialtyDTO> specialtyDTOList = specialtyService.listAll().stream().map(SpecialtyDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok().body(specialtyDTOList);
     }

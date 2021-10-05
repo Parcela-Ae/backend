@@ -3,16 +3,16 @@ package br.com.parcelaae.app.dto;
 import br.com.parcelaae.app.domain.Clinic;
 import br.com.parcelaae.app.domain.Customer;
 import br.com.parcelaae.app.domain.Feedback;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class NewFeedbackDTO {
 
     @NotNull(message = "Preenchimento obrigatório")

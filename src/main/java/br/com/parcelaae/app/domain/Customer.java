@@ -2,9 +2,9 @@ package br.com.parcelaae.app.domain;
 
 import br.com.parcelaae.app.domain.enums.Profile;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 @AllArgsConstructor

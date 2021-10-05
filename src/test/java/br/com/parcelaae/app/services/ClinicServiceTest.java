@@ -73,9 +73,7 @@ class ClinicServiceTest {
         var addresses = List.of(Address.builder().build(), Address.builder().build());
         var userToSave = Clinic.builder().build();
 
-        var userExpected = Clinic.builder().build();
-        userExpected.setId(1);
-        userExpected.getAddresses().addAll(addresses);
+        var userExpected = Clinic.builder().id(1).addresses(addresses).build();
 
         when(userRepository.save(userToSave)).thenReturn(userExpected);
 
@@ -89,7 +87,7 @@ class ClinicServiceTest {
     @Test
     void shouldFindAListOfClinics() {
         var filter = ClinicFilter.builder().build();
-        var clinics = List.of(Clinic.builder().build());
+        List<Clinic> clinics = List.of(Clinic.builder().build());
 
         when(clinicCustomRepository.find(filter)).thenReturn(clinics);
 
@@ -100,7 +98,7 @@ class ClinicServiceTest {
 
     @Test
     void shouldListAllClinics() {
-        var clinics = List.of(Clinic.builder().build());
+        List<Clinic> clinics = List.of(Clinic.builder().build());
 
         when(clinicRepository.findAll()).thenReturn(clinics);
 

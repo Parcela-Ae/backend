@@ -1,6 +1,8 @@
 package br.com.parcelaae.app.security;
 
 import br.com.parcelaae.app.domain.enums.Profile;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,6 +13,8 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Builder
+@AllArgsConstructor
 public class UserSS implements UserDetails {
     private static final long serialVersionUID = 1L;
 
