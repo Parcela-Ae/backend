@@ -9,6 +9,8 @@ import javax.persistence.EntityManager;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 @RequiredArgsConstructor
 @Repository
 public class ClinicCustomRepository {
@@ -16,20 +18,49 @@ public class ClinicCustomRepository {
     private final EntityManager em;
 
     public List<Clinic> find(@NotNull ClinicFilter filter) {
-        String sql = "";
+        var sql = new StringBuilder();
+        var isFirst = true;
 
-        sql += " SELECT clinic ";
-        sql += " FROM Clinic clinic ";
+        sql.append(" SELECT clinic ");
+        sql.append(" FROM Clinic clinic ");
 
-        if (filter.getName() != null) {
-            sql += " WHERE clinic.name LIKE :name";
+        if (nonNull(filter.getCity()))
+            sql.append(" INNER JOIN Address address ON clinic.id = address.user.id ");
+
+        if (nonNull(filter.getSpecialty()))
+            sql.append(" INNER JOIN clinic.specialties specialty ");
+
+        if (nonNull(filter.getName())) {
+            sql.append(" WHERE clinic.name LIKE :name ");
+            isFirst = false;
         }
 
-        var query = em.createQuery(sql, Clinic.class);
+        if (nonNull(filter.getCity()) && isFirst) {
+            sql.append(" WHERE address.city LIKE :city ");
+            isFirst = false;
+        } else {
+            sql.append(" AND address.city LIKE :city ");
+        }
 
-        if (filter.getName() != null) {
+        if (nonNull(filter.getSpecialty()) && isFirst) {
+            sql.append(" WHERE specialty.name LIKE :specialty ");
+        } else {
+            sql.append(" AND specialty.name LIKE :specialty ");
+        }
+
+        var query = em.createQuery(sql.toString(), Clinic.class);
+
+        if (nonNull(filter.getName())) {
             query.setParameter("name", "%" + filter.getName() + "%");
         }
+
+        if (nonNull(filter.getCity())) {
+            query.setParameter("city", "%" + filter.getCity() + "%");
+        }
+
+        if (nonNull(filter.getSpecialty()))
+            query.setParameter("specialty", "%" + filter.getSpecialty() + "%");
+
         return query.getResultList();
     }
 }

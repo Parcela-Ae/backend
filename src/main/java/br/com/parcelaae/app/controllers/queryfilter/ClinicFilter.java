@@ -10,4 +10,6 @@ import lombok.*;
 public class ClinicFilter {
 
     private String name;
+    private String specialty;
+    private String city;
 }
