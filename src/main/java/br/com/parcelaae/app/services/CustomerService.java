@@ -56,7 +56,6 @@ public class CustomerService {
                 .user(customer)
                 .city(newUserDTO.getCity())
                 .state(newUserDTO.getState())
-                .uf(newUserDTO.getUf())
                 .build();
 
         customer.getAddresses().add(address);

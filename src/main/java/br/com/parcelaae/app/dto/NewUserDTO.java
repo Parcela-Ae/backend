@@ -52,8 +52,6 @@ public class NewUserDTO implements Serializable {
 
     private String state;
 
-    private String uf;
-
     @NotEmpty(message = "Preenchimento obrigatório")
     private String phone1;
 

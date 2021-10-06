@@ -73,7 +73,6 @@ public class ClinicService {
                 .user(clinic)
                 .city(newUserDTO.getCity())
                 .state(newUserDTO.getState())
-                .uf(newUserDTO.getUf())
                 .build();
         var especialidades = newUserDTO.getSpecialties();
 

@@ -27,7 +27,6 @@ public class Address implements Serializable {
     private String longitude;
     private String city;
     private String state;
-    private String uf;
 
     @JsonIgnore
     @ManyToOne
