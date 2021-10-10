@@ -3,6 +3,7 @@ package br.com.parcelaae.app.services;
 import br.com.parcelaae.app.controllers.queryfilter.ClinicFilter;
 import br.com.parcelaae.app.domain.Address;
 import br.com.parcelaae.app.domain.Clinic;
+import br.com.parcelaae.app.domain.Credit;
 import br.com.parcelaae.app.domain.User;
 import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.repositories.ClinicRepository;
@@ -32,9 +33,13 @@ public class ClinicService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private CreditService creditService;
+
     public User insert(User user) {
         user = userRepository.save(user);
         addressService.saveAll(user.getAddresses());
+        creditService.save(new Credit(null, user, 0.0));
         return user;
     }
 

@@ -1,11 +1,13 @@
 package br.com.parcelaae.app.controllers.exceptions;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 
+@Builder
 @AllArgsConstructor
 @Getter
 @Setter

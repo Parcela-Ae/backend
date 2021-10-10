@@ -12,6 +12,7 @@ insert into profiles (user_id, profiles) values (1, 1);
 insert into profiles (user_id, profiles) values (1, 3);
 insert into clinic_specialties (clinic_id, specialties_id) values (1, 2);
 insert into clinic_specialties (clinic_id, specialties_id) values (1, 3);
+insert into credit (id, balance, user_id) values (1, 0.0, 1);
 
 insert into user (id, email, name, password) values (2, 'clinica@sim.com', 'Clinica SIM', '$2a$10$VdEtcZfZQbgLX9E3wykq/OX6ENEj83s2nPsQuUznBVhkJQaYiTFIW');
 insert into clinic (cnpj, id) values ('12345678910', 2);
@@ -22,6 +23,7 @@ insert into profiles (user_id, profiles) values (2, 1);
 insert into profiles (user_id, profiles) values (2, 3);
 insert into clinic_specialties (clinic_id, specialties_id) values (2, 2);
 insert into clinic_specialties (clinic_id, specialties_id) values (2, 3);
+insert into credit (id, balance, user_id) values (2, 0.0, 2);
 
 insert into user (id, email, name, password) values (3, 'sirio@libanes.com', 'Sirio Libanes', '$2a$10$/ZcXT4sPz7qiLzc2qJlpbep1EF7ZCXPmUrEtKLcE3lmxLjG6f9AY6');
 insert into clinic (cnpj, id) values ('10987654321', 3);
@@ -32,3 +34,4 @@ insert into profiles (user_id, profiles) values (3, 3);
 insert into clinic_specialties (clinic_id, specialties_id) values (3, 1);
 insert into clinic_specialties (clinic_id, specialties_id) values (3, 2);
 insert into clinic_specialties (clinic_id, specialties_id) values (3, 3);
+insert into credit (id, balance, user_id) values (3, 0.0, 3);

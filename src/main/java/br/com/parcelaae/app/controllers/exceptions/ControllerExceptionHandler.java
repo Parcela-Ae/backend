@@ -19,4 +19,17 @@ public class ControllerExceptionHandler {
                 .forEach(x -> err.addError(x.getField(), x.getDefaultMessage()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
+
+    @ExceptionHandler(BalanceInsufficientException.class)
+    public ResponseEntity<StandardError> validation(BalanceInsufficientException balanceInsufficientException, HttpServletRequest request) {
+
+        var err = StandardError.builder()
+                .timestamp(System.currentTimeMillis())
+                .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+                .error("Saldo Insuficiente")
+                .message(balanceInsufficientException.getMessage())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
 }

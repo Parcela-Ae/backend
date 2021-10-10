@@ -1,6 +1,7 @@
 package br.com.parcelaae.app.services;
 
 import br.com.parcelaae.app.domain.Address;
+import br.com.parcelaae.app.domain.Credit;
 import br.com.parcelaae.app.domain.Customer;
 import br.com.parcelaae.app.domain.User;
 import br.com.parcelaae.app.dto.NewUserDTO;
@@ -30,6 +31,9 @@ public class CustomerService {
     @Autowired
     private ViaCepService viaCepService;
 
+    @Autowired
+    private CreditService creditService;
+
     public List<Customer> listAll() {
         return  customerRepository.findAll();
     }
@@ -37,6 +41,7 @@ public class CustomerService {
     public User insert(User user) {
         user = userRepository.save(user);
         addressService.saveAll(user.getAddresses());
+        creditService.save(new Credit(null, user, 0.0));
         return user;
     }
 
