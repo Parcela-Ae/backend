@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/transactions")
+@RequestMapping(value = "/transactions")
 public class BalanceMovementController {
 
     @Autowired
