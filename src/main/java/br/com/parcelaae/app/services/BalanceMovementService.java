@@ -97,6 +97,7 @@ public class BalanceMovementService {
                 .id(balanceMovement.getId())
                 .value(balanceMovement.getValue())
                 .operationDate(balanceMovement.getOperationDate())
+                .type(balanceMovement.getType())
                 .build();
     }
 
@@ -106,6 +107,7 @@ public class BalanceMovementService {
                 .origin(balanceMovement.getOrigin().getUser().getName())
                 .destination(balanceMovement.getDestination().getUser().getName())
                 .value(balanceMovement.getValue())
+                .operationDate(balanceMovement.getOperationDate())
                 .type(balanceMovement.getType())
                 .status(balanceMovement.getStatus())
                 .build();

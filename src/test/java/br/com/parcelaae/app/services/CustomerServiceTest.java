@@ -42,6 +42,9 @@ class CustomerServiceTest {
     @Mock
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Mock
+    private CreditService creditService;
+
     private List<Customer> customersExpected = new ArrayList<>();
 
     private NewUserDTO newUserDTO;

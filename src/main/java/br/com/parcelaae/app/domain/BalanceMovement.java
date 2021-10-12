@@ -29,8 +29,12 @@ public class BalanceMovement implements Serializable {
     @JoinColumn(name = "destination_id")
     private Credit destination;
 
+    @Enumerated(EnumType.STRING)
     private TransactionType type;
+
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus status;
+
     private Double value;
     private LocalDateTime operationDate;
-    private TransactionStatus status;
 }

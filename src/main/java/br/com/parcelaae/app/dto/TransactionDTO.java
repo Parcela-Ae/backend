@@ -1,5 +1,6 @@
 package br.com.parcelaae.app.dto;
 
+import br.com.parcelaae.app.domain.enums.TransactionType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,4 +19,5 @@ public class TransactionDTO {
     private Double value;
     @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
     private LocalDateTime operationDate;
+    private TransactionType type;
 }

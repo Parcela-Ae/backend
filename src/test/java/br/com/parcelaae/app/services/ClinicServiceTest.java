@@ -46,6 +46,9 @@ class ClinicServiceTest {
     @Mock
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Mock
+    private CreditService creditService;
+
     private NewUserDTO newUserDTO;
 
     @BeforeEach

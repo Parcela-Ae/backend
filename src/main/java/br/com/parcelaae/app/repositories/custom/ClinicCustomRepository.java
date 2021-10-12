@@ -38,13 +38,13 @@ public class ClinicCustomRepository {
         if (nonNull(filter.getCity()) && isFirst) {
             sql.append(" WHERE address.city LIKE :city ");
             isFirst = false;
-        } else {
+        } else if (nonNull(filter.getCity())) {
             sql.append(" AND address.city LIKE :city ");
         }
 
         if (nonNull(filter.getSpecialty()) && isFirst) {
             sql.append(" WHERE specialty.name LIKE :specialty ");
-        } else {
+        } else if (nonNull(filter.getSpecialty())) {
             sql.append(" AND specialty.name LIKE :specialty ");
         }
 
