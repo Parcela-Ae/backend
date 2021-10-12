@@ -5,10 +5,13 @@ import br.com.parcelaae.app.domain.Address;
 import br.com.parcelaae.app.domain.Clinic;
 import br.com.parcelaae.app.domain.Credit;
 import br.com.parcelaae.app.domain.User;
+import br.com.parcelaae.app.dto.ClinicDTO;
 import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.repositories.ClinicRepository;
 import br.com.parcelaae.app.repositories.UserRepository;
 import br.com.parcelaae.app.repositories.custom.ClinicCustomRepository;
+import org.hibernate.ObjectNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,6 +44,11 @@ public class ClinicService {
         addressService.saveAll(user.getAddresses());
         creditService.save(new Credit(null, user, 0.0));
         return user;
+    }
+
+    public Clinic findById(Integer clinicId) {
+        return clinicRepository.findById(clinicId)
+                .orElseThrow(() -> new ObjectNotFoundException(Clinic.class, "Não foi encontrada uma clínica para o ID informado"));
     }
 
     public List<Clinic> find(ClinicFilter filter) {
@@ -91,5 +99,11 @@ public class ClinicService {
             clinic.getPhones().add(newUserDTO.getPhone3());
         }
         return clinic;
+    }
+
+    public ClinicDTO fromEntity(Clinic clinic) {
+        var clinicDTO = new ClinicDTO();
+        BeanUtils.copyProperties(clinic, clinicDTO);
+        return clinicDTO;
     }
 }

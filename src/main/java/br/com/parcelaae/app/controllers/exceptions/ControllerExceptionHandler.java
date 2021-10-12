@@ -1,5 +1,6 @@
 package br.com.parcelaae.app.controllers.exceptions;
 
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -28,6 +29,19 @@ public class ControllerExceptionHandler {
                 .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
                 .error("Saldo Insuficiente")
                 .message(balanceInsufficientException.getMessage())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(ObjectNotFoundException.class)
+    public ResponseEntity<StandardError> validation(ObjectNotFoundException objectNotFoundException, HttpServletRequest request) {
+
+        var err = StandardError.builder()
+                .timestamp(System.currentTimeMillis())
+                .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+                .error("Objeto não encontrado")
+                .message(objectNotFoundException.getMessage())
                 .path(request.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
