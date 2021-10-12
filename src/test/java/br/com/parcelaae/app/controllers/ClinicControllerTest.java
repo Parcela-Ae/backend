@@ -2,6 +2,7 @@ package br.com.parcelaae.app.controllers;
 
 import br.com.parcelaae.app.controllers.queryfilter.ClinicFilter;
 import br.com.parcelaae.app.domain.Clinic;
+import br.com.parcelaae.app.dto.ClinicDTO;
 import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.services.ClinicService;
 import org.junit.jupiter.api.AfterEach;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -54,13 +56,19 @@ class ClinicControllerTest {
         var filter = ClinicFilter.builder().name(CLINIC_NAME).build();
         var clinic = Clinic.builder().name(CLINIC_NAME).build();
         var clinics = List.of(clinic);
+        var clinicDTO = new ClinicDTO();
+        var clinicsDTOExpected= List.of(clinicDTO);
+        BeanUtils.copyProperties(clinic, clinicDTO);
 
         when(clinicService.find(filter)).thenReturn(clinics);
+        when(clinicService.fromEntity(clinic)).thenReturn(clinicDTO);
 
         var response = clinicController.find(filter);
+        var responseBody = response.getBody();
 
         assertThat(response).isNotNull();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseBody).usingRecursiveFieldByFieldElementComparator().isEqualTo(clinicsDTOExpected);
     }
 
     @Test
