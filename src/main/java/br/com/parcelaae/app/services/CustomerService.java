@@ -7,6 +7,7 @@ import br.com.parcelaae.app.domain.User;
 import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.repositories.CustomerRepository;
 import br.com.parcelaae.app.repositories.UserRepository;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,11 @@ public class CustomerService {
 
     @Autowired
     private CreditService creditService;
+
+    public Customer findById(Integer customerId) {
+        return customerRepository.findById(customerId)
+                .orElseThrow(() -> new ObjectNotFoundException(Customer.class, "Não foi encontrada informações para o id do cliente informado"));
+    }
 
     public List<Customer> listAll() {
         return  customerRepository.findAll();

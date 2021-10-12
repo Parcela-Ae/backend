@@ -19,6 +19,12 @@ public class CustomerController {
     @Autowired
     private CustomerService service;
 
+    @GetMapping("/{customerId}")
+    public ResponseEntity<Customer> findById(@PathVariable("customerId") Integer customerId) {
+        var customer = service.findById(customerId);
+        return ResponseEntity.ok(customer);
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<Customer>> findAll() {
