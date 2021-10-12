@@ -1,6 +1,5 @@
 package br.com.parcelaae.app.services;
 
-import br.com.parcelaae.app.controllers.exceptions.BalanceInsufficientException;
 import br.com.parcelaae.app.domain.BalanceMovement;
 import br.com.parcelaae.app.domain.Credit;
 import br.com.parcelaae.app.domain.enums.TransactionStatus;
@@ -8,6 +7,7 @@ import br.com.parcelaae.app.dto.NewTransactionDTO;
 import br.com.parcelaae.app.dto.TransactionDTO;
 import br.com.parcelaae.app.dto.TransactionDetailDTO;
 import br.com.parcelaae.app.repositories.BalanceMovementRepository;
+import br.com.parcelaae.app.services.exceptions.BalanceInsufficientException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,10 @@ public class BalanceMovementService {
     @Autowired
     private CreditService creditService;
 
-    public void save(BalanceMovement balanceMovement) throws BalanceInsufficientException {
+    @Autowired
+    private UserService userService;
+
+    public void save(BalanceMovement balanceMovement) {
 
         switch (balanceMovement.getType()) {
             case RECHARGE:
@@ -57,7 +60,7 @@ public class BalanceMovementService {
         toPay(balanceMovement);
     }
 
-    private void toPay(BalanceMovement balanceMovement) throws BalanceInsufficientException {
+    private void toPay(BalanceMovement balanceMovement) {
         var creditOrigin = creditService.findById(balanceMovement.getOrigin().getId());
         var creditDestination = creditService.findById(balanceMovement.getDestination().getId());
 
@@ -68,7 +71,7 @@ public class BalanceMovementService {
         creditService.save(creditDestination);
     }
 
-    private void validateIfThereIsEnoughBalance(Credit creditOrigin, Double valueToDebit) throws BalanceInsufficientException {
+    private void validateIfThereIsEnoughBalance(Credit creditOrigin, Double valueToDebit) {
         if (creditOrigin.getBalance() < valueToDebit)
             throw new BalanceInsufficientException("Saldo infuciente para esta operação");
     }

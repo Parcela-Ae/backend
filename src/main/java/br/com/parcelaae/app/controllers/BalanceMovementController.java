@@ -1,6 +1,5 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.controllers.exceptions.BalanceInsufficientException;
 import br.com.parcelaae.app.dto.NewTransactionDTO;
 import br.com.parcelaae.app.dto.TransactionDTO;
 import br.com.parcelaae.app.dto.TransactionDetailDTO;
@@ -14,6 +13,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static br.com.parcelaae.app.services.UserService.validateIfUserHasAuthoritation;
+
 @RestController
 @RequestMapping(value = "/transactions")
 public class BalanceMovementController {
@@ -22,7 +23,7 @@ public class BalanceMovementController {
     private BalanceMovementService balanceMovementService;
 
     @PostMapping
-    public ResponseEntity<Void> insert(@Valid @RequestBody NewTransactionDTO newTransactionDTO) throws BalanceInsufficientException {
+    public ResponseEntity<Void> insert(@Valid @RequestBody NewTransactionDTO newTransactionDTO) {
         var newTransaction = balanceMovementService.fromDTO(newTransactionDTO);
         balanceMovementService.save(newTransaction);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -36,6 +37,7 @@ public class BalanceMovementController {
 
     @GetMapping("/users/{userId}")
     public ResponseEntity<List<TransactionDTO>> listAllTransactionsByUserId(@PathVariable("userId") Integer userId) {
+        validateIfUserHasAuthoritation(userId);
         var transactions = balanceMovementService.listAllTransactionsByUserId(userId);
         var transactionsDTO = transactions.stream().map(BalanceMovementService::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok(transactionsDTO);

@@ -1,5 +1,7 @@
 package br.com.parcelaae.app.controllers.exceptions;
 
+import br.com.parcelaae.app.services.exceptions.AuthorizationException;
+import br.com.parcelaae.app.services.exceptions.BalanceInsufficientException;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +37,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(ObjectNotFoundException.class)
-    public ResponseEntity<StandardError> validation(ObjectNotFoundException objectNotFoundException, HttpServletRequest request) {
+    public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException objectNotFoundException, HttpServletRequest request) {
 
         var err = StandardError.builder()
                 .timestamp(System.currentTimeMillis())
@@ -45,5 +47,18 @@ public class ControllerExceptionHandler {
                 .path(request.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request) {
+
+        var err = StandardError.builder()
+                .status(HttpStatus.FORBIDDEN.value())
+                .error("Error de autorização")
+                .message(e.getMessage())
+                .timestamp(System.currentTimeMillis())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
 }

@@ -12,6 +12,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.util.List;
 
+import static br.com.parcelaae.app.services.UserService.validateIfUserHasAuthoritation;
+
 @RestController
 @RequestMapping(value = "/customers")
 public class CustomerController {
@@ -21,6 +23,7 @@ public class CustomerController {
 
     @GetMapping("/{customerId}")
     public ResponseEntity<Customer> findById(@PathVariable("customerId") Integer customerId) {
+        validateIfUserHasAuthoritation(customerId);
         var customer = service.findById(customerId);
         return ResponseEntity.ok(customer);
     }
