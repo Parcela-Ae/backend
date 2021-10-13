@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Slf4j
@@ -82,6 +83,11 @@ public class BalanceMovementService {
 
     public BalanceMovement getTransactionDetail(Long transactionId) {
         return balanceMovementRepository.findById(transactionId).orElse(null);
+    }
+
+    public BalanceMovement getLastTransactionByUserId(Integer userId) {
+        var transactions = listAllTransactionsByUserId(userId);
+        return transactions.stream().max(Comparator.comparing(BalanceMovement::getId)).orElse(null);
     }
 
     public BalanceMovement fromDTO(NewTransactionDTO dto) {

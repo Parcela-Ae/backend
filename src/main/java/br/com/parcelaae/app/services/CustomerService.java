@@ -4,6 +4,8 @@ import br.com.parcelaae.app.domain.Address;
 import br.com.parcelaae.app.domain.Credit;
 import br.com.parcelaae.app.domain.Customer;
 import br.com.parcelaae.app.domain.User;
+import br.com.parcelaae.app.dto.CustomerDTO;
+import br.com.parcelaae.app.dto.FeedbackDTO;
 import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.repositories.CustomerRepository;
 import br.com.parcelaae.app.repositories.UserRepository;
@@ -12,7 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CustomerService {
@@ -35,9 +41,36 @@ public class CustomerService {
     @Autowired
     private CreditService creditService;
 
+    @Autowired
+    private BalanceMovementService balanceMovementService;
+
+    @Autowired
+    private FeedbackService feedbackService;
+
     public Customer findById(Integer customerId) {
         return customerRepository.findById(customerId)
                 .orElseThrow(() -> new ObjectNotFoundException(Customer.class, "Não foi encontrada informações para o id do cliente informado"));
+    }
+
+    public CustomerDTO toDTO(Customer customer) {
+        List<FeedbackDTO> feedbacks = Collections.emptyList();
+        if (Objects.nonNull(customer.getFeedbacks()))
+            feedbacks = customer.getFeedbacks().stream().map(FeedbackDTO::new).collect(Collectors.toList());
+
+        var lastTransaction = balanceMovementService.getLastTransactionByUserId(customer.getId());
+        var lastTransactionDTO = Stream.of(lastTransaction).map(BalanceMovementService::toDTO).findFirst().orElse(null);
+
+        return CustomerDTO.builder()
+                .id(customer.getId())
+                .name(customer.getName())
+                .email(customer.getEmail())
+                .cpf(customer.getCpf())
+                .credit(customer.getCredit())
+                .addresses(customer.getAddresses())
+                .phones(customer.getPhones())
+                .feedbacks(feedbacks)
+                .lastTransaction(lastTransactionDTO)
+                .build();
     }
 
     public List<Customer> listAll() {

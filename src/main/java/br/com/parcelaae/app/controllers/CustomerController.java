@@ -1,6 +1,7 @@
 package br.com.parcelaae.app.controllers;
 
 import br.com.parcelaae.app.domain.Customer;
+import br.com.parcelaae.app.dto.CustomerDTO;
 import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,11 @@ public class CustomerController {
     private CustomerService service;
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<Customer> findById(@PathVariable("customerId") Integer customerId) {
+    public ResponseEntity<CustomerDTO> findById(@PathVariable("customerId") Integer customerId) {
         validateIfUserHasAuthoritation(customerId);
         var customer = service.findById(customerId);
-        return ResponseEntity.ok(customer);
+        var customerDTO = service.toDTO(customer);
+        return ResponseEntity.ok(customerDTO);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
