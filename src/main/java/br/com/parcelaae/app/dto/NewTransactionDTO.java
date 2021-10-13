@@ -5,7 +5,6 @@ import br.com.parcelaae.app.services.validation.EnumNamePattern;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -20,14 +19,9 @@ public class NewTransactionDTO {
     private Double value;
     @EnumNamePattern(regexp = "RECHARGE|TRANSFER|PAYMENT")
     private TransactionType type;
-    @NotEmpty(message = "Preenchimento obrigatório")
     private String cardNumber;
-    @NotEmpty(message = "Preenchimento obrigatório")
     private String cardHolderName;
-    @NotEmpty(message = "Preenchimento obrigatório")
     private String expirationDate;
-    @NotEmpty(message = "Preenchimento obrigatório")
     private String cvv;
-    @NotNull(message = "Preenchimento obrigatório")
     private Integer installments;
 }
