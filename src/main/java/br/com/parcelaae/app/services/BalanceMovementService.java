@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -49,7 +50,11 @@ public class BalanceMovementService {
     private void rechargeCredit(BalanceMovement balanceMovement) {
         balanceMovementRepository.save(balanceMovement);
         var creditDestination = creditService.findById(balanceMovement.getDestination().getId());
-        creditDestination.setBalance(balanceMovement.getValue());
+
+        var oldBalanceCreditDestination = BigDecimal.valueOf(creditDestination.getBalance());
+        var rechargeValue = BigDecimal.valueOf(balanceMovement.getValue());
+
+        creditDestination.setBalance(oldBalanceCreditDestination.add(rechargeValue).doubleValue());
         creditService.save(creditDestination);
     }
 
@@ -68,7 +73,15 @@ public class BalanceMovementService {
         validateIfThereIsEnoughBalance(creditOrigin, balanceMovement.getValue());
 
         balanceMovementRepository.save(balanceMovement);
-        creditDestination.setBalance(balanceMovement.getValue());
+
+        var valueToPay = BigDecimal.valueOf(balanceMovement.getValue());
+        var balanceOrigin = BigDecimal.valueOf(creditOrigin.getBalance());
+        var balanceDestination = BigDecimal.valueOf(creditDestination.getBalance());
+
+        creditDestination.setBalance(balanceDestination.add(valueToPay).doubleValue());
+        creditOrigin.setBalance(balanceOrigin.subtract(valueToPay).doubleValue());
+
+        creditService.save(creditOrigin);
         creditService.save(creditDestination);
     }
 
