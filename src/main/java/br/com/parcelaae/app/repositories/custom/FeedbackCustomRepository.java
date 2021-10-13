@@ -22,15 +22,15 @@ public class FeedbackCustomRepository {
         sql.append(" FROM Feedback feedback ");
 
         if (filter.getCustomerId() != null && filter.getClinicId() == null) {
-            sql.append(" WHERE feedback.customer.id LIKE :customerId");
+            sql.append(" WHERE feedback.customer.id = :customerId");
         }
         if (filter.getClinicId() != null && filter.getCustomerId() == null) {
-            sql.append(" WHERE feedback.clinic.id LIKE :clinicId");
+            sql.append(" WHERE feedback.clinic.id = :clinicId");
         }
 
         if (filter.getClinicId() != null && filter.getCustomerId() != null) {
-            sql.append(" WHERE feedback.clinic.id LIKE :clinicId");
-            sql.append(" AND feedback.customer.id LIKE :customerId");
+            sql.append(" WHERE feedback.clinic.id = :clinicId");
+            sql.append(" AND feedback.customer.id = :customerId");
         }
 
         var query = em.createQuery(sql.toString(), Feedback.class);

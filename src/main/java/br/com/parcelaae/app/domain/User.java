@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "tb_user")
 @Inheritance(strategy=InheritanceType.JOINED)
 public abstract class User implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -46,7 +47,9 @@ public abstract class User implements Serializable {
 
     @JsonIgnore
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "PROFILES")
+    @CollectionTable(name = "PROFILES",
+            joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name="profile_id")
     private Set<Integer> profiles = new HashSet<>();
 
     @OneToOne(mappedBy = "user")
