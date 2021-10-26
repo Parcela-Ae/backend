@@ -9,6 +9,9 @@ import javax.persistence.EntityManager;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 @RequiredArgsConstructor
 @Repository
 public class FeedbackCustomRepository {
@@ -21,30 +24,31 @@ public class FeedbackCustomRepository {
         sql.append(" SELECT feedback ");
         sql.append(" FROM Feedback feedback ");
 
-        if (filter.getCustomerId() != null && filter.getClinicId() == null) {
+        if (nonNull(filter.getCustomerId()) && isNull(filter.getClinicId())) {
             sql.append(" WHERE feedback.customer.id = :customerId");
         }
-        if (filter.getClinicId() != null && filter.getCustomerId() == null) {
+        if (nonNull(filter.getClinicId()) && isNull(filter.getCustomerId())) {
             sql.append(" WHERE feedback.clinic.id = :clinicId");
         }
 
-        if (filter.getClinicId() != null && filter.getCustomerId() != null) {
+        if (nonNull(filter.getClinicId()) && isNull(filter.getCustomerId())) {
             sql.append(" WHERE feedback.clinic.id = :clinicId");
             sql.append(" AND feedback.customer.id = :customerId");
         }
 
         var query = em.createQuery(sql.toString(), Feedback.class);
 
-        if (filter.getCustomerId() != null && filter.getClinicId() == null) {
+        if (nonNull(filter.getCustomerId()) && isNull(filter.getClinicId())) {
             query.setParameter("customerId", filter.getCustomerId());
         }
-        if (filter.getClinicId() != null && filter.getCustomerId() == null) {
+        if (nonNull(filter.getClinicId()) && isNull(filter.getCustomerId())) {
             query.setParameter("clinicId", filter.getClinicId());
         }
-        if (filter.getClinicId() != null && filter.getCustomerId() != null) {
+        if (nonNull(filter.getClinicId()) && isNull(filter.getCustomerId())) {
             query.setParameter("clinicId", filter.getClinicId());
             query.setParameter("customerId", filter.getCustomerId());
         }
+
         return query.getResultList();
     }
 }
