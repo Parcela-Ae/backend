@@ -14,7 +14,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -23,11 +22,11 @@ import java.util.Date;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    private JWTUtil jwtUtil;
+    private final JWTUtil jwtUtil;
 
-    private UserService userService;
+    private final UserService userService;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
         setAuthenticationFailureHandler(new JWTAuthenticationFailureHandler());
@@ -53,10 +52,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                         FilterChain chain, Authentication auth) throws IOException, ServletException {
-        UserSS userSS = (UserSS) auth.getPrincipal();
-        String username = userSS.getUsername();
-        String token = jwtUtil.generateToken(username);
+                                         FilterChain chain, Authentication auth) throws IOException {
+        var userSS = (UserSS) auth.getPrincipal();
+        var token = jwtUtil.generateToken(userSS);
         fillAuthorizationInfo(response, userSS, token);
     }
 
@@ -74,7 +72,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         @Override
         public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
-                throws IOException, ServletException {
+                throws IOException {
             response.setStatus(401);
             response.setContentType("application/json");
             response.getWriter().append(json());
@@ -84,8 +82,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             long date = new Date().getTime();
             return "{\"timestamp\": " + date + ", "
                     + "\"status\": 401, "
-                    + "\"error\": \"Nao autorizado\", "
-                    + "\"message\": \"Email ou senha invalidos\", "
+                    + "\"error\": \"Unauthorized\", "
+                    + "\"message\": \"Email or password invalids\", "
                     + "\"path\": \"/login\"}";
         }
     }

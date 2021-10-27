@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+import static java.util.Objects.nonNull;
+
 @Component
 public class JWTUtil {
 
@@ -17,9 +19,10 @@ public class JWTUtil {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    public String generateToken(String username) {
+    public String generateToken(UserSS userSS) {
         return Jwts.builder()
-                .setSubject(username)
+                .setId(userSS.getId().toString())
+                .setSubject(userSS.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
@@ -27,19 +30,18 @@ public class JWTUtil {
 
     public boolean tokenValido(String token) {
         Claims claims = getClaims(token);
-        if (claims != null) {
+        if (nonNull(claims)) {
             var username = claims.getSubject();
             var expirationDate = claims.getExpiration();
             var now = new Date(System.currentTimeMillis());
-            if (username != null && expirationDate != null && now.before(expirationDate))
-                return true;
+            return nonNull(username) && nonNull(expirationDate) && now.before(expirationDate);
         }
         return false;
     }
 
     public String getUsername(String token) {
         Claims claims = getClaims(token);
-        if (claims != null)
+        if (nonNull(claims))
             return claims.getSubject();
         return null;
     }
