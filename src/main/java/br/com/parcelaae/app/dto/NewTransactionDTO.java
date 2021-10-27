@@ -5,6 +5,7 @@ import br.com.parcelaae.app.services.validation.EnumNamePattern;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -15,8 +16,9 @@ public class NewTransactionDTO {
     private Long originCreditId;
     @NotNull(message = "A conta de destino é obrigatória")
     private Long destinationCreditId;
-    @NotNull(message = "O valor da transação é obrigatório")
+    @DecimalMin("0.01")
     private Double value;
+    @NotNull
     @EnumNamePattern(regexp = "RECHARGE|TRANSFER|PAYMENT")
     private TransactionType type;
     private String cardNumber;
