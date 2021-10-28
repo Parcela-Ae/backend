@@ -4,6 +4,7 @@ import br.com.parcelaae.app.domain.enums.Profile;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -19,6 +20,7 @@ import java.util.List;
 public class Clinic extends User implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Column(unique = true)
     private String cnpj;
 
     @ManyToMany

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
@@ -20,6 +21,7 @@ import java.util.List;
 public class Customer extends User implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Column(unique = true)
     private String cpf;
 
     @OneToMany(mappedBy = "customer")

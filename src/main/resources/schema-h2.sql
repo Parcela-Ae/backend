@@ -26,3 +26,5 @@ alter table feedback add constraint fk_feedback_customer foreign key (customer_i
 alter table phones add constraint fk_phones_user foreign key (user_id) references tb_user(id);
 alter table profiles add constraint fk_profiles_user foreign key (user_id) references tb_user(id);
 alter table tb_user add constraint uk_user_email unique(email);
+alter table clinic add constraint uk_clinic_cnpj unique(cnpj);
+alter table customer add constraint uk_customer_cpf unique(cpf);

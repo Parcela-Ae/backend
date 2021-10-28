@@ -2,6 +2,7 @@ package br.com.parcelaae.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,7 +17,9 @@ public class Credit implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "account-number-generator")
+    @GenericGenerator(name = "account-number-generator",
+            strategy = "br.com.parcelaae.app.domain.AccountNumberGenerator")
     private Long id;
 
     @JsonIgnore

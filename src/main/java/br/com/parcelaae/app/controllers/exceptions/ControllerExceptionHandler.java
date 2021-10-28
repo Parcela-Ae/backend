@@ -3,6 +3,7 @@ package br.com.parcelaae.app.controllers.exceptions;
 import br.com.parcelaae.app.services.exceptions.AuthorizationException;
 import br.com.parcelaae.app.services.exceptions.BalanceInsufficientException;
 import org.hibernate.ObjectNotFoundException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -54,11 +55,30 @@ public class ControllerExceptionHandler {
 
         var err = StandardError.builder()
                 .status(HttpStatus.FORBIDDEN.value())
-                .error("Error de autorização")
+                .error("Erro de autorização")
                 .message(e.getMessage())
                 .timestamp(System.currentTimeMillis())
                 .path(request.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<StandardError> authorization(ConstraintViolationException e, HttpServletRequest request) {
+        var isCpfExisting = e.getConstraintName().contains("cpf");
+        var isCnpjExisting = e.getConstraintName().contains("cnpj");
+        var messageCpfOrCnpj = isCpfExisting ? "CPF já cadastrado" : "";
+
+        if (messageCpfOrCnpj.isEmpty())
+            messageCpfOrCnpj = isCnpjExisting ? "CNPJ já cadastrado" : "";
+
+        var err = StandardError.builder()
+                .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+                .error("Violação de constraint")
+                .message(isCpfExisting || isCnpjExisting ? messageCpfOrCnpj : e.getMessage())
+                .timestamp(System.currentTimeMillis())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 }

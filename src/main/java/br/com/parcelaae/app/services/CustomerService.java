@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class CustomerService {
@@ -58,7 +57,7 @@ public class CustomerService {
             feedbacks = customer.getFeedbacks().stream().map(FeedbackDTO::new).collect(Collectors.toList());
 
         var lastTransaction = balanceMovementService.getLastTransactionByUserId(customer.getId());
-        var lastTransactionDTO = Stream.of(lastTransaction).map(BalanceMovementService::toDTO).findFirst().orElse(null);
+        var lastTransactionDTO = Objects.nonNull(lastTransaction) ? BalanceMovementService.toDTO(lastTransaction) : null;
 
         return CustomerDTO.builder()
                 .id(customer.getId())

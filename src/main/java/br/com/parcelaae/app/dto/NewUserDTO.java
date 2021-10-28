@@ -1,6 +1,7 @@
 package br.com.parcelaae.app.dto;
 
 import br.com.parcelaae.app.domain.Specialty;
+import br.com.parcelaae.app.services.validation.CpfCnpj;
 import br.com.parcelaae.app.services.validation.UserInsert;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -27,6 +28,7 @@ public class NewUserDTO implements Serializable {
     @Email(message = "Email inválido")
     private String email;
 
+    @CpfCnpj
     @NotEmpty(message = "Preenchimento obrigatório")
     private String cpfOuCnpj;
 
