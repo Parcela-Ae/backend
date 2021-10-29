@@ -24,8 +24,7 @@ public class BalanceMovementController {
 
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody NewTransactionDTO newTransactionDTO) {
-        var newTransaction = balanceMovementService.fromDTO(newTransactionDTO);
-        balanceMovementService.save(newTransaction);
+        balanceMovementService.save(newTransactionDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

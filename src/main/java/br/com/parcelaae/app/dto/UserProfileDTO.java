@@ -16,6 +16,7 @@ public class UserProfileDTO {
     private String email;
     private String name;
     private String typeUser;
+    private Long accountNumber;
 
     public UserProfileDTO(UserSS userSS) {
         BeanUtils.copyProperties(userSS, this);

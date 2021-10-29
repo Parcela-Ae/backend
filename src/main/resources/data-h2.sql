@@ -115,20 +115,20 @@ insert into credit (id, balance, user_id) values (67569, 0.0, 6);
 
 --Transactions--
 --John Wick--
-insert into balance_movement (id, operation_date, type, value, destination_id, origin_id, status) values (1, {ts '2021-09-17 18:47:52.69'}, 'RECHARGE', 150, 41628, 41628, 'APPROVED');
+insert into balance_movement (id, operation_date, type, value, destination_id, origin_id, status) values (1, {ts '2021-09-17 18:47:52.69'}, 'RECHARGE', 150, 41628, null, 'APPROVED');
 insert into balance_movement (id, operation_date, type, value, destination_id, origin_id, status) values (2, {ts '2021-09-18 09:30:35.69'}, 'PAYMENT', 80, 38749, 41628, 'APPROVED');
 insert into balance_movement (id, operation_date, type, value, destination_id, origin_id, status) values (3, {ts '2021-10-01 14:47:24.69'}, 'TRANSFER', 40, 53216, 41628, 'APPROVED');
-update credit set balance = 90 where credit.id = 4;
+update credit set balance = 90 where credit.id = 41628;
 --Lara Croft--
-insert into balance_movement (id, operation_date, type, value, destination_id, origin_id, status) values (4, {ts '2021-09-25 18:47:52.69'}, 'RECHARGE', 200, 53216, 53216, 'APPROVED');
+insert into balance_movement (id, operation_date, type, value, destination_id, origin_id, status) values (4, {ts '2021-09-25 18:47:52.69'}, 'RECHARGE', 200, 53216, null, 'APPROVED');
 insert into balance_movement (id, operation_date, type, value, destination_id, origin_id, status) values (5, {ts '2021-09-30 10:23:06.69'}, 'PAYMENT', 80, 23467, 53216, 'APPROVED');
 insert into balance_movement (id, operation_date, type, value, destination_id, origin_id, status) values (6, {ts '2021-10-05 08:12:53.69'}, 'TRANSFER', 35, 67569, 53216, 'APPROVED');
-update credit set balance = 125 where credit.id = 5;
+update credit set balance = 125 where credit.id = 53216;
 --Kratos War--
-insert into balance_movement (id, operation_date, type, value, destination_id, origin_id, status) values (7, {ts '2021-09-27 18:47:52.69'}, 'RECHARGE', 300, 67569, 67569, 'APPROVED');
+insert into balance_movement (id, operation_date, type, value, destination_id, origin_id, status) values (7, {ts '2021-09-27 18:47:52.69'}, 'RECHARGE', 300, 67569, null, 'APPROVED');
 insert into balance_movement (id, operation_date, type, value, destination_id, origin_id, status) values (8, {ts '2021-10-02 14:55:16.69'}, 'PAYMENT', 50, 10205, 67569, 'APPROVED');
 insert into balance_movement (id, operation_date, type, value, destination_id, origin_id, status) values (9, {ts '2021-10-05 19:36:24.69'}, 'TRANSFER', 60, 41628, 67569, 'APPROVED');
-update credit set balance = 225 where credit.id = 6;
+update credit set balance = 225 where credit.id = 67569;
 
 --Feedbacks--
 insert into feedback (id, message, rating, clinic_id, customer_id) values (1, 'Atendimento mais ou menos', 5.0, 1, 4);

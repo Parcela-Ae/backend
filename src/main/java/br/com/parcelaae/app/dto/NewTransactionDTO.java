@@ -11,11 +11,9 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class NewTransactionDTO {
-
-    @NotNull(message = "A conta de origem é obrigatória")
-    private Long originCreditId;
-    @NotNull(message = "A conta de destino é obrigatória")
-    private Long destinationCreditId;
+    private Long accountNumberOrigin;
+    private Long accountNumberDestination;
+    private String cpfCnpj;
     @DecimalMin("0.01")
     private Double value;
     @NotNull

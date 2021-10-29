@@ -64,7 +64,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<StandardError> authorization(ConstraintViolationException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> constraintViolation(ConstraintViolationException e, HttpServletRequest request) {
         var isCpfExisting = e.getConstraintName().contains("cpf");
         var isCnpjExisting = e.getConstraintName().contains("cnpj");
         var messageCpfOrCnpj = isCpfExisting ? "CPF já cadastrado" : "";
@@ -76,6 +76,19 @@ public class ControllerExceptionHandler {
                 .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
                 .error("Violação de constraint")
                 .message(isCpfExisting || isCnpjExisting ? messageCpfOrCnpj : e.getMessage())
+                .timestamp(System.currentTimeMillis())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<StandardError> illegalArguments(IllegalArgumentException e, HttpServletRequest request) {
+
+        var err = StandardError.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error("Erro argumentos inválidos")
+                .message("Um ou mais argumentos estão inválidos")
                 .timestamp(System.currentTimeMillis())
                 .path(request.getRequestURI())
                 .build();

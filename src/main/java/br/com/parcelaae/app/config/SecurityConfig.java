@@ -3,6 +3,7 @@ package br.com.parcelaae.app.config;
 import br.com.parcelaae.app.filter.JWTAuthenticationFilter;
 import br.com.parcelaae.app.filter.JWTAuthorizationFilter;
 import br.com.parcelaae.app.security.JWTUtil;
+import br.com.parcelaae.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JWTUtil jwtUtil;
 
+    @Autowired
+    private UserService userService;
+
     private static final String[] PUBLIC_MATCHERS = {
             "/h2-console/**",
             "/v3/api-docs/**",
@@ -67,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated();
-        http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil, userService));
         http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }

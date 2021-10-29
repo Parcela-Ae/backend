@@ -28,11 +28,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final UserService userService;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UserService userService) {
         setAuthenticationFailureHandler(new JWTAuthenticationFailureHandler());
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
-        this.userService = new UserService();
+        this.userService = userService;
     }
 
     @Override

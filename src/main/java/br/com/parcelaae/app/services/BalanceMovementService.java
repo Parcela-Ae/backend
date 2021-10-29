@@ -3,6 +3,7 @@ package br.com.parcelaae.app.services;
 import br.com.parcelaae.app.domain.BalanceMovement;
 import br.com.parcelaae.app.domain.Credit;
 import br.com.parcelaae.app.domain.enums.TransactionStatus;
+import br.com.parcelaae.app.domain.enums.TransactionType;
 import br.com.parcelaae.app.dto.NewTransactionDTO;
 import br.com.parcelaae.app.dto.TransactionDTO;
 import br.com.parcelaae.app.dto.TransactionDetailDTO;
@@ -16,6 +17,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import static io.netty.util.internal.StringUtil.isNullOrEmpty;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static java.util.Optional.ofNullable;
 
 @Slf4j
 @Service
@@ -30,24 +38,18 @@ public class BalanceMovementService {
     @Autowired
     private UserService userService;
 
-    public void save(BalanceMovement balanceMovement) {
+    public void save(NewTransactionDTO newTransactionDTO) {
+        var balanceMovement = fromDTO(newTransactionDTO);
 
-        switch (balanceMovement.getType()) {
-            case RECHARGE:
-                rechargeCredit(balanceMovement);
-                break;
-            case PAYMENT:
-                payWithCredits(balanceMovement);
-                break;
-            case TRANSFER:
-                tranferCredits(balanceMovement);
-                break;
-            default:
-                log.info("Tipo de operação inválida, " + balanceMovement.getType());
+        if (TransactionType.RECHARGE.equals(balanceMovement.getType()))
+            rechargeCredit(balanceMovement);
+        else {
+            payOrTransferWithCredits(balanceMovement, newTransactionDTO.getCpfCnpj());
         }
     }
 
     private void rechargeCredit(BalanceMovement balanceMovement) {
+        balanceMovement.setOrigin(balanceMovement.getDestination());
         balanceMovementRepository.save(balanceMovement);
         var creditDestination = creditService.findById(balanceMovement.getDestination().getId());
 
@@ -58,20 +60,40 @@ public class BalanceMovementService {
         creditService.save(creditDestination);
     }
 
-    private void payWithCredits(BalanceMovement balanceMovement) throws BalanceInsufficientException {
-        toPay(balanceMovement);
-    }
-
-    private void tranferCredits(BalanceMovement balanceMovement) throws BalanceInsufficientException {
-        toPay(balanceMovement);
-    }
-
-    private void toPay(BalanceMovement balanceMovement) {
+    private void payOrTransferWithCredits(BalanceMovement balanceMovement, String cpfCnpj) throws BalanceInsufficientException {
         var creditOrigin = creditService.findById(balanceMovement.getOrigin().getId());
-        var creditDestination = creditService.findById(balanceMovement.getDestination().getId());
+        var creditDestination = getCreditDestination(balanceMovement, cpfCnpj);
+        throwExceptionIfThereIsNotOriginAndDestinationCredit(creditOrigin, creditDestination);
+        toPay(balanceMovement, creditOrigin, creditDestination);
+    }
 
+    private Credit getCreditDestination(BalanceMovement balanceMovement, String cpfCnpj) {
+        Optional<Credit> creditDestination = Optional.empty();
+
+        if (TransactionType.PAYMENT.equals(balanceMovement.getType()) && !isNullOrEmpty(cpfCnpj)) {
+
+            creditDestination = ofNullable(creditService.findByCnpj(cpfCnpj));
+
+        } else if (TransactionType.TRANSFER.equals(balanceMovement.getType()) && !isNullOrEmpty(cpfCnpj)) {
+
+            creditDestination = ofNullable(creditService.findByCpf(cpfCnpj));
+
+        } else if (TransactionType.TRANSFER.equals(balanceMovement.getType()) && nonNull(balanceMovement.getDestination())) {
+
+            creditDestination = ofNullable(creditService.findById(balanceMovement.getDestination().getId()));
+        }
+        return creditDestination.orElse(null);
+    }
+
+    private void throwExceptionIfThereIsNotOriginAndDestinationCredit(Credit creditOrigin, Credit creditDestination) {
+        if (Objects.isNull(creditOrigin) || isNull(creditDestination))
+            throw new IllegalArgumentException();
+    }
+
+    private void toPay(BalanceMovement balanceMovement, Credit creditOrigin, Credit creditDestination) {
         validateIfThereIsEnoughBalance(creditOrigin, balanceMovement.getValue());
 
+        balanceMovement.setDestination(creditDestination);
         balanceMovementRepository.save(balanceMovement);
 
         var valueToPay = BigDecimal.valueOf(balanceMovement.getValue());
@@ -105,8 +127,8 @@ public class BalanceMovementService {
 
     public BalanceMovement fromDTO(NewTransactionDTO dto) {
         return BalanceMovement.builder()
-                .origin(Credit.builder().id(dto.getOriginCreditId()).build())
-                .destination(Credit.builder().id(dto.getDestinationCreditId()).build())
+                .origin(Credit.builder().id(dto.getAccountNumberOrigin()).build())
+                .destination(Credit.builder().id(dto.getAccountNumberDestination()).build())
                 .value(dto.getValue())
                 .type(dto.getType())
                 .status(TransactionStatus.APPROVED)
