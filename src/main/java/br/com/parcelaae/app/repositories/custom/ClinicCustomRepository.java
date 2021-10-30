@@ -2,7 +2,7 @@ package br.com.parcelaae.app.repositories.custom;
 
 import br.com.parcelaae.app.controllers.queryfilter.ClinicFilter;
 import br.com.parcelaae.app.domain.Clinic;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static io.netty.util.internal.StringUtil.isNullOrEmpty;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Repository
 public class ClinicCustomRepository {
 

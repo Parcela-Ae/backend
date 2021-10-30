@@ -3,7 +3,7 @@ package br.com.parcelaae.app.services;
 import br.com.parcelaae.app.domain.Email;
 import br.com.parcelaae.app.domain.enums.StatusEmail;
 import br.com.parcelaae.app.repositories.EmailRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,16 +11,16 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
 @Service
 public class EmailService {
 
-    @Autowired
-    EmailRepository emailRepository;
+    private final EmailRepository emailRepository;
 
-    @Autowired
-    private JavaMailSender emailSender;
+    private final JavaMailSender emailSender;
 
     public Email sendEmail(Email emailModel) {
+        var email = new Email();
         emailModel.setSendDateEmail(LocalDateTime.now());
         try {
             SimpleMailMessage message = new SimpleMailMessage();
@@ -34,7 +34,8 @@ public class EmailService {
         } catch (MailException e) {
             emailModel.setStatusEmail(StatusEmail.ERROR);
         } finally {
-            return emailRepository.save(emailModel);
+            email = emailRepository.save(emailModel);
         }
+        return email;
     }
 }

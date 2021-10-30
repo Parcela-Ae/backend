@@ -1,13 +1,13 @@
 package br.com.parcelaae.app.repositories.custom;
 
 import br.com.parcelaae.app.domain.Credit;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotNull;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Repository
 public class CreditCustomRepository {
 

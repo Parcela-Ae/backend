@@ -3,17 +3,16 @@ package br.com.parcelaae.app.services;
 import br.com.parcelaae.app.domain.Credit;
 import br.com.parcelaae.app.repositories.CreditRepository;
 import br.com.parcelaae.app.repositories.custom.CreditCustomRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class CreditService {
 
-    @Autowired
-    private CreditRepository creditRepository;
+    private final CreditRepository creditRepository;
 
-    @Autowired
-    private CreditCustomRepository creditCustomRepository;
+    private final CreditCustomRepository creditCustomRepository;
 
     public void save(Credit credit) {
         creditRepository.save(credit);

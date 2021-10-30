@@ -1,12 +1,12 @@
 package br.com.parcelaae.app.repositories.custom;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Repository
 public class CityCustomRepository {
 

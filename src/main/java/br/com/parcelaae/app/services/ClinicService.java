@@ -10,34 +10,29 @@ import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.repositories.ClinicRepository;
 import br.com.parcelaae.app.repositories.UserRepository;
 import br.com.parcelaae.app.repositories.custom.ClinicCustomRepository;
+import lombok.AllArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class ClinicService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private ClinicRepository clinicRepository;
+    private final ClinicRepository clinicRepository;
 
-    @Autowired
-    private ClinicCustomRepository clinicCustomRepository;
+    private final ClinicCustomRepository clinicCustomRepository;
 
-    @Autowired
-    private AddressService addressService;
+    private final AddressService addressService;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    private CreditService creditService;
+    private final CreditService creditService;
 
     public User insert(User user) {
         user = userRepository.save(user);

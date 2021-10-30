@@ -4,19 +4,18 @@ import br.com.parcelaae.app.controllers.queryfilter.FeedbackFilter;
 import br.com.parcelaae.app.domain.Feedback;
 import br.com.parcelaae.app.repositories.FeedbackRepository;
 import br.com.parcelaae.app.repositories.custom.FeedbackCustomRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class FeedbackService {
 
-    @Autowired
-    private FeedbackRepository feedbackRepository;
+    private final FeedbackRepository feedbackRepository;
 
-    @Autowired
-    FeedbackCustomRepository customRepository;
+    private final FeedbackCustomRepository customRepository;
 
     public List<Feedback> findByCustumer(Integer customerId) {
         return feedbackRepository.findByCustomerId(customerId);

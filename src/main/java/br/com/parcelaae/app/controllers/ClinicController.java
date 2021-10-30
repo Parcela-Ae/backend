@@ -5,7 +5,7 @@ import br.com.parcelaae.app.domain.Clinic;
 import br.com.parcelaae.app.dto.ClinicDTO;
 import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.services.ClinicService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -14,12 +14,12 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping(value = "/clinics")
 public class ClinicController {
 
-    @Autowired
-    private ClinicService clinicService;
+    private final ClinicService clinicService;
 
     @GetMapping("/{clinicId}")
     public ResponseEntity<ClinicDTO> findById(@PathVariable("clinicId") Integer clinicId) {
@@ -31,7 +31,7 @@ public class ClinicController {
     @PostMapping(value = "/search")
     public ResponseEntity<List<ClinicDTO>> find(@RequestBody ClinicFilter filter) {
         var clinics = clinicService.find(filter);
-        var clinicsDTO = clinics.stream().map(e -> clinicService.fromEntity(e)).collect(Collectors.toList());
+        var clinicsDTO = clinics.stream().map(clinicService::fromEntity).collect(Collectors.toList());
         return ResponseEntity.ok().body(clinicsDTO);
     }
 

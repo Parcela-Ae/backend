@@ -4,7 +4,7 @@ import br.com.parcelaae.app.dto.NewTransactionDTO;
 import br.com.parcelaae.app.dto.TransactionDTO;
 import br.com.parcelaae.app.dto.TransactionDetailDTO;
 import br.com.parcelaae.app.services.BalanceMovementService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
 
 import static br.com.parcelaae.app.services.UserService.validateIfUserHasAuthoritation;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping(value = "/transactions")
 public class BalanceMovementController {
 
-    @Autowired
-    private BalanceMovementService balanceMovementService;
+    private final BalanceMovementService balanceMovementService;
 
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody NewTransactionDTO newTransactionDTO) {

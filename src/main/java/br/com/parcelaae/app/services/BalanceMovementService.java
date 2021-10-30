@@ -9,8 +9,8 @@ import br.com.parcelaae.app.dto.TransactionDTO;
 import br.com.parcelaae.app.dto.TransactionDetailDTO;
 import br.com.parcelaae.app.repositories.BalanceMovementRepository;
 import br.com.parcelaae.app.services.exceptions.BalanceInsufficientException;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -25,18 +25,16 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 
+@AllArgsConstructor
 @Slf4j
 @Service
 public class BalanceMovementService {
 
-    @Autowired
-    private BalanceMovementRepository balanceMovementRepository;
+    private final BalanceMovementRepository balanceMovementRepository;
 
-    @Autowired
-    private CreditService creditService;
+    private final CreditService creditService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     public void save(NewTransactionDTO newTransactionDTO) {
         var balanceMovement = fromDTO(newTransactionDTO);

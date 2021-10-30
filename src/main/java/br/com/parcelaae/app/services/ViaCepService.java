@@ -1,17 +1,17 @@
 package br.com.parcelaae.app.services;
 
 import br.com.parcelaae.app.domain.ViaCep;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+@AllArgsConstructor
 @Service
 public class ViaCepService {
 
-    @Autowired
-    private WebClient webClientViaCep;
+    private final WebClient webClientViaCep;
 
     public ViaCep getCityByZipCode(String zipCode) {
         Mono<ViaCep> viaCepMono = this.webClientViaCep

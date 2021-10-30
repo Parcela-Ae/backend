@@ -3,17 +3,17 @@ package br.com.parcelaae.app.services;
 import br.com.parcelaae.app.domain.Specialty;
 import br.com.parcelaae.app.dto.SpecialtyDTO;
 import br.com.parcelaae.app.repositories.SpecialtyRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class SpecialtyService {
 
-    @Autowired
-    private SpecialtyRepository specialtyRepository;
+    private final SpecialtyRepository specialtyRepository;
 
     public Specialty insert(Specialty specialty) {
         return specialtyRepository.save(specialty);

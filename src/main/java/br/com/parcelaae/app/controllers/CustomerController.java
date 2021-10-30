@@ -4,7 +4,7 @@ import br.com.parcelaae.app.domain.Customer;
 import br.com.parcelaae.app.dto.CustomerDTO;
 import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.services.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +15,12 @@ import java.util.List;
 
 import static br.com.parcelaae.app.services.UserService.validateIfUserHasAuthoritation;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping(value = "/customers")
 public class CustomerController {
 
-    @Autowired
-    private CustomerService service;
+    private final CustomerService service;
 
     @GetMapping("/{customerId}")
     public ResponseEntity<CustomerDTO> findById(@PathVariable("customerId") Integer customerId) {

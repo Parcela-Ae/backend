@@ -2,17 +2,17 @@ package br.com.parcelaae.app.services;
 
 import br.com.parcelaae.app.domain.City;
 import br.com.parcelaae.app.repositories.custom.CityCustomRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 public class CityService {
 
-    @Autowired
-    private CityCustomRepository cityCustomRepository;
+    private final CityCustomRepository cityCustomRepository;
 
     public List<City> listAll() {
         var citiesString = cityCustomRepository.listAll();

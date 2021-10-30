@@ -4,7 +4,7 @@ import br.com.parcelaae.app.filter.JWTAuthenticationFilter;
 import br.com.parcelaae.app.filter.JWTAuthorizationFilter;
 import br.com.parcelaae.app.security.JWTUtil;
 import br.com.parcelaae.app.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -23,22 +23,19 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
 
-    @Autowired
-    private JWTUtil jwtUtil;
+    private final JWTUtil jwtUtil;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     private static final String[] PUBLIC_MATCHERS = {
             "/h2-console/**",

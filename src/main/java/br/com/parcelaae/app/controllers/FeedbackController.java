@@ -4,21 +4,24 @@ import br.com.parcelaae.app.controllers.queryfilter.FeedbackFilter;
 import br.com.parcelaae.app.dto.FeedbackDTO;
 import br.com.parcelaae.app.dto.NewFeedbackDTO;
 import br.com.parcelaae.app.services.FeedbackService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping(value = "/feedbacks")
 public class FeedbackController {
 
-    @Autowired
-    private FeedbackService feedbackService;
+    private final FeedbackService feedbackService;
 
     @PostMapping("/search")
     public ResponseEntity<List<FeedbackDTO>> findByCostumerId(@RequestBody FeedbackFilter feedbackFilter) {

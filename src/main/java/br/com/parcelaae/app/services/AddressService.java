@@ -2,18 +2,18 @@ package br.com.parcelaae.app.services;
 
 import br.com.parcelaae.app.domain.Address;
 import br.com.parcelaae.app.repositories.AddressRepository;
+import lombok.AllArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class AddressService {
 
-    @Autowired
-    private AddressRepository repository;
+    private final AddressRepository repository;
 
     public Address find(Integer id) {
         return repository.findById(id)
@@ -32,7 +32,7 @@ public class AddressService {
     }
 
     /**
-     * @// TODO: 03/06/2021 Criar método para definir quais campos serão atualizados antes de salvar
+     * TODO: 03/06/2021 Criar método para definir quais campos serão atualizados antes de salvar
      */
     public Address update(Address newAddress) {
         return repository.save(newAddress);

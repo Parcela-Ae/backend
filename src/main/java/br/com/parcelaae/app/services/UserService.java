@@ -4,15 +4,15 @@ import br.com.parcelaae.app.domain.enums.Profile;
 import br.com.parcelaae.app.dto.UserProfileDTO;
 import br.com.parcelaae.app.security.UserSS;
 import br.com.parcelaae.app.services.exceptions.AuthorizationException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class UserService {
 
-    @Autowired
-    private CreditService creditService;
+    private final CreditService creditService;
 
     public UserProfileDTO getUserProfile(UserSS userSS) {
         var userProfileDTO = new UserProfileDTO(userSS);

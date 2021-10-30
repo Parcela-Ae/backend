@@ -3,7 +3,7 @@ package br.com.parcelaae.app.controllers;
 import br.com.parcelaae.app.domain.Specialty;
 import br.com.parcelaae.app.dto.SpecialtyDTO;
 import br.com.parcelaae.app.services.SpecialtyService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +12,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping(value = "/specialties")
 public class SpecialtyController {
 
-    @Autowired
-    private SpecialtyService specialtyService;
+    private final SpecialtyService specialtyService;
 
     @GetMapping
     public ResponseEntity<List<SpecialtyDTO>> listAll() {

@@ -9,8 +9,8 @@ import br.com.parcelaae.app.dto.FeedbackDTO;
 import br.com.parcelaae.app.dto.NewUserDTO;
 import br.com.parcelaae.app.repositories.CustomerRepository;
 import br.com.parcelaae.app.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,32 +19,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 public class CustomerService {
 
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private AddressService addressService;
+    private final AddressService addressService;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    private ViaCepService viaCepService;
+    private final ViaCepService viaCepService;
 
-    @Autowired
-    private CreditService creditService;
+    private final CreditService creditService;
 
-    @Autowired
-    private BalanceMovementService balanceMovementService;
+    private final BalanceMovementService balanceMovementService;
 
-    @Autowired
-    private FeedbackService feedbackService;
+    private final FeedbackService feedbackService;
 
     public Customer findById(Integer customerId) {
         return customerRepository.findById(customerId)
