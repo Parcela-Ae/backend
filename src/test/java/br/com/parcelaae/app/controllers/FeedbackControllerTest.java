@@ -1,10 +1,10 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.domain.Clinic;
-import br.com.parcelaae.app.domain.Customer;
-import br.com.parcelaae.app.domain.Feedback;
-import br.com.parcelaae.app.dto.NewFeedbackDTO;
-import br.com.parcelaae.app.services.FeedbackService;
+import br.com.parcelaae.app.domain.clinic.model.Clinic;
+import br.com.parcelaae.app.domain.customer.model.Customer;
+import br.com.parcelaae.app.domain.feedback.model.Feedback;
+import br.com.parcelaae.app.domain.feedback.model.FeedbackApiRequest;
+import br.com.parcelaae.app.domain.feedback.service.FeedbackService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -55,7 +55,7 @@ class FeedbackControllerTest {
 
     @Test
     void shouldInsertNewFeedback() {
-        var newFeedbackDTO = NewFeedbackDTO.builder().build();
+        var newFeedbackDTO = FeedbackApiRequest.builder().build();
 
         doNothing().when(feedbackService).save(any());
 

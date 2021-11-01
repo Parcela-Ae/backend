@@ -1,10 +1,9 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.dto.UserProfileDTO;
-import br.com.parcelaae.app.security.SecurityUtil;
-import br.com.parcelaae.app.security.UserSS;
-import br.com.parcelaae.app.services.UserService;
-import org.assertj.core.api.Assertions;
+import br.com.parcelaae.app.domain.user.model.UserProfileApiResponse;
+import br.com.parcelaae.app.domain.security.SecurityUtil;
+import br.com.parcelaae.app.domain.security.model.UserSS;
+import br.com.parcelaae.app.domain.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,7 +28,7 @@ class UserControllerTest {
 
     @Test
     void shouldGetUserProfile() {
-        var userProfileDTOExpected = UserProfileDTO.builder()
+        var userProfileDTOExpected = UserProfileApiResponse.builder()
                 .id(1)
                 .name("John Wick")
                 .email("john@wick.com")

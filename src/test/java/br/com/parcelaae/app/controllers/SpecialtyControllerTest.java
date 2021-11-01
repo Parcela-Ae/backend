@@ -1,8 +1,8 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.domain.Specialty;
-import br.com.parcelaae.app.dto.SpecialtyDTO;
-import br.com.parcelaae.app.services.SpecialtyService;
+import br.com.parcelaae.app.domain.specialty.model.Specialty;
+import br.com.parcelaae.app.domain.specialty.model.SpecialtyApiModel;
+import br.com.parcelaae.app.domain.specialty.service.SpecialtyService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,7 +62,7 @@ class SpecialtyControllerTest {
 
     @Test
     void shouldInsert() {
-        var specialtyDTO = SpecialtyDTO.builder().id(1).name("Cardiologia").build();
+        var specialtyDTO = SpecialtyApiModel.builder().id(1).name("Cardiologia").build();
         var specialty = Specialty.builder().id(1).name("Cardiologia").build();
 
         when(specialtyService.fromDTO(specialtyDTO)).thenReturn(specialty);

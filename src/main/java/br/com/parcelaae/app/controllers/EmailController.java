@@ -1,8 +1,8 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.domain.Email;
-import br.com.parcelaae.app.dto.EmailDto;
-import br.com.parcelaae.app.services.EmailService;
+import br.com.parcelaae.app.domain.email.model.Email;
+import br.com.parcelaae.app.domain.email.model.EmailApiRequest;
+import br.com.parcelaae.app.domain.email.service.EmailService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -22,9 +22,9 @@ public class EmailController {
     private final EmailService emailService;
 
     @PostMapping
-    public ResponseEntity<Email> sendEmail(@RequestBody @Valid EmailDto emailDto) {
+    public ResponseEntity<Email> sendEmail(@RequestBody @Valid EmailApiRequest emailApiRequest) {
         Email emailModel = new Email();
-        BeanUtils.copyProperties(emailDto, emailModel);
+        BeanUtils.copyProperties(emailApiRequest, emailModel);
         emailService.sendEmail(emailModel);
         return new ResponseEntity<>(emailModel, HttpStatus.CREATED);
     }

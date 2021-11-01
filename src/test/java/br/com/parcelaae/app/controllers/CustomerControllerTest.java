@@ -1,8 +1,8 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.domain.Customer;
-import br.com.parcelaae.app.dto.NewUserDTO;
-import br.com.parcelaae.app.services.CustomerService;
+import br.com.parcelaae.app.domain.customer.model.Customer;
+import br.com.parcelaae.app.domain.user.model.UserApiRequest;
+import br.com.parcelaae.app.domain.customer.service.CustomerService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,7 +63,7 @@ class CustomerControllerTest {
 
     @Test
     void shouldInsertANewCustomer() {
-        var newUserDTO = NewUserDTO.builder()
+        var newUserDTO = UserApiRequest.builder()
                 .name(CUSTOMER_NAME)
                 .build();
         var newCustomer = Customer.builder()

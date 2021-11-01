@@ -1,8 +1,8 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.domain.Email;
-import br.com.parcelaae.app.dto.EmailDto;
-import br.com.parcelaae.app.services.EmailService;
+import br.com.parcelaae.app.domain.email.model.Email;
+import br.com.parcelaae.app.domain.email.model.EmailApiRequest;
+import br.com.parcelaae.app.domain.email.service.EmailService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,7 +25,7 @@ class EmailControllerTest {
 
     @Test
     void shouldSendAnEmail() {
-        var emailDto = EmailDto.builder()
+        var emailDto = EmailApiRequest.builder()
                 .ownerRef("Logan")
                 .emailFrom("logan@wolverine.com")
                 .emailTo("john@wick.com")

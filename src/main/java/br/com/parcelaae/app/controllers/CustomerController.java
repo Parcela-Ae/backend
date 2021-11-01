@@ -1,9 +1,9 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.domain.Customer;
-import br.com.parcelaae.app.dto.CustomerDTO;
-import br.com.parcelaae.app.dto.NewUserDTO;
-import br.com.parcelaae.app.services.CustomerService;
+import br.com.parcelaae.app.domain.customer.model.Customer;
+import br.com.parcelaae.app.domain.customer.model.CustomerApiResponse;
+import br.com.parcelaae.app.domain.user.model.UserApiRequest;
+import br.com.parcelaae.app.domain.customer.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.util.List;
 
-import static br.com.parcelaae.app.services.UserService.validateIfUserHasAuthoritation;
+import static br.com.parcelaae.app.domain.user.service.UserService.validateIfUserHasAuthoritation;
 
 @AllArgsConstructor
 @RestController
@@ -23,7 +23,7 @@ public class CustomerController {
     private final CustomerService service;
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<CustomerDTO> findById(@PathVariable("customerId") Integer customerId) {
+    public ResponseEntity<CustomerApiResponse> findById(@PathVariable("customerId") Integer customerId) {
         validateIfUserHasAuthoritation(customerId);
         var customer = service.findById(customerId);
         var customerDTO = service.toDTO(customer);
@@ -37,8 +37,8 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@Valid @RequestBody NewUserDTO newUserDTO) {
-        Customer customer = service.fromDTO(newUserDTO);
+    public ResponseEntity<Void> insert(@Valid @RequestBody UserApiRequest userApiRequest) {
+        Customer customer = service.fromDTO(userApiRequest);
         service.insert(customer);
         var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(customer.getId()).toUri();
         return ResponseEntity.created(uri).build();

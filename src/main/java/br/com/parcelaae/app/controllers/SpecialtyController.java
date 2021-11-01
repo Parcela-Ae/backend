@@ -1,8 +1,8 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.domain.Specialty;
-import br.com.parcelaae.app.dto.SpecialtyDTO;
-import br.com.parcelaae.app.services.SpecialtyService;
+import br.com.parcelaae.app.domain.specialty.model.Specialty;
+import br.com.parcelaae.app.domain.specialty.model.SpecialtyApiModel;
+import br.com.parcelaae.app.domain.specialty.service.SpecialtyService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,15 +20,15 @@ public class SpecialtyController {
     private final SpecialtyService specialtyService;
 
     @GetMapping
-    public ResponseEntity<List<SpecialtyDTO>> listAll() {
-        List<SpecialtyDTO> specialtyDTOList = specialtyService.listAll().stream().map(SpecialtyDTO::new).collect(Collectors.toList());
-        return ResponseEntity.ok().body(specialtyDTOList);
+    public ResponseEntity<List<SpecialtyApiModel>> listAll() {
+        List<SpecialtyApiModel> specialtyApiModelList = specialtyService.listAll().stream().map(SpecialtyApiModel::new).collect(Collectors.toList());
+        return ResponseEntity.ok().body(specialtyApiModelList);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody SpecialtyDTO specialtyDTO) {
-        Specialty specialty = specialtyService.fromDTO(specialtyDTO);
+    public ResponseEntity<Void> insert(@RequestBody SpecialtyApiModel specialtyApiModel) {
+        Specialty specialty = specialtyService.fromDTO(specialtyApiModel);
         specialtyService.insert(specialty);
         var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(specialty.getId()).toUri();
         return ResponseEntity.created(uri).build();

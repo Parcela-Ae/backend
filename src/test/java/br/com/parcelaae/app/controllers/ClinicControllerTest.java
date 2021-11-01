@@ -1,10 +1,10 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.controllers.queryfilter.ClinicFilter;
-import br.com.parcelaae.app.domain.Clinic;
-import br.com.parcelaae.app.dto.ClinicDTO;
-import br.com.parcelaae.app.dto.NewUserDTO;
-import br.com.parcelaae.app.services.ClinicService;
+import br.com.parcelaae.app.domain.clinic.model.ClinicRestFilter;
+import br.com.parcelaae.app.domain.clinic.model.Clinic;
+import br.com.parcelaae.app.domain.clinic.model.ClinicApiResponse;
+import br.com.parcelaae.app.domain.user.model.UserApiRequest;
+import br.com.parcelaae.app.domain.clinic.service.ClinicService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,10 +53,10 @@ class ClinicControllerTest {
 
     @Test
     void shouldFindWithFilter() {
-        var filter = ClinicFilter.builder().name(CLINIC_NAME).build();
+        var filter = ClinicRestFilter.builder().name(CLINIC_NAME).build();
         var clinic = Clinic.builder().name(CLINIC_NAME).build();
         var clinics = List.of(clinic);
-        var clinicDTO = new ClinicDTO();
+        var clinicDTO = new ClinicApiResponse();
         var clinicsDTOExpected= List.of(clinicDTO);
         BeanUtils.copyProperties(clinic, clinicDTO);
 
@@ -73,7 +73,7 @@ class ClinicControllerTest {
 
     @Test
     void shouldInsertANewClinic() {
-        var newUserDTO = NewUserDTO.builder()
+        var newUserDTO = UserApiRequest.builder()
                 .name(CLINIC_NAME)
                 .build();
         var newClinic = Clinic.builder()

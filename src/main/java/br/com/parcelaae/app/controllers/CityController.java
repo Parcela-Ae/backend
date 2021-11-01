@@ -1,7 +1,7 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.domain.City;
-import br.com.parcelaae.app.services.CityService;
+import br.com.parcelaae.app.domain.city.model.City;
+import br.com.parcelaae.app.domain.city.service.CityService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

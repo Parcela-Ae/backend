@@ -1,9 +1,9 @@
 package br.com.parcelaae.app.controllers;
 
-import br.com.parcelaae.app.controllers.queryfilter.FeedbackFilter;
-import br.com.parcelaae.app.dto.FeedbackDTO;
-import br.com.parcelaae.app.dto.NewFeedbackDTO;
-import br.com.parcelaae.app.services.FeedbackService;
+import br.com.parcelaae.app.domain.feedback.model.FeedbackRestFilter;
+import br.com.parcelaae.app.domain.feedback.model.FeedbackApiResponse;
+import br.com.parcelaae.app.domain.feedback.model.FeedbackApiRequest;
+import br.com.parcelaae.app.domain.feedback.service.FeedbackService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,15 +24,15 @@ public class FeedbackController {
     private final FeedbackService feedbackService;
 
     @PostMapping("/search")
-    public ResponseEntity<List<FeedbackDTO>> findByCostumerId(@RequestBody FeedbackFilter feedbackFilter) {
-        var feedbacks = feedbackService.search(feedbackFilter);
-        var feedbacksDTO = feedbacks.stream().map(FeedbackDTO::new).collect(Collectors.toList());
+    public ResponseEntity<List<FeedbackApiResponse>> findByCostumerId(@RequestBody FeedbackRestFilter feedbackRestFilter) {
+        var feedbacks = feedbackService.search(feedbackRestFilter);
+        var feedbacksDTO = feedbacks.stream().map(FeedbackApiResponse::new).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(feedbacksDTO);
     }
 
     @PostMapping
-    public ResponseEntity<Void> insertNewFeedback(@Valid @RequestBody NewFeedbackDTO newFeedbackDTO) {
-        var newFeedback = NewFeedbackDTO.toEntity(newFeedbackDTO);
+    public ResponseEntity<Void> insertNewFeedback(@Valid @RequestBody FeedbackApiRequest feedbackApiRequest) {
+        var newFeedback = FeedbackApiRequest.toEntity(feedbackApiRequest);
         feedbackService.save(newFeedback);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
