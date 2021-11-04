@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface BalanceMovementRepository extends JpaRepository<BalanceMovement, Long> {
 
-    @Query("SELECT transaction FROM BalanceMovement transaction WHERE transaction.origin.user.id = :userId OR transaction.destination.user.id = :userId")
+    @Query("SELECT transaction FROM BalanceMovement transaction WHERE transaction.origin.user.id = :userId OR transaction.destination.user.id = :userId ORDER BY transaction.id DESC")
     List<BalanceMovement> findByUserId(@Param("userId") Integer userId);
 }
