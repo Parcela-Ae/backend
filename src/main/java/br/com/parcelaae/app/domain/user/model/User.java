@@ -2,7 +2,6 @@ package br.com.parcelaae.app.domain.user.model;
 
 import br.com.parcelaae.app.domain.address.model.Address;
 import br.com.parcelaae.app.domain.credit.model.Credit;
-import br.com.parcelaae.app.domain.enums.Profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,6 +38,9 @@ public abstract class User implements Serializable {
 
     @JsonIgnore
     private String password;
+
+    @JsonIgnore
+    private Boolean enabled = false;
 
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
     private List<Address> addresses = new ArrayList<>();

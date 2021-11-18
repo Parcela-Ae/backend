@@ -10,8 +10,9 @@ create table feedback (id serial, message varchar(255), rating double, clinic_id
 create table phones (user_id integer not null, phones varchar(255));
 create table profiles (user_id integer not null, profile_id integer);
 create table specialty (id serial, name varchar(255), primary key (id));
-create table email (id serial, ownerRef varchar(255), emailFrom varchar(255), emailTo varchar(255), text text, sendDateEmail date, statusEmail integer, primary key (id));
-create table tb_user (id serial, email varchar(255), name varchar(255), password varchar(255), primary key (id));
+create table email (id serial, owner_ref varchar(255), email_from varchar(255), email_to varchar(255), subject varchar(255), text text, send_date_email date, status_email varchar(20), primary key (id));
+create table tb_user (id serial, email varchar(255), name varchar(255), password varchar(255), enabled boolean, primary key (id));
+create table confirmation_token (id serial, token varchar(255) not null, created_at timestamp not null, expires_at timestamp, confirmed_at timestamp, expiration_actived boolean, user_id integer not null, primary key (id));
 
 alter table address add constraint fk_address_user foreign key (user_id) references tb_user(id);
 alter table balance_movement add constraint fk_balance_mov_credit_dest foreign key (destination_id) references credit;
@@ -28,3 +29,4 @@ alter table profiles add constraint fk_profiles_user foreign key (user_id) refer
 alter table tb_user add constraint uk_user_email unique(email);
 alter table clinic add constraint uk_clinic_cnpj unique(cnpj);
 alter table customer add constraint uk_customer_cpf unique(cpf);
+alter table confirmation_token add constraint fk_confirmation_token_user foreign key (user_id) references tb_user(id);

@@ -2,7 +2,7 @@ package br.com.parcelaae.app.domain.customer.model;
 
 import br.com.parcelaae.app.domain.feedback.model.Feedback;
 import br.com.parcelaae.app.domain.user.model.User;
-import br.com.parcelaae.app.domain.enums.Profile;
+import br.com.parcelaae.app.domain.user.model.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

@@ -2,7 +2,7 @@ package br.com.parcelaae.app.domain.clinic.model;
 
 import br.com.parcelaae.app.domain.specialty.model.Specialty;
 import br.com.parcelaae.app.domain.user.model.User;
-import br.com.parcelaae.app.domain.enums.Profile;
+import br.com.parcelaae.app.domain.user.model.Profile;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

@@ -3,14 +3,15 @@ package br.com.parcelaae.app.domain.clinic;
 import br.com.parcelaae.app.domain.clinic.model.ClinicRestFilter;
 import br.com.parcelaae.app.domain.address.model.Address;
 import br.com.parcelaae.app.domain.clinic.model.Clinic;
+import br.com.parcelaae.app.domain.registration.service.RegistrationService;
 import br.com.parcelaae.app.domain.specialty.model.Specialty;
 import br.com.parcelaae.app.domain.address.service.AddressService;
 import br.com.parcelaae.app.domain.user.model.UserApiRequest;
 import br.com.parcelaae.app.domain.clinic.repository.ClinicRepository;
-import br.com.parcelaae.app.domain.user.repository.UserRepository;
 import br.com.parcelaae.app.domain.clinic.repository.ClinicCustomRepository;
 import br.com.parcelaae.app.domain.clinic.service.ClinicService;
 import br.com.parcelaae.app.domain.credit.service.CreditService;
+import br.com.parcelaae.app.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +36,7 @@ class ClinicServiceTest {
     private ClinicService clinicService;
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Mock
     private ClinicRepository clinicRepository;
@@ -51,6 +52,9 @@ class ClinicServiceTest {
 
     @Mock
     private CreditService creditService;
+
+    @Mock
+    private RegistrationService registrationService;
 
     private UserApiRequest userApiRequest;
 
@@ -78,7 +82,7 @@ class ClinicServiceTest {
 
         var userExpected = Clinic.builder().id(1).addresses(addresses).build();
 
-        when(userRepository.save(userToSave)).thenReturn(userExpected);
+        when(userService.save(userToSave)).thenReturn(userExpected);
 
         var userActual = clinicService.insert(userToSave);
 
@@ -115,7 +119,7 @@ class ClinicServiceTest {
         var userToUpdate = Clinic.builder().build();
         var userExpected = Clinic.builder().build();
 
-        when(userRepository.save(userToUpdate)).thenReturn(userExpected);
+        when(userService.save(userToUpdate)).thenReturn(userExpected);
 
         var userActual = clinicService.update(userToUpdate);
 
@@ -126,11 +130,11 @@ class ClinicServiceTest {
     void shouldDeleteTheUser() {
         var userId = 1;
 
-        doNothing().when(userRepository).deleteById(userId);
+        doNothing().when(userService).deleteById(userId);
 
         clinicService.delete(userId);
 
-        verify(userRepository, times(1)).deleteById(userId);
+        verify(userService, times(1)).deleteById(userId);
     }
 
     @Test

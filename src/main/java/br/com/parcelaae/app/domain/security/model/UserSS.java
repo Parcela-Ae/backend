@@ -1,6 +1,7 @@
 package br.com.parcelaae.app.domain.security.model;
 
-import br.com.parcelaae.app.domain.enums.Profile;
+import br.com.parcelaae.app.domain.user.model.Profile;
+import br.com.parcelaae.app.domain.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Builder
@@ -29,16 +29,15 @@ public class UserSS implements UserDetails {
     @Setter
     private String typeUser;
     private Collection<? extends GrantedAuthority> authorities;
+    private Boolean enabled;
 
-    public UserSS() {
-    }
-
-    public UserSS(Integer id, String email, String password, String name, Set<Profile> profiles) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.authorities = profiles.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toList());
+    public UserSS(User user) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.name = user.getName();
+        this.authorities = user.getProfiles().stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toList());
+        this.enabled = user.getEnabled();
     }
 
     @Override
@@ -73,7 +72,7 @@ public class UserSS implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     public boolean hasRole(Profile profile) {

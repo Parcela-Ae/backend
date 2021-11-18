@@ -9,10 +9,10 @@ import br.com.parcelaae.app.domain.customer.model.Customer;
 import br.com.parcelaae.app.domain.customer.model.CustomerApiResponse;
 import br.com.parcelaae.app.domain.customer.repository.CustomerRepository;
 import br.com.parcelaae.app.domain.feedback.model.FeedbackApiResponse;
-import br.com.parcelaae.app.domain.feedback.service.FeedbackService;
+import br.com.parcelaae.app.domain.registration.service.RegistrationService;
 import br.com.parcelaae.app.domain.user.model.User;
 import br.com.parcelaae.app.domain.user.model.UserApiRequest;
-import br.com.parcelaae.app.domain.user.repository.UserRepository;
+import br.com.parcelaae.app.domain.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,7 +29,7 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     private final AddressService addressService;
 
@@ -39,7 +39,7 @@ public class CustomerService {
 
     private final BalanceMovementService balanceMovementService;
 
-    private final FeedbackService feedbackService;
+    private final RegistrationService registrationService;
 
     public Customer findById(Integer customerId) {
         return customerRepository.findById(customerId)
@@ -72,9 +72,10 @@ public class CustomerService {
     }
 
     public User insert(User user) {
-        user = userRepository.save(user);
+        user = userService.save(user);
         addressService.saveAll(user.getAddresses());
         creditService.save(new Credit(null, user, 0.0));
+        registrationService.register(user);
         return user;
     }
 

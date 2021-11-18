@@ -1,17 +1,18 @@
 package br.com.parcelaae.app.domain.clinic.service;
 
-import br.com.parcelaae.app.domain.clinic.model.ClinicRestFilter;
 import br.com.parcelaae.app.domain.address.model.Address;
-import br.com.parcelaae.app.domain.clinic.model.Clinic;
-import br.com.parcelaae.app.domain.credit.model.Credit;
-import br.com.parcelaae.app.domain.user.model.User;
 import br.com.parcelaae.app.domain.address.service.AddressService;
+import br.com.parcelaae.app.domain.clinic.model.Clinic;
 import br.com.parcelaae.app.domain.clinic.model.ClinicApiResponse;
-import br.com.parcelaae.app.domain.user.model.UserApiRequest;
-import br.com.parcelaae.app.domain.clinic.repository.ClinicRepository;
-import br.com.parcelaae.app.domain.user.repository.UserRepository;
+import br.com.parcelaae.app.domain.clinic.model.ClinicRestFilter;
 import br.com.parcelaae.app.domain.clinic.repository.ClinicCustomRepository;
+import br.com.parcelaae.app.domain.clinic.repository.ClinicRepository;
+import br.com.parcelaae.app.domain.credit.model.Credit;
 import br.com.parcelaae.app.domain.credit.service.CreditService;
+import br.com.parcelaae.app.domain.registration.service.RegistrationService;
+import br.com.parcelaae.app.domain.user.model.User;
+import br.com.parcelaae.app.domain.user.model.UserApiRequest;
+import br.com.parcelaae.app.domain.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -24,7 +25,7 @@ import java.util.List;
 @Service
 public class ClinicService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     private final ClinicRepository clinicRepository;
 
@@ -36,10 +37,13 @@ public class ClinicService {
 
     private final CreditService creditService;
 
+    private final RegistrationService registrationService;
+
     public User insert(User user) {
-        user = userRepository.save(user);
+        user = userService.save(user);
         addressService.saveAll(user.getAddresses());
         creditService.save(new Credit(null, user, 0.0));
+        registrationService.register(user);
         return user;
     }
 
@@ -60,11 +64,11 @@ public class ClinicService {
      * // TODO: 06/06/2021 Criar método para atualizar somente campos específicos
      */
     public User update(User user) {
-        return userRepository.save(user);
+        return userService.save(user);
     }
 
-    public void delete(Integer usuarioId) {
-        userRepository.deleteById(usuarioId);
+    public void delete(Integer userId) {
+        userService.deleteById(userId);
     }
 
     public Clinic fromDTO(UserApiRequest userApiRequest) {

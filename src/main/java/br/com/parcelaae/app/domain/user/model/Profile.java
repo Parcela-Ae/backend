@@ -1,4 +1,4 @@
-package br.com.parcelaae.app.domain.enums;
+package br.com.parcelaae.app.domain.user.model;
 
 import java.util.stream.Stream;
 
@@ -11,7 +11,7 @@ public enum Profile {
     private int cod;
     private String description;
 
-    private Profile(int cod, String description) {
+    Profile(int cod, String description) {
         this.cod = cod;
         this.description = description;
     }

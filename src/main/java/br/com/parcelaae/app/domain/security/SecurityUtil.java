@@ -1,6 +1,6 @@
 package br.com.parcelaae.app.domain.security;
 
-import br.com.parcelaae.app.domain.enums.Profile;
+import br.com.parcelaae.app.domain.user.model.Profile;
 import br.com.parcelaae.app.domain.security.model.UserSS;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

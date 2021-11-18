@@ -2,7 +2,7 @@ package br.com.parcelaae.app.domain.user.service;
 
 import br.com.parcelaae.app.core.exception.AuthorizationException;
 import br.com.parcelaae.app.domain.credit.service.CreditService;
-import br.com.parcelaae.app.domain.enums.Profile;
+import br.com.parcelaae.app.domain.user.model.Profile;
 import br.com.parcelaae.app.domain.user.model.User;
 import br.com.parcelaae.app.domain.user.model.UserProfileApiResponse;
 import br.com.parcelaae.app.domain.user.repository.UserRepository;
@@ -26,13 +26,21 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
-        if (user == null)
-            throw new UsernameNotFoundException(email);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
 
-        var userSS = new UserSS(user.getId(), user.getEmail(), user.getPassword(), user.getName(), user.getProfiles());
+        var userSS = new UserSS(user);
         userSS.setTypeUser(getTypeUser(userSS));
         return userSS;
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
     public UserProfileApiResponse getUserProfile(UserSS userSS) {
@@ -59,5 +67,15 @@ public class UserService implements UserDetailsService {
 
     private static boolean isAnUserValid(Integer userId, UserSS user) {
         return isNull(user) || !user.hasRole(Profile.ADMIN) && !userId.equals(user.getId());
+    }
+
+    public void enableAppUser(String email) {
+        var appUser = findByEmail(email);
+        appUser.setEnabled(true);
+        userRepository.save(appUser);
+    }
+
+    public void deleteById(Integer userId) {
+        userRepository.deleteById(userId);
     }
 }

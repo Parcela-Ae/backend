@@ -1,4 +1,4 @@
-package br.com.parcelaae.app.domain.enums;
+package br.com.parcelaae.app.domain.customer.model;
 
 import java.util.stream.Stream;
 
@@ -10,7 +10,7 @@ public enum CustomerType {
     private int cod;
     private String descricao;
 
-    private CustomerType(int cod, String descricao) {
+    CustomerType(int cod, String descricao) {
         this.cod = cod;
         this.descricao = descricao;
     }

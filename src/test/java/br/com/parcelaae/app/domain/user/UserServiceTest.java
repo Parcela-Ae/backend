@@ -3,7 +3,7 @@ package br.com.parcelaae.app.domain.user;
 import br.com.parcelaae.app.builders.UserAux;
 import br.com.parcelaae.app.domain.credit.model.Credit;
 import br.com.parcelaae.app.domain.credit.service.CreditService;
-import br.com.parcelaae.app.domain.enums.Profile;
+import br.com.parcelaae.app.domain.user.model.Profile;
 import br.com.parcelaae.app.domain.user.model.User;
 import br.com.parcelaae.app.domain.user.repository.UserRepository;
 import br.com.parcelaae.app.domain.security.model.UserSS;
@@ -19,6 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -76,7 +77,7 @@ class UserServiceTest {
 
     @Test
     void shouldLoadUserByUsername() {
-        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(userExpected);
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.of(userExpected));
 
         var userSSActual = userService.loadUserByUsername(USER_EMAIL);
 
@@ -93,7 +94,7 @@ class UserServiceTest {
 
     @Test
     void shouldThrowUsernameNotFoundExceptionWhenLoadUserByUsernameIsCalled() {
-        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(null);
+        when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.empty());
 
         var usernameNotFoundException = catchThrowableOfType(
                 () -> userService.loadUserByUsername(USER_EMAIL), UsernameNotFoundException.class);

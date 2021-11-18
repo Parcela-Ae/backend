@@ -3,11 +3,12 @@ package br.com.parcelaae.app.domain.customer;
 import br.com.parcelaae.app.domain.address.model.Address;
 import br.com.parcelaae.app.domain.customer.model.Customer;
 import br.com.parcelaae.app.domain.address.service.AddressService;
+import br.com.parcelaae.app.domain.registration.service.RegistrationService;
 import br.com.parcelaae.app.domain.user.model.UserApiRequest;
 import br.com.parcelaae.app.domain.customer.repository.CustomerRepository;
-import br.com.parcelaae.app.domain.user.repository.UserRepository;
 import br.com.parcelaae.app.domain.credit.service.CreditService;
 import br.com.parcelaae.app.domain.customer.service.CustomerService;
+import br.com.parcelaae.app.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +38,7 @@ class CustomerServiceTest {
     private CustomerRepository customerRepository;
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Mock
     private AddressService addressService;
@@ -47,6 +48,9 @@ class CustomerServiceTest {
 
     @Mock
     private CreditService creditService;
+
+    @Mock
+    private RegistrationService registrationService;
 
     private List<Customer> customersExpected = new ArrayList<>();
 
@@ -87,7 +91,7 @@ class CustomerServiceTest {
         customerToSave.getAddresses().add(address);
         var customerExpected = Customer.builder().cpf("123456").build();
 
-        when(userRepository.save(customerToSave)).thenReturn(customerExpected);
+        when(userService.save(customerToSave)).thenReturn(customerExpected);
 
         var newCustomerActual = customerService.insert(customerToSave);
 

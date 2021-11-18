@@ -56,7 +56,7 @@ insert into specialty (id, name) values (55, 'Reumatologia');
 insert into specialty (id, name) values (56, 'Urologia');
 
 --Clinicas--
-insert into tb_user (id, email, name, password) values (1, 'ok@doutor.com', 'Ok Doutor', '$2a$10$VdEtcZfZQbgLX9E3wykq/OX6ENEj83s2nPsQuUznBVhkJQaYiTFIW');
+insert into tb_user (id, email, name, password, enabled) values (1, 'ok@doutor.com', 'Ok Doutor', '$2a$10$VdEtcZfZQbgLX9E3wykq/OX6ENEj83s2nPsQuUznBVhkJQaYiTFIW', true);
 insert into clinic (cnpj, id) values ('52684284000186', 1);
 insert into address (id, city, state, complement, latitude, longitude, neighborhood, number, public_area, user_id, zip_code) values (1, 'Recife', 'PE', 'Apto 303', null, null, 'Espinheiro', '300', 'Av. Agamenon Magalhães', 1, '38220834');
 insert into address (id, city, state, complement, latitude, longitude, neighborhood, number, public_area, user_id, zip_code) values (2, 'Olinda', 'PE', null, null, null, 'Centro', '105', 'Presidente Kennedy', 1, 38777012);
@@ -68,7 +68,7 @@ insert into clinic_specialties (clinic_id, specialties_id) values (1, 18);
 insert into clinic_specialties (clinic_id, specialties_id) values (1, 43);
 insert into credit (id, balance, user_id) values (10205, 0.0, 1);
 
-insert into tb_user (id, email, name, password) values (2, 'clinica@sim.com', 'Clinica SIM', '$2a$10$VdEtcZfZQbgLX9E3wykq/OX6ENEj83s2nPsQuUznBVhkJQaYiTFIW');
+insert into tb_user (id, email, name, password, enabled) values (2, 'clinica@sim.com', 'Clinica SIM', '$2a$10$VdEtcZfZQbgLX9E3wykq/OX6ENEj83s2nPsQuUznBVhkJQaYiTFIW', true);
 insert into clinic (cnpj, id) values ('31048585000143', 2);
 insert into address (id, city, state, complement, latitude, longitude, neighborhood, number, public_area, user_id, zip_code) values (3, 'Paulista', 'PE', null, null, null, 'Centro', '105', 'Presidente Kennedy', 2, 38777012);
 insert into phones (user_id, phones) values (2, '34353637');
@@ -79,7 +79,7 @@ insert into clinic_specialties (clinic_id, specialties_id) values (2, 18);
 insert into clinic_specialties (clinic_id, specialties_id) values (2, 43);
 insert into credit (id, balance, user_id) values (23467, 0.0, 2);
 
-insert into tb_user (id, email, name, password) values (3, 'sirio@libanes.com', 'Sirio Libanes', '$2a$10$/ZcXT4sPz7qiLzc2qJlpbep1EF7ZCXPmUrEtKLcE3lmxLjG6f9AY6');
+insert into tb_user (id, email, name, password, enabled) values (3, 'sirio@libanes.com', 'Sirio Libanes', '$2a$10$/ZcXT4sPz7qiLzc2qJlpbep1EF7ZCXPmUrEtKLcE3lmxLjG6f9AY6', true);
 insert into clinic (cnpj, id) values ('96083005000102', 3);
 insert into address (id, city, state, complement, latitude, longitude, neighborhood, number, public_area, user_id, zip_code) values (4, 'São Paulo', 'SP', null, null, null, 'Centro', '2106', 'Avenida Paulista', 3, 39867024);
 insert into phones (user_id, phones) values (3, '11994020345');
@@ -91,7 +91,7 @@ insert into clinic_specialties (clinic_id, specialties_id) values (3, 43);
 insert into credit (id, balance, user_id) values (38749, 0.0, 3);
 
 --Clientes--
-insert into tb_user (id, email, name, password) values (4, 'john@wick.com', 'John Wick', '$2a$10$VdEtcZfZQbgLX9E3wykq/OX6ENEj83s2nPsQuUznBVhkJQaYiTFIW');
+insert into tb_user (id, email, name, password, enabled) values (4, 'john@wick.com', 'John Wick', '$2a$10$VdEtcZfZQbgLX9E3wykq/OX6ENEj83s2nPsQuUznBVhkJQaYiTFIW', true);
 insert into customer (cpf, id) values ('12117341020', 4);
 insert into address (id, city, state, complement, latitude, longitude, neighborhood, number, public_area, user_id, zip_code) values (5, 'São Paulo', 'SP', 'Apto 901', null, null, 'Centro', '300', 'Av. Paulista', 4, '38220834');
 insert into phones (user_id, phones) values (4, '11987506591');
@@ -99,14 +99,14 @@ insert into profiles (user_id, profile_id) values (4, 1);
 insert into profiles (user_id, profile_id) values (4, 2);
 insert into credit (id, balance, user_id) values (41628, 0.0, 4);
 
-insert into tb_user (id, email, name, password) values (5, 'lara@croft.com', 'Lara Croft', '$2a$10$VdEtcZfZQbgLX9E3wykq/OX6ENEj83s2nPsQuUznBVhkJQaYiTFIW');
+insert into tb_user (id, email, name, password, enabled) values (5, 'lara@croft.com', 'Lara Croft', '$2a$10$VdEtcZfZQbgLX9E3wykq/OX6ENEj83s2nPsQuUznBVhkJQaYiTFIW', true);
 insert into customer (cpf, id) values ('81597383074', 5);
 insert into address (id, city, state, complement, latitude, longitude, neighborhood, number, public_area, user_id, zip_code) values (6, 'Rio de Janeiro', 'RJ', null, null, null, 'Centro', '300', 'Av. Brasil', 5, '38220834');
 insert into phones (user_id, phones) values (5, '21985742124');
 insert into profiles (user_id, profile_id) values (5, 2);
 insert into credit (id, balance, user_id) values (53216, 0.0, 5);
 
-insert into tb_user (id, email, name, password) values (6, 'ghost@sparta.com', 'Kratos War', '$2a$10$VdEtcZfZQbgLX9E3wykq/OX6ENEj83s2nPsQuUznBVhkJQaYiTFIW');
+insert into tb_user (id, email, name, password, enabled) values (6, 'ghost@sparta.com', 'Kratos War', '$2a$10$VdEtcZfZQbgLX9E3wykq/OX6ENEj83s2nPsQuUznBVhkJQaYiTFIW', true);
 insert into customer (cpf, id) values ('03689605016', 6);
 insert into address (id, city, state, complement, latitude, longitude, neighborhood, number, public_area, user_id, zip_code) values (7, 'Recife', 'PE', null, null, null, 'Espinheiro', '115', 'Rua 48', 6, '38220834');
 insert into phones (user_id, phones) values (6, '11992637589');

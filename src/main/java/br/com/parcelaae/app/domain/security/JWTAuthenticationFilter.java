@@ -1,7 +1,7 @@
 package br.com.parcelaae.app.domain.security;
 
-import br.com.parcelaae.app.domain.security.model.UserSS;
 import br.com.parcelaae.app.domain.security.model.CredentialsModel;
+import br.com.parcelaae.app.domain.security.model.UserSS;
 import br.com.parcelaae.app.domain.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -28,7 +26,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final UserService userService;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UserService userService) {
-        setAuthenticationFailureHandler(new JWTAuthenticationFailureHandler());
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.userService = userService;
@@ -65,25 +62,5 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(userJson);
-    }
-
-    private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
-
-        @Override
-        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
-                throws IOException {
-            response.setStatus(401);
-            response.setContentType("application/json");
-            response.getWriter().append(json());
-        }
-
-        private String json() {
-            long date = new Date().getTime();
-            return "{\"timestamp\": " + date + ", "
-                    + "\"status\": 401, "
-                    + "\"error\": \"Unauthorized\", "
-                    + "\"message\": \"Email or password invalids\", "
-                    + "\"path\": \"/login\"}";
-        }
     }
 }

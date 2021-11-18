@@ -140,15 +140,12 @@
 					<mutationThreshold>0</mutationThreshold>
 					<coverageThreshold>0</coverageThreshold>
 					<excludedClasses>
-						<param>br.com.parcelaae.app.controllers.queryfilter.*</param>
 						<param>br.com.parcelaae.app.core.configuration.*</param>
 						<param>br.com.parcelaae.app.core.exception.*Error</param>
 						<param>br.com.parcelaae.app.core.exception.*Message</param>
 						<param>br.com.parcelaae.app.core.exception.*Validator</param>
-						<param>br.com.parcelaae.app.domain.*</param>
-						<param>br.com.parcelaae.app.dto.*</param>
-						<param>br.com.parcelaae.app.filter.*</param>
-						<param>br.com.parcelaae.app.security.*</param>
+						<param>br.com.parcelaae.app.domain.**.model.*</param>
+						<param>br.com.parcelaae.app.domain.security.*</param>
 					</excludedClasses>
 				</configuration>
 			</plugin>

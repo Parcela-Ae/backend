@@ -1,7 +1,7 @@
 package br.com.parcelaae.app.domain.email;
 
 import br.com.parcelaae.app.domain.email.model.Email;
-import br.com.parcelaae.app.domain.enums.StatusEmail;
+import br.com.parcelaae.app.domain.email.model.StatusEmail;
 import br.com.parcelaae.app.exceptions.CustomMailException;
 import br.com.parcelaae.app.domain.email.repository.EmailRepository;
 import br.com.parcelaae.app.domain.email.service.EmailService;

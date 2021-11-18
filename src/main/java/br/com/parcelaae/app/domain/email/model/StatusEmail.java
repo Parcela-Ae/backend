@@ -1,4 +1,4 @@
-package br.com.parcelaae.app.domain.enums;
+package br.com.parcelaae.app.domain.email.model;
 
 public enum StatusEmail {
 
