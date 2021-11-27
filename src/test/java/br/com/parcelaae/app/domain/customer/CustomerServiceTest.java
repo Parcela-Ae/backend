@@ -96,7 +96,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void shouldConveterNewUserDtoToCustomer() {
+    void shouldConverterNewUserDtoToCustomer() {
         when(passwordEncoder.encode(userApiRequest.getPassword())).thenReturn(ENCRYPTED_PASSWORD);
 
         var customer = customerService.fromDTO(userApiRequest);
@@ -110,7 +110,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void shouldConveterNewUserDtoToCustomerWithTwoPhones() {
+    void shouldConverterNewUserDtoToCustomerWithTwoPhones() {
         userApiRequest.setPhone2("32364455");
 
         var customer = customerService.fromDTO(userApiRequest);
@@ -119,7 +119,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void shouldConveterNewUserDtoToCustomerWithThreePhones() {
+    void shouldConverterNewUserDtoToCustomerWithThreePhones() {
         userApiRequest.setPhone3("32364455");
 
         var customer = customerService.fromDTO(userApiRequest);

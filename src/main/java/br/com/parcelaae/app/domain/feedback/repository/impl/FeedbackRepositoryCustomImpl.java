@@ -1,9 +1,9 @@
-package br.com.parcelaae.app.domain.feedback.repository;
+package br.com.parcelaae.app.domain.feedback.repository.impl;
 
-import br.com.parcelaae.app.domain.feedback.model.FeedbackRestFilter;
 import br.com.parcelaae.app.domain.feedback.model.Feedback;
+import br.com.parcelaae.app.domain.feedback.model.FeedbackRestFilter;
+import br.com.parcelaae.app.domain.feedback.repository.FeedbackRepositoryCustom;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotNull;
@@ -13,11 +13,11 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @AllArgsConstructor
-@Repository
-public class FeedbackCustomRepository {
+public class FeedbackRepositoryCustomImpl implements FeedbackRepositoryCustom {
 
     private final EntityManager em;
 
+    @Override
     public List<Feedback> find(@NotNull FeedbackRestFilter filter) {
         var sql = new StringBuilder();
 

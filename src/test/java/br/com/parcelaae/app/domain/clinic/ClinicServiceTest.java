@@ -8,7 +8,6 @@ import br.com.parcelaae.app.domain.address.service.AddressService;
 import br.com.parcelaae.app.domain.user.model.UserApiRequest;
 import br.com.parcelaae.app.domain.clinic.repository.ClinicRepository;
 import br.com.parcelaae.app.domain.user.repository.UserRepository;
-import br.com.parcelaae.app.domain.clinic.repository.ClinicCustomRepository;
 import br.com.parcelaae.app.domain.clinic.service.ClinicService;
 import br.com.parcelaae.app.domain.credit.service.CreditService;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,9 +38,6 @@ class ClinicServiceTest {
 
     @Mock
     private ClinicRepository clinicRepository;
-
-    @Mock
-    private ClinicCustomRepository clinicCustomRepository;
 
     @Mock
     private AddressService addressService;
@@ -92,7 +88,7 @@ class ClinicServiceTest {
         var filter = ClinicRestFilter.builder().build();
         List<Clinic> clinics = List.of(Clinic.builder().build());
 
-        when(clinicCustomRepository.find(filter)).thenReturn(clinics);
+        when(clinicRepository.find(filter)).thenReturn(clinics);
 
         var clinicsActual = clinicService.find(filter);
 
@@ -134,7 +130,7 @@ class ClinicServiceTest {
     }
 
     @Test
-    void shouldConveterNewUserDtoToClinic() {
+    void shouldConverterNewUserDtoToClinic() {
         when(passwordEncoder.encode(userApiRequest.getPassword())).thenReturn(ENCRYPTED_PASSWORD);
 
         var customer = clinicService.fromDTO(userApiRequest);
@@ -148,7 +144,7 @@ class ClinicServiceTest {
     }
 
     @Test
-    void shouldConveterNewUserDtoToCustomerWithTwoPhones() {
+    void shouldConverterNewUserDtoToCustomerWithTwoPhones() {
         userApiRequest.setPhone2("32364455");
 
         var customer = clinicService.fromDTO(userApiRequest);
@@ -157,7 +153,7 @@ class ClinicServiceTest {
     }
 
     @Test
-    void shouldConveterNewUserDtoToCustomerWithThreePhones() {
+    void shouldConverterNewUserDtoToCustomerWithThreePhones() {
         userApiRequest.setPhone3("32364455");
 
         var customer = clinicService.fromDTO(userApiRequest);

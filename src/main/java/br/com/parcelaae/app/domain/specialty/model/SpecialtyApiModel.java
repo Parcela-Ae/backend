@@ -1,6 +1,5 @@
 package br.com.parcelaae.app.domain.specialty.model;
 
-import br.com.parcelaae.app.domain.specialty.model.Specialty;
 import lombok.*;
 
 import java.io.Serializable;

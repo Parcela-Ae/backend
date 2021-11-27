@@ -3,7 +3,7 @@ package br.com.parcelaae.app.domain.feedback;
 import br.com.parcelaae.app.domain.feedback.model.FeedbackRestFilter;
 import br.com.parcelaae.app.domain.feedback.model.Feedback;
 import br.com.parcelaae.app.domain.feedback.repository.FeedbackRepository;
-import br.com.parcelaae.app.domain.feedback.repository.FeedbackCustomRepository;
+import br.com.parcelaae.app.domain.feedback.repository.FeedbackRepositoryCustom;
 import br.com.parcelaae.app.domain.feedback.service.FeedbackService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,9 +26,6 @@ class FeedbackServiceTest {
 
     @Mock
     private FeedbackRepository feedbackRepository;
-
-    @Mock
-    FeedbackCustomRepository customRepository;
 
     private final List<Feedback> feedbacksExpected = new ArrayList<>();
 
@@ -72,7 +69,7 @@ class FeedbackServiceTest {
     void shouldSearchForFeedbacksWithFilter() {
         var filter = FeedbackRestFilter.builder().build();
 
-        when(customRepository.find(filter)).thenReturn(feedbacksExpected);
+        when(feedbackRepository.find(filter)).thenReturn(feedbacksExpected);
 
         var feedbacksActual = feedbackService.search(filter);
 

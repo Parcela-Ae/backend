@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
+public interface FeedbackRepository extends JpaRepository<Feedback, Integer>, FeedbackRepositoryCustom {
 
     @Query("SELECT feedback FROM Feedback feedback WHERE feedback.customer.id = :customerId")
     List<Feedback> findByCustomerId(@Param("customerId") Integer customerId);

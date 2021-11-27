@@ -1,20 +1,20 @@
-package br.com.parcelaae.app.domain.credit.repository;
+package br.com.parcelaae.app.domain.credit.repository.impl;
 
 import br.com.parcelaae.app.domain.credit.model.Credit;
+import br.com.parcelaae.app.domain.credit.repository.CreditRepositoryCustom;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
-@Repository
-public class CreditCustomRepository {
+public class CreditRepositoryCustomImpl implements CreditRepositoryCustom {
 
     private final EntityManager em;
 
     private static final String QUERY_BASE = " SELECT credit FROM Credit credit ";
 
+    @Override
     public Credit findByUserId(Integer userId) {
 
         String sql = QUERY_BASE +
@@ -27,6 +27,7 @@ public class CreditCustomRepository {
         return query.getSingleResult();
     }
 
+    @Override
     public Credit findByCpf(@NotNull String cpf) {
 
         String sql = QUERY_BASE +
@@ -40,6 +41,7 @@ public class CreditCustomRepository {
         return query.getSingleResult();
     }
 
+    @Override
     public Credit findByCnpj(String cnpj) {
 
         String sql = QUERY_BASE +

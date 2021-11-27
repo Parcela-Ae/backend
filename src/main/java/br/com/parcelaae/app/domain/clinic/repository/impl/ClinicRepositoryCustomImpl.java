@@ -1,22 +1,24 @@
-package br.com.parcelaae.app.domain.clinic.repository;
+package br.com.parcelaae.app.domain.clinic.repository.impl;
 
-import br.com.parcelaae.app.domain.clinic.model.ClinicRestFilter;
 import br.com.parcelaae.app.domain.clinic.model.Clinic;
+import br.com.parcelaae.app.domain.clinic.model.ClinicRestFilter;
+import br.com.parcelaae.app.domain.clinic.repository.ClinicRepositoryCustom;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static io.netty.util.internal.StringUtil.isNullOrEmpty;
+import static java.util.Objects.isNull;
 
 @AllArgsConstructor
-@Repository
-public class ClinicCustomRepository {
+public class ClinicRepositoryCustomImpl implements ClinicRepositoryCustom {
 
     private final EntityManager em;
 
+    @Override
     public List<Clinic> find(@NotNull ClinicRestFilter filter) {
         var sql = new StringBuilder();
         var isFirst = true;
@@ -62,5 +64,41 @@ public class ClinicCustomRepository {
             query.setParameter("specialty", "%" + filter.getSpecialty() + "%");
 
         return query.getResultList();
+    }
+
+    @Override
+    public void addAppointmentValue(Integer clinicId, Integer specialtyId, BigDecimal appointmentValue) {
+        em.joinTransaction();
+        if (isNull(clinicId) || isNull(specialtyId) || isNull(appointmentValue))
+            throw new IllegalArgumentException("Argumentos insuficientes para a solicitação");
+
+        var sql = "UPDATE clinic_specialties SET appointment_value = :appointmentValue "
+                + "WHERE clinic_id = :clinicId AND specialties_id = :specialtyId";
+
+        var query = em.createNativeQuery(sql);
+
+        query.setParameter("appointmentValue", appointmentValue);
+        query.setParameter("clinicId", clinicId);
+        query.setParameter("specialtyId", specialtyId);
+
+        query.executeUpdate();
+    }
+
+    @Override
+    public BigDecimal getAppointmentValue(Integer clinicId, Integer specialtyId) {
+
+        if (isNull(clinicId) || isNull(specialtyId))
+            throw new IllegalArgumentException("Argumentos insuficientes para a solicitação");
+
+        var sql = "SELECT CS.appointment_value FROM clinic_specialties as CS "
+                + "WHERE clinic_id = :clinicId AND specialties_id = :specialtyId";
+
+        var query = em.createNativeQuery(sql);
+
+        query.setParameter("clinicId", clinicId);
+        query.setParameter("specialtyId", specialtyId);
+
+        var appointmentValue = (Double) query.getSingleResult();
+        return BigDecimal.valueOf(appointmentValue);
     }
 }

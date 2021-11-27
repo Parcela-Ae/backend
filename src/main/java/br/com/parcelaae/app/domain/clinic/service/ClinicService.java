@@ -10,7 +10,6 @@ import br.com.parcelaae.app.domain.clinic.model.ClinicApiResponse;
 import br.com.parcelaae.app.domain.user.model.UserApiRequest;
 import br.com.parcelaae.app.domain.clinic.repository.ClinicRepository;
 import br.com.parcelaae.app.domain.user.repository.UserRepository;
-import br.com.parcelaae.app.domain.clinic.repository.ClinicCustomRepository;
 import br.com.parcelaae.app.domain.credit.service.CreditService;
 import lombok.AllArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
@@ -18,6 +17,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 
 @AllArgsConstructor
@@ -27,8 +28,6 @@ public class ClinicService {
     private final UserRepository userRepository;
 
     private final ClinicRepository clinicRepository;
-
-    private final ClinicCustomRepository clinicCustomRepository;
 
     private final AddressService addressService;
 
@@ -49,7 +48,7 @@ public class ClinicService {
     }
 
     public List<Clinic> find(ClinicRestFilter filter) {
-        return clinicCustomRepository.find(filter);
+        return clinicRepository.find(filter);
     }
 
     public List<Clinic> listAll() {
@@ -65,6 +64,16 @@ public class ClinicService {
 
     public void delete(Integer usuarioId) {
         userRepository.deleteById(usuarioId);
+    }
+
+    @Transactional
+    public void addAppointmentValue(Integer clinicId, Integer specialtyId, BigDecimal appointmentValue) {
+        clinicRepository.addAppointmentValue(clinicId, specialtyId, appointmentValue);
+    }
+
+    @Transactional
+    public BigDecimal getAppointmentValue(Integer clinicId, Integer specialtyId) {
+        return clinicRepository.getAppointmentValue(clinicId, specialtyId);
     }
 
     public Clinic fromDTO(UserApiRequest userApiRequest) {

@@ -1,5 +1,6 @@
-package br.com.parcelaae.app.domain.city.repository;
+package br.com.parcelaae.app.domain.city.repository.impl;
 
+import br.com.parcelaae.app.domain.city.repository.CityRepositoryCustom;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -8,10 +9,11 @@ import java.util.List;
 
 @AllArgsConstructor
 @Repository
-public class CityCustomRepository {
+public class CityRepositoryCustomImpl implements CityRepositoryCustom {
 
     private final EntityManager em;
 
+    @Override
     public List<String> listAll() {
 
         var sql = "SELECT DISTINCT address.city " +
