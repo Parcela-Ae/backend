@@ -146,6 +146,7 @@
 						<param>br.com.parcelaae.app.core.exception.*Message</param>
 						<param>br.com.parcelaae.app.core.exception.*Validator</param>
 						<param>br.com.parcelaae.app.domain.**.model.*</param>
+						<param>br.com.parcelaae.app.domain.security.*</param>
 						<param>br.com.parcelaae.app.dto.*</param>
 						<param>br.com.parcelaae.app.filter.*</param>
 						<param>br.com.parcelaae.app.security.*</param>
