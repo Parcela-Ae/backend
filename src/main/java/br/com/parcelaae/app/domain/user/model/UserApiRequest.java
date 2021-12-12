@@ -21,7 +21,7 @@ public class UserApiRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @NotEmpty(message = "Preenchimento obrigatório")
-    @Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres")
+    @Length(min = 2, max = 120, message = "O nome deve ter entre 2 a 120 caracteres")
     private String name;
 
     @NotEmpty(message = "Preenchimento obrigatório")

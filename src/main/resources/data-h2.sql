@@ -64,8 +64,8 @@ insert into phones (user_id, phones) values (1, '34353637');
 insert into phones (user_id, phones) values (1, '81994020345');
 insert into profiles (user_id, profile_id) values (1, 1);
 insert into profiles (user_id, profile_id) values (1, 3);
-insert into clinic_specialties (clinic_id, specialties_id) values (1, 18);
-insert into clinic_specialties (clinic_id, specialties_id) values (1, 43);
+insert into clinic_specialties (clinic_id, specialty_id, appointment_value) values (1, 18, 90.00);
+insert into clinic_specialties (clinic_id, specialty_id, appointment_value) values (1, 43, 75.00);
 insert into credit (id, balance, user_id) values (10205, 0.0, 1);
 
 insert into tb_user (id, email, name, password) values (2, 'clinica@sim.com', 'Clinica SIM', '$2a$10$VdEtcZfZQbgLX9E3wykq/OX6ENEj83s2nPsQuUznBVhkJQaYiTFIW');
@@ -75,8 +75,8 @@ insert into phones (user_id, phones) values (2, '34353637');
 insert into phones (user_id, phones) values (2, '81994020345');
 insert into profiles (user_id, profile_id) values (2, 1);
 insert into profiles (user_id, profile_id) values (2, 3);
-insert into clinic_specialties (clinic_id, specialties_id) values (2, 18);
-insert into clinic_specialties (clinic_id, specialties_id) values (2, 43);
+insert into clinic_specialties (clinic_id, specialty_id) values (2, 18);
+insert into clinic_specialties (clinic_id, specialty_id) values (2, 43);
 insert into credit (id, balance, user_id) values (23467, 0.0, 2);
 
 insert into tb_user (id, email, name, password) values (3, 'sirio@libanes.com', 'Sirio Libanes', '$2a$10$/ZcXT4sPz7qiLzc2qJlpbep1EF7ZCXPmUrEtKLcE3lmxLjG6f9AY6');
@@ -85,9 +85,9 @@ insert into address (id, city, state, complement, latitude, longitude, neighborh
 insert into phones (user_id, phones) values (3, '11994020345');
 insert into phones (user_id, phones) values (3, '32353937');
 insert into profiles (user_id, profile_id) values (3, 3);
-insert into clinic_specialties (clinic_id, specialties_id) values (3, 16);
-insert into clinic_specialties (clinic_id, specialties_id) values (3, 18);
-insert into clinic_specialties (clinic_id, specialties_id) values (3, 43);
+insert into clinic_specialties (clinic_id, specialty_id) values (3, 16);
+insert into clinic_specialties (clinic_id, specialty_id) values (3, 18);
+insert into clinic_specialties (clinic_id, specialty_id) values (3, 43);
 insert into credit (id, balance, user_id) values (38749, 0.0, 3);
 
 --Clientes--

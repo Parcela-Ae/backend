@@ -1,5 +1,6 @@
 package br.com.parcelaae.app.domain.scheduling.service;
 
+import br.com.parcelaae.app.domain.balancemovement.service.BalanceMovementService;
 import br.com.parcelaae.app.domain.clinic.model.Clinic;
 import br.com.parcelaae.app.domain.clinic.model.ClinicApiResponse;
 import br.com.parcelaae.app.domain.customer.model.Customer;
@@ -12,16 +13,22 @@ import br.com.parcelaae.app.domain.specialty.model.SpecialtyApiModel;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
+@Transactional
 @AllArgsConstructor
 @Service
 public class SchedulingService {
 
     private final SchedulingRepository schedulingRepository;
 
+    private final BalanceMovementService balanceMovementService;
+
     public Scheduling save(SchedulingApiRequest schedulingApiRequest) {
+        var payment = balanceMovementService.fromScheduleApiRequest(schedulingApiRequest);
+        balanceMovementService.save(payment);
         var scheduling = toEntity(schedulingApiRequest);
         return schedulingRepository.save(scheduling);
     }
@@ -40,8 +47,8 @@ public class SchedulingService {
         scheduling.setClinic(Clinic.builder().id(schedulingApiRequest.getClinicId()).build());
         scheduling.setSpecialty(Specialty.builder().id(schedulingApiRequest.getSpecialtyId()).build());
         scheduling.setScheduledTo(schedulingApiRequest.getScheduledTo());
-        scheduling.setAppointmentValue(BigDecimal.valueOf(schedulingApiRequest.getAppointmentValue()));
-        scheduling.setAppointmentTime(schedulingApiRequest.getAppointmentTime());
+        scheduling.setAppointmentValue(BigDecimal.valueOf(schedulingApiRequest.getValue()));
+        scheduling.setAppointmentTime(schedulingApiRequest.getScheduledTo().getHour() + ":" + schedulingApiRequest.getScheduledTo().getMinute());
         return scheduling;
     }
 

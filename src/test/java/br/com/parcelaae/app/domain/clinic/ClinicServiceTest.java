@@ -3,6 +3,7 @@ package br.com.parcelaae.app.domain.clinic;
 import br.com.parcelaae.app.domain.clinic.model.ClinicRestFilter;
 import br.com.parcelaae.app.domain.address.model.Address;
 import br.com.parcelaae.app.domain.clinic.model.Clinic;
+import br.com.parcelaae.app.domain.clinic.repository.ClinicSpecialtyRepository;
 import br.com.parcelaae.app.domain.specialty.model.Specialty;
 import br.com.parcelaae.app.domain.address.service.AddressService;
 import br.com.parcelaae.app.domain.user.model.UserApiRequest;
@@ -38,6 +39,9 @@ class ClinicServiceTest {
 
     @Mock
     private ClinicRepository clinicRepository;
+
+    @Mock
+    private ClinicSpecialtyRepository clinicSpecialtyRepository;
 
     @Mock
     private AddressService addressService;
@@ -81,6 +85,7 @@ class ClinicServiceTest {
         assertThat(userActual).isNotNull();
         assertThat(userActual.getId()).isEqualTo(userExpected.getId());
         verify(addressService, times(1)).saveAll(userExpected.getAddresses());
+        verify(clinicSpecialtyRepository, times(1)).saveAll(any());
     }
 
     @Test

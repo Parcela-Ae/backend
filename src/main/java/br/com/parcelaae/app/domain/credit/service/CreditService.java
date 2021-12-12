@@ -5,6 +5,9 @@ import br.com.parcelaae.app.domain.credit.repository.CreditRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
+@Transactional
 @AllArgsConstructor
 @Service
 public class CreditService {

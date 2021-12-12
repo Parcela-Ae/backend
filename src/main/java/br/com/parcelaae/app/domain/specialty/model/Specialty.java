@@ -21,4 +21,9 @@ public class Specialty implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+
+    public Specialty(SpecialtyApiModel specialtyApiModel) {
+        this.id = specialtyApiModel.getId();
+        this.name = specialtyApiModel.getName();
+    }
 }

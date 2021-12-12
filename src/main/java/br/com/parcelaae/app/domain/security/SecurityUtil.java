@@ -6,6 +6,9 @@ import lombok.experimental.UtilityClass;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import static br.com.parcelaae.app.core.constants.AppConstants.CLINIC;
+import static br.com.parcelaae.app.core.constants.AppConstants.CUSTOMER;
+
 @UtilityClass
 public class SecurityUtil {
 
@@ -14,9 +17,9 @@ public class SecurityUtil {
     }
 
     public static String getTypeUser(UserSS userSS) {
-        String typeUser = "CLIENTE";
+        String typeUser = CUSTOMER;
         if (userSS.getAuthorities().contains(new SimpleGrantedAuthority(Profile.CLINIC.getDescription())))
-            typeUser = "CLINICA";
+            typeUser = CLINIC;
 
         return typeUser;
     }

@@ -1,8 +1,10 @@
 package br.com.parcelaae.app.domain.user.model;
 
 import br.com.parcelaae.app.domain.address.model.Address;
+import br.com.parcelaae.app.domain.clinic.model.ClinicSpecialty;
 import br.com.parcelaae.app.domain.credit.model.Credit;
 import br.com.parcelaae.app.domain.enums.Profile;
+import br.com.parcelaae.app.domain.specialty.model.Specialty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,10 +14,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuperBuilder
@@ -57,6 +56,13 @@ public abstract class User implements Serializable {
     @OneToOne(mappedBy = "user")
     private Credit credit;
 
+    @OneToMany(
+            mappedBy = "clinic",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ClinicSpecialty> specialties = new ArrayList<>();
+
     protected User(String name, String email, String password) {
         this.name = name;
         this.email = email;
@@ -69,5 +75,25 @@ public abstract class User implements Serializable {
 
     public void addPerfil(Profile profile) {
         profiles.add(profile.getCod());
+    }
+
+    public void addSpecialty(Specialty specialty) {
+        var clinicSpecialty = new ClinicSpecialty(this, specialty);
+        specialties.add(clinicSpecialty);
+    }
+
+    public void removeSpecialty(Specialty specialty) {
+        for (Iterator<ClinicSpecialty> iterator = specialties.iterator();
+             iterator.hasNext(); ) {
+
+            var clinicSpecialty = iterator.next();
+
+            if (clinicSpecialty.getClinic().equals(this) &&
+                    clinicSpecialty.getSpecialty().equals(specialty)) {
+                iterator.remove();
+                clinicSpecialty.setSpecialty(null);
+                clinicSpecialty.setClinic(null);
+            }
+        }
     }
 }

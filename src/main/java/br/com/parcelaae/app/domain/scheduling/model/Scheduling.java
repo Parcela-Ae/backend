@@ -9,7 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -33,7 +33,7 @@ public class Scheduling implements Serializable {
     @JoinColumn(name = "specialty_id")
     private Specialty specialty;
 
-    private LocalDate scheduledTo;
+    private LocalDateTime scheduledTo;
     private BigDecimal appointmentValue;
     private String appointmentTime;
 }

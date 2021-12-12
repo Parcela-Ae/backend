@@ -1,16 +1,17 @@
 package br.com.parcelaae.app.domain.clinic.service;
 
-import br.com.parcelaae.app.domain.clinic.model.ClinicRestFilter;
 import br.com.parcelaae.app.domain.address.model.Address;
-import br.com.parcelaae.app.domain.clinic.model.Clinic;
-import br.com.parcelaae.app.domain.credit.model.Credit;
-import br.com.parcelaae.app.domain.user.model.User;
 import br.com.parcelaae.app.domain.address.service.AddressService;
-import br.com.parcelaae.app.domain.clinic.model.ClinicApiResponse;
-import br.com.parcelaae.app.domain.user.model.UserApiRequest;
+import br.com.parcelaae.app.domain.clinic.model.*;
 import br.com.parcelaae.app.domain.clinic.repository.ClinicRepository;
-import br.com.parcelaae.app.domain.user.repository.UserRepository;
+import br.com.parcelaae.app.domain.clinic.repository.ClinicSpecialtyRepository;
+import br.com.parcelaae.app.domain.credit.model.Credit;
 import br.com.parcelaae.app.domain.credit.service.CreditService;
+import br.com.parcelaae.app.domain.specialty.model.Specialty;
+import br.com.parcelaae.app.domain.specialty.model.SpecialtyApiModel;
+import br.com.parcelaae.app.domain.user.model.User;
+import br.com.parcelaae.app.domain.user.model.UserApiRequest;
+import br.com.parcelaae.app.domain.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -19,8 +20,13 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
+
+@Transactional
 @AllArgsConstructor
 @Service
 public class ClinicService {
@@ -29,6 +35,8 @@ public class ClinicService {
 
     private final ClinicRepository clinicRepository;
 
+    private final ClinicSpecialtyRepository clinicSpecialtyRepository;
+
     private final AddressService addressService;
 
     private final BCryptPasswordEncoder passwordEncoder;
@@ -36,9 +44,14 @@ public class ClinicService {
     private final CreditService creditService;
 
     public User insert(User user) {
+        var specialties = user.getSpecialties();
+        user.setSpecialties(null);
+
         user = userRepository.save(user);
+
         addressService.saveAll(user.getAddresses());
         creditService.save(new Credit(null, user, 0.0));
+        clinicSpecialtyRepository.saveAll(specialties);
         return user;
     }
 
@@ -66,12 +79,10 @@ public class ClinicService {
         userRepository.deleteById(usuarioId);
     }
 
-    @Transactional
     public void addAppointmentValue(Integer clinicId, Integer specialtyId, BigDecimal appointmentValue) {
         clinicRepository.addAppointmentValue(clinicId, specialtyId, appointmentValue);
     }
 
-    @Transactional
     public BigDecimal getAppointmentValue(Integer clinicId, Integer specialtyId) {
         return clinicRepository.getAppointmentValue(clinicId, specialtyId);
     }
@@ -93,11 +104,13 @@ public class ClinicService {
                 .city(userApiRequest.getCity())
                 .state(userApiRequest.getState())
                 .build();
-        var especialidades = userApiRequest.getSpecialties();
+
+        if (nonNull(userApiRequest.getSpecialties()) && !userApiRequest.getSpecialties().isEmpty())
+            userApiRequest.getSpecialties().forEach(clinic::addSpecialty);
 
         clinic.getAddresses().add(end);
         clinic.getPhones().add(userApiRequest.getPhone1());
-        clinic.getSpecialties().addAll(especialidades);
+
         if (userApiRequest.getPhone2()!=null) {
             clinic.getPhones().add(userApiRequest.getPhone2());
         }
@@ -110,6 +123,31 @@ public class ClinicService {
     public ClinicApiResponse fromEntity(Clinic clinic) {
         var clinicDTO = new ClinicApiResponse();
         BeanUtils.copyProperties(clinic, clinicDTO);
+        clinicDTO.getSpecialties().addAll(clinic.getSpecialties().stream()
+                .map(SpecialtyApiModel::new).collect(Collectors.toList()));
         return clinicDTO;
+    }
+
+    public List<ClinicSpecialty> listAllSpecialtiesByClinicId(Integer clinicId) {
+        return clinicSpecialtyRepository.listAllSpecialtiesByClinicId(clinicId);
+    }
+
+    public void saveSpecialties(Integer clinicId, List<SpecialtyApiModel> specialties) {
+        var clinicSpecialties = listAllSpecialtiesByClinicId(clinicId);
+        var clinic = Clinic.builder().id(clinicId).build();
+
+        if (nonNull(clinicSpecialties) && !clinicSpecialties.isEmpty()) {
+            var clinicSpecialtyIds = clinicSpecialties.stream()
+                    .map(ClinicSpecialty::getClinicSpecialtyId).collect(Collectors.toList());
+            clinicSpecialtyRepository.deleteAllById(clinicSpecialtyIds);
+        }
+
+        clinicSpecialties = new ArrayList<>();
+
+        for (SpecialtyApiModel specialty : specialties) {
+            clinicSpecialties.add(new ClinicSpecialty(clinic, new Specialty(specialty), specialty.getAppointmentValue()));
+        }
+
+        clinicSpecialtyRepository.saveAll(clinicSpecialties);
     }
 }

@@ -10,11 +10,13 @@ import br.com.parcelaae.app.domain.balancemovement.model.TransactionDetailApiRes
 import br.com.parcelaae.app.domain.balancemovement.repository.BalanceMovementRepository;
 import br.com.parcelaae.app.core.exception.BalanceInsufficientException;
 import br.com.parcelaae.app.domain.credit.service.CreditService;
+import br.com.parcelaae.app.domain.scheduling.model.SchedulingApiRequest;
 import br.com.parcelaae.app.domain.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -27,6 +29,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 
+@Transactional
 @AllArgsConstructor
 @Slf4j
 @Service
@@ -142,6 +145,15 @@ public class BalanceMovementService {
                 .value(balanceMovement.getValue())
                 .operationDate(balanceMovement.getOperationDate())
                 .type(balanceMovement.getType())
+                .build();
+    }
+
+    public TransactionApiRequest fromScheduleApiRequest(SchedulingApiRequest schedulingApiRequest) {
+        return TransactionApiRequest.builder()
+                .accountNumberOrigin(schedulingApiRequest.getAccountNumberOrigin())
+                .cpfCnpj(schedulingApiRequest.getCpfCnpj())
+                .value(schedulingApiRequest.getValue())
+                .type(TransactionType.PAYMENT)
                 .build();
     }
 

@@ -5,9 +5,11 @@ import br.com.parcelaae.app.domain.city.repository.CityRepositoryCustom;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @AllArgsConstructor
 @Service
 public class CityService {

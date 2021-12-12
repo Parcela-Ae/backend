@@ -3,10 +3,10 @@ package br.com.parcelaae.app.domain.user.service;
 import br.com.parcelaae.app.core.exception.AuthorizationException;
 import br.com.parcelaae.app.domain.credit.service.CreditService;
 import br.com.parcelaae.app.domain.enums.Profile;
+import br.com.parcelaae.app.domain.security.model.UserSS;
 import br.com.parcelaae.app.domain.user.model.User;
 import br.com.parcelaae.app.domain.user.model.UserProfileApiResponse;
 import br.com.parcelaae.app.domain.user.repository.UserRepository;
-import br.com.parcelaae.app.domain.security.model.UserSS;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,9 +14,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 import static br.com.parcelaae.app.domain.security.SecurityUtil.getTypeUser;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
+@Transactional
 @AllArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
@@ -59,5 +63,11 @@ public class UserService implements UserDetailsService {
 
     private static boolean isAnUserValid(Integer userId, UserSS user) {
         return isNull(user) || !user.hasRole(Profile.ADMIN) && !userId.equals(user.getId());
+    }
+
+    public boolean isValidUser(UserSS authenticatedUser, Integer userId, String typeUser) {
+        return nonNull(authenticatedUser) && nonNull(userId) && nonNull(typeUser)
+                && authenticatedUser.getId().equals(userId)
+                && typeUser.equals(authenticatedUser.getTypeUser());
     }
 }

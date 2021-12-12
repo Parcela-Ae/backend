@@ -45,9 +45,9 @@ public class ClinicRepositoryCustomImpl implements ClinicRepositoryCustom {
         }
 
         if (!isNullOrEmpty(filter.getSpecialty()) && isFirst) {
-            sql.append(" WHERE specialty.name LIKE :specialty ");
+            sql.append(" WHERE specialty.specialty.name LIKE :specialty ");
         } else if (!isNullOrEmpty(filter.getSpecialty())) {
-            sql.append(" AND specialty.name LIKE :specialty ");
+            sql.append(" AND specialty.specialty.name LIKE :specialty ");
         }
 
         var query = em.createQuery(sql.toString(), Clinic.class);

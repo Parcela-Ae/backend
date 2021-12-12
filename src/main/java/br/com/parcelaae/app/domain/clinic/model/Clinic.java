@@ -1,18 +1,15 @@
 package br.com.parcelaae.app.domain.clinic.model;
 
-import br.com.parcelaae.app.domain.specialty.model.Specialty;
-import br.com.parcelaae.app.domain.user.model.User;
 import br.com.parcelaae.app.domain.enums.Profile;
-import lombok.*;
+import br.com.parcelaae.app.domain.user.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @SuperBuilder
 @AllArgsConstructor
@@ -24,10 +21,6 @@ public class Clinic extends User implements Serializable {
 
     @Column(unique = true)
     private String cnpj;
-
-    @ManyToMany
-    @JoinColumn(name = "specialty_id")
-    private List<Specialty> specialties = new ArrayList<>();
 
     public Clinic() {
         super();

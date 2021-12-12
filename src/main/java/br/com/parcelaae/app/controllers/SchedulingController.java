@@ -57,7 +57,7 @@ public class SchedulingController {
         if (!userService.isValidUser(authenticatedUser, customerId, CUSTOMER))
             throw new AuthorizationException("Não foi possível recuperar as informações do usuário no momento");
 
-        schedules =  schedulingService.listAllByCustomerId(authenticatedUser.getId());
+        schedules =  schedulingService.listAllByCustomerId(customerId);
 
         schedules.forEach(scheduling -> schedulesResponse.add(schedulingService.toApiResponse(scheduling)));
 

@@ -6,8 +6,10 @@ import br.com.parcelaae.app.domain.feedback.repository.FeedbackRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @AllArgsConstructor
 @Service
 public class FeedbackService {

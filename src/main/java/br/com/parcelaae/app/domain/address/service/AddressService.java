@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @AllArgsConstructor
 @Service
 public class AddressService {
@@ -21,12 +22,10 @@ public class AddressService {
                         "Objeto não encontrado para o Id: " + id, Address.class.getName()));
     }
 
-    @Transactional
     public Address insert(Address address) {
         return repository.save(address);
     }
 
-    @Transactional
     public List<Address> saveAll(List<Address> listaAddresses) {
         return repository.saveAll(listaAddresses);
     }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @Data
 public class SchedulingApiResponse {
-    private Integer schedulingId;
+    private Long schedulingId;
     private ClinicApiResponse clinic;
     private SpecialtyApiModel specialty;
     @JsonFormat(pattern="dd/MM/yyyy")
