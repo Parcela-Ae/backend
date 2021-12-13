@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static br.com.parcelaae.app.core.constants.AppConstants.CLINIC;
+import static br.com.parcelaae.app.domain.user.service.UserService.validateIfUserHasAuthoritation;
 import static java.util.Objects.nonNull;
 
 @AllArgsConstructor
@@ -30,6 +31,7 @@ public class ClinicController {
 
     @GetMapping("/{clinicId}")
     public ResponseEntity<ClinicApiResponse> findById(@PathVariable("clinicId") Integer clinicId) {
+        validateIfUserHasAuthoritation(clinicId);
         var clinic = clinicService.findById(clinicId);
         var clinicDTO = clinicService.fromEntity(clinic);
         return ResponseEntity.ok(clinicDTO);
@@ -59,7 +61,7 @@ public class ClinicController {
         return ResponseEntity.ok(specialtiesApiResponse);
     }
 
-    @PutMapping(path = "{clinicId}/specialties")
+    @PostMapping(path = "{clinicId}/specialties")
     public ResponseEntity<Void> saveSpecialties(@PathVariable("clinicId") Integer clinicId,
                                                 @RequestBody List<SpecialtyApiModel> specialties) {
         var authenticatedUser = UserService.getAuthenticatedUser();

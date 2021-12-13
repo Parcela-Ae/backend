@@ -20,26 +20,26 @@ import static br.com.parcelaae.app.domain.user.service.UserService.validateIfUse
 @RequestMapping(value = "/customers")
 public class CustomerController {
 
-    private final CustomerService service;
+    private final CustomerService customerService;
 
     @GetMapping("/{customerId}")
     public ResponseEntity<CustomerApiResponse> findById(@PathVariable("customerId") Integer customerId) {
         validateIfUserHasAuthoritation(customerId);
-        var customer = service.findById(customerId);
-        var customerDTO = service.toDTO(customer);
+        var customer = customerService.findById(customerId);
+        var customerDTO = customerService.toDTO(customer);
         return ResponseEntity.ok(customerDTO);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<Customer>> findAll() {
-        return ResponseEntity.ok().body(service.listAll());
+        return ResponseEntity.ok().body(customerService.listAll());
     }
 
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody UserApiRequest userApiRequest) {
-        Customer customer = service.fromDTO(userApiRequest);
-        service.insert(customer);
+        Customer customer = customerService.fromDTO(userApiRequest);
+        customerService.insert(customer);
         var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(customer.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }

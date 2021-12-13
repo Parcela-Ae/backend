@@ -1,17 +1,11 @@
 package br.com.parcelaae.app.domain.balancemovement.service;
 
-import br.com.parcelaae.app.domain.balancemovement.model.BalanceMovement;
-import br.com.parcelaae.app.domain.credit.model.Credit;
-import br.com.parcelaae.app.domain.balancemovement.model.TransactionStatus;
-import br.com.parcelaae.app.domain.balancemovement.model.TransactionType;
-import br.com.parcelaae.app.domain.balancemovement.model.TransactionApiRequest;
-import br.com.parcelaae.app.domain.balancemovement.model.TransactionApiResponse;
-import br.com.parcelaae.app.domain.balancemovement.model.TransactionDetailApiResponse;
-import br.com.parcelaae.app.domain.balancemovement.repository.BalanceMovementRepository;
 import br.com.parcelaae.app.core.exception.BalanceInsufficientException;
+import br.com.parcelaae.app.domain.balancemovement.model.*;
+import br.com.parcelaae.app.domain.balancemovement.repository.BalanceMovementRepository;
+import br.com.parcelaae.app.domain.credit.model.Credit;
 import br.com.parcelaae.app.domain.credit.service.CreditService;
 import br.com.parcelaae.app.domain.scheduling.model.SchedulingApiRequest;
-import br.com.parcelaae.app.domain.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,8 +32,6 @@ public class BalanceMovementService {
     private final BalanceMovementRepository balanceMovementRepository;
 
     private final CreditService creditService;
-
-    private final UserService userService;
 
     public void save(TransactionApiRequest transactionApiRequest) {
         var balanceMovement = fromDTO(transactionApiRequest);

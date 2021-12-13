@@ -2,7 +2,11 @@ package br.com.parcelaae.app.domain.clinic.service;
 
 import br.com.parcelaae.app.domain.address.model.Address;
 import br.com.parcelaae.app.domain.address.service.AddressService;
-import br.com.parcelaae.app.domain.clinic.model.*;
+import br.com.parcelaae.app.domain.balancemovement.service.BalanceMovementService;
+import br.com.parcelaae.app.domain.clinic.model.Clinic;
+import br.com.parcelaae.app.domain.clinic.model.ClinicApiResponse;
+import br.com.parcelaae.app.domain.clinic.model.ClinicRestFilter;
+import br.com.parcelaae.app.domain.clinic.model.ClinicSpecialty;
 import br.com.parcelaae.app.domain.clinic.repository.ClinicRepository;
 import br.com.parcelaae.app.domain.clinic.repository.ClinicSpecialtyRepository;
 import br.com.parcelaae.app.domain.credit.model.Credit;
@@ -42,6 +46,8 @@ public class ClinicService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     private final CreditService creditService;
+
+    private final BalanceMovementService balanceMovementService;
 
     public User insert(User user) {
         var specialties = user.getSpecialties();

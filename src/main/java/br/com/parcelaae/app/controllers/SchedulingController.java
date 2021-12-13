@@ -7,9 +7,9 @@ import br.com.parcelaae.app.domain.scheduling.model.SchedulingApiResponse;
 import br.com.parcelaae.app.domain.scheduling.service.SchedulingService;
 import br.com.parcelaae.app.domain.user.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -27,9 +27,8 @@ public class SchedulingController {
 
     @PostMapping(path = "schedules")
     public ResponseEntity<Void> insert(@RequestBody @Valid SchedulingApiRequest schedulingApiRequest) {
-        var scheduling = schedulingService.save(schedulingApiRequest);
-        var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(scheduling.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+        schedulingService.save(schedulingApiRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping(path = "clinics/{clinicId}/schedules")

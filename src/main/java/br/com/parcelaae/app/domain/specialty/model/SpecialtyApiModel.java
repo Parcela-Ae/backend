@@ -3,6 +3,7 @@ package br.com.parcelaae.app.domain.specialty.model;
 import br.com.parcelaae.app.domain.clinic.model.ClinicSpecialty;
 import lombok.*;
 
+import javax.validation.constraints.DecimalMin;
 import java.io.Serializable;
 
 @Builder
@@ -15,6 +16,7 @@ public class SpecialtyApiModel implements Serializable {
 
     private Integer id;
     private String name;
+    @DecimalMin("0.01")
     private Double appointmentValue;
 
     public SpecialtyApiModel(Specialty entity) {

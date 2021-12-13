@@ -13,7 +13,10 @@ mutation-test:
 test: unit-test mutation-test
 
 build:
-	mvn clean install
+	mvn clean install compile
 	
 run:
 	mvn spring-boot:run
+
+deploy:
+	mvn heroku:deploy -Dheroku.appName=parcela-ae-app

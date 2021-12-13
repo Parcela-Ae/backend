@@ -3,17 +3,19 @@ package br.com.parcelaae.app.domain.scheduling.model;
 import br.com.parcelaae.app.domain.clinic.model.Clinic;
 import br.com.parcelaae.app.domain.customer.model.Customer;
 import br.com.parcelaae.app.domain.specialty.model.Specialty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Builder
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Scheduling implements Serializable {
     private static final long serialVersionUID = 1L;
 

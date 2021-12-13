@@ -61,6 +61,11 @@ public class UserService implements UserDetailsService {
             throw new AuthorizationException("Acesso negado");
     }
 
+    public static boolean userHasAuthoritation(Integer userId) {
+        var user = getAuthenticatedUser();
+        return isAnUserValid(userId, user);
+    }
+
     private static boolean isAnUserValid(Integer userId, UserSS user) {
         return isNull(user) || !user.hasRole(Profile.ADMIN) && !userId.equals(user.getId());
     }
