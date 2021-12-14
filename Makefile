@@ -7,7 +7,7 @@ gen-sources:
 unit-test:
 	mvn clean test
 
-mutation-test:
+mt:
 	mvn clean install && (mvn org.pitest:pitest-maven:mutationCoverage || true) && start target/pit-reports/*/index.html
 
 test: unit-test mutation-test

@@ -1,6 +1,7 @@
 package br.com.parcelaae.app.domain.scheduling.model;
 
 import br.com.parcelaae.app.domain.clinic.model.ClinicApiResponse;
+import br.com.parcelaae.app.domain.customer.model.CustomerApiResponse;
 import br.com.parcelaae.app.domain.specialty.model.SpecialtyApiModel;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 public class SchedulingApiResponse {
     private Long schedulingId;
     private ClinicApiResponse clinic;
+    private CustomerApiResponse customer;
     private SpecialtyApiModel specialty;
     @JsonFormat(pattern="dd/MM/yyyy")
     private LocalDateTime scheduledTo;

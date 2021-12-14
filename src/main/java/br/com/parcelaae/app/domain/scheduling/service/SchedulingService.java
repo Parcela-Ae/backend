@@ -4,6 +4,7 @@ import br.com.parcelaae.app.domain.balancemovement.service.BalanceMovementServic
 import br.com.parcelaae.app.domain.clinic.model.Clinic;
 import br.com.parcelaae.app.domain.clinic.model.ClinicApiResponse;
 import br.com.parcelaae.app.domain.customer.model.Customer;
+import br.com.parcelaae.app.domain.customer.model.CustomerApiResponse;
 import br.com.parcelaae.app.domain.scheduling.model.Scheduling;
 import br.com.parcelaae.app.domain.scheduling.model.SchedulingApiRequest;
 import br.com.parcelaae.app.domain.scheduling.model.SchedulingApiResponse;
@@ -61,6 +62,9 @@ public class SchedulingService {
                 .specialty(SpecialtyApiModel.builder()
                         .id(scheduling.getSpecialty().getId())
                         .name(scheduling.getSpecialty().getName())
+                        .build())
+                .customer(CustomerApiResponse.builder()
+                        .name(scheduling.getCustomer().getName())
                         .build())
                 .scheduledTo(scheduling.getScheduledTo())
                 .appointmentValue(scheduling.getAppointmentValue())
