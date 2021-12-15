@@ -49,7 +49,7 @@ public class SchedulingService {
         scheduling.setSpecialty(Specialty.builder().id(schedulingApiRequest.getSpecialtyId()).build());
         scheduling.setScheduledTo(schedulingApiRequest.getScheduledTo());
         scheduling.setAppointmentValue(BigDecimal.valueOf(schedulingApiRequest.getValue()));
-        scheduling.setAppointmentTime(schedulingApiRequest.getScheduledTo().getHour() + ":" + schedulingApiRequest.getScheduledTo().getMinute());
+        scheduling.setAppointmentTime(schedulingApiRequest.getScheduledTo().getHour() + ":" + "00");
         return scheduling;
     }
 
