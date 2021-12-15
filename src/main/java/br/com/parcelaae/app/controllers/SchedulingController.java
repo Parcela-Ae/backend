@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static br.com.parcelaae.app.core.constants.AppConstants.CLINIC;
 import static br.com.parcelaae.app.core.constants.AppConstants.CUSTOMER;
@@ -43,8 +45,12 @@ public class SchedulingController {
         schedules = schedulingService.listAllByClinicId(authenticatedUser.getId());
 
         schedules.forEach(scheduling -> schedulesResponse.add(schedulingService.toApiResponse(scheduling)));
+        var responseSorted = schedulesResponse.stream()
+                .sorted(Comparator.comparing(SchedulingApiResponse::getScheduledTo))
+                .sorted(Comparator.comparing(SchedulingApiResponse::getAppointmentTime))
+                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(schedulesResponse);
+        return ResponseEntity.ok(responseSorted);
     }
 
     @GetMapping(path = "customers/{customerId}/schedules")
@@ -59,7 +65,11 @@ public class SchedulingController {
         schedules =  schedulingService.listAllByCustomerId(customerId);
 
         schedules.forEach(scheduling -> schedulesResponse.add(schedulingService.toApiResponse(scheduling)));
+        var responseSorted = schedulesResponse.stream()
+                .sorted(Comparator.comparing(SchedulingApiResponse::getScheduledTo))
+                .sorted(Comparator.comparing(SchedulingApiResponse::getAppointmentTime))
+                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(schedulesResponse);
+        return ResponseEntity.ok(responseSorted);
     }
 }
