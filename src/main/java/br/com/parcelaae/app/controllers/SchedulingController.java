@@ -47,7 +47,6 @@ public class SchedulingController {
         schedules.forEach(scheduling -> schedulesResponse.add(schedulingService.toApiResponse(scheduling)));
         var responseSorted = schedulesResponse.stream()
                 .sorted(Comparator.comparing(SchedulingApiResponse::getScheduledTo))
-                .sorted(Comparator.comparing(SchedulingApiResponse::getAppointmentTime))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(responseSorted);
@@ -67,7 +66,6 @@ public class SchedulingController {
         schedules.forEach(scheduling -> schedulesResponse.add(schedulingService.toApiResponse(scheduling)));
         var responseSorted = schedulesResponse.stream()
                 .sorted(Comparator.comparing(SchedulingApiResponse::getScheduledTo))
-                .sorted(Comparator.comparing(SchedulingApiResponse::getAppointmentTime))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(responseSorted);
